@@ -1,0 +1,47 @@
+{
+  "services": [],
+  "customers": [
+    {
+      "id": 1,
+      "first_name": "ایمان",
+      "last_name": "علی عباسی",
+      "phone": "09194441712",
+      "debt": 0,
+      "address": "",
+      "join_date": "۱۴۰۵/۴/۷"
+    },
+    {
+      "id": 2,
+      "first_name": "امیرحسین",
+      "last_name": "علی عباسی",
+      "phone": "09120198372",
+      "debt": 0,
+      "address": "",
+      "join_date": "۱۴۰۵/۴/۷"
+    },
+    {
+      "id": 3,
+      "first_name": "علی",
+      "last_name": "احمدی",
+      "phone": "",
+      "debt": 0,
+      "address": "تست",
+      "join_date": "۱۴۰۵/۴/۷"
+    },
+    {
+      "id": 4,
+      "first_name": "test45",
+      "last_name": "",
+      "phone": "",
+      "debt": 0,
+      "address": "",
+      "join_date": "۱۴۰۵/۴/۷"
+    }
+  ],
+  "orders": [],
+  "order_items": [],
+  "tariffs": [],
+  "internal_news": [],
+  "tips": [],
+  "last_update": "۱۴۰۵/۴/۷،‏ ۱۸:۴۷:۲۱"
+}
