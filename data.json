@@ -85,38 +85,7 @@
       "stock": 99999999999999
     }
   ],
-  "customers": [
-    {
-      "id": 2,
-      "first_name": "امیرحسین",
-      "last_name": "علی عباسی",
-      "phone": "09120198372",
-      "debt": 0,
-      "address": "",
-      "join_date": "۱۴۰۵/۴/۷",
-      "points": 1,
-      "national": "",
-      "info": "",
-      "total_purchase": 0,
-      "discount_used": false,
-      "next_discount": 0
-    },
-    {
-      "id": 3,
-      "first_name": "سعید",
-      "last_name": "خراسانی",
-      "phone": "09100815451",
-      "national": "",
-      "debt": 0,
-      "address": "",
-      "info": "",
-      "join_date": "۱۴۰۵/۴/۸",
-      "points": 6,
-      "total_purchase": 0,
-      "next_discount": 0,
-      "discount_used": false
-    }
-  ],
+  "customers": [],
   "orders": [
     {
       "id": 1,
@@ -142,5 +111,5 @@
   "internal_news": [],
   "tips": [],
   "users": [],
-  "last_update": "۱۴۰۵/۴/۸،‏ ۱۸:۴۶:۰۲"
+  "last_update": "۱۴۰۵/۴/۸،‏ ۱۸:۴۶:۱۲"
 }
