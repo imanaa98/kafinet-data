@@ -2,7 +2,7 @@
   "services": [
     {
       "id": 2,
-      "name": "پرینت سیاه‌سفید تک رو a4",
+      "name": "پرینت سیاه‌ سفید تک رو a4",
       "category": "پرینت",
       "price": 80000,
       "stock": 999
@@ -121,5 +121,5 @@
   "tariffs": [],
   "internal_news": [],
   "tips": [],
-  "last_update": "۱۴۰۵/۴/۸،‏ ۱۱:۴۱:۱۲"
+  "last_update": "۱۴۰۵/۴/۸،‏ ۱۱:۴۴:۲۰"
 }
