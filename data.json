@@ -106,7 +106,7 @@
       "debt": 0,
       "address": "",
       "join_date": "۱۴۰۵/۴/۷",
-      "points": 0,
+      "points": 1,
       "national": "",
       "info": ""
     },
@@ -123,8 +123,27 @@
       "points": 0
     }
   ],
-  "orders": [],
-  "order_items": [],
+  "orders": [
+    {
+      "id": 1,
+      "customer_id": 2,
+      "date": "۱۴۰۵/۴/۸،‏ ۱۷:۵۶:۱۹",
+      "total": 1100000,
+      "status": "تکمیل شده"
+    }
+  ],
+  "order_items": [
+    {
+      "order_id": 1,
+      "product_id": 3,
+      "product_name": "پرینت سیاه‌ سفید دو رو a4",
+      "qty": 10,
+      "unit_price": 110000,
+      "discount": 0,
+      "discounted_price": 110000,
+      "subtotal": 1100000
+    }
+  ],
   "tariffs": [],
   "internal_news": [],
   "tips": [],
@@ -146,5 +165,5 @@
       "join_date": "۱۴۰۵/۴/۸"
     }
   ],
-  "last_update": "۱۴۰۵/۴/۸،‏ ۱۷:۵۵:۵۸"
+  "last_update": "۱۴۰۵/۴/۸،‏ ۱۷:۵۶:۲۲"
 }
