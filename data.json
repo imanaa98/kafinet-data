@@ -20,6 +20,13 @@
       "category": "پرینت",
       "price": 110000,
       "stock": 999
+    },
+    {
+      "id": 5,
+      "name": "ویرایش عکس",
+      "category": "ویرایش",
+      "price": 50000,
+      "stock": 999
     }
   ],
   "customers": [
@@ -47,5 +54,5 @@
   "tariffs": [],
   "internal_news": [],
   "tips": [],
-  "last_update": "۱۴۰۵/۴/۸،‏ ۱۱:۲۸:۴۶"
+  "last_update": "۱۴۰۵/۴/۸،‏ ۱۱:۲۹:۰۰"
 }
