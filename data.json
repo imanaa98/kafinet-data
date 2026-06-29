@@ -8,13 +8,6 @@
       "stock": 999
     },
     {
-      "id": 4,
-      "name": "اسکن",
-      "category": "اسکن",
-      "price": 50000,
-      "stock": 999
-    },
-    {
       "id": 3,
       "name": "پرینت سیاه‌سفید دو رو a4",
       "category": "پرینت",
@@ -25,6 +18,13 @@
       "id": 5,
       "name": "ویرایش عکس",
       "category": "ویرایش",
+      "price": 50000,
+      "stock": 999
+    },
+    {
+      "id": 4,
+      "name": "اسکن",
+      "category": "اسکن",
       "price": 50000,
       "stock": 999
     }
@@ -54,5 +54,5 @@
   "tariffs": [],
   "internal_news": [],
   "tips": [],
-  "last_update": "۱۴۰۵/۴/۸،‏ ۱۱:۲۹:۰۰"
+  "last_update": "۱۴۰۵/۴/۸،‏ ۱۱:۲۹:۲۶"
 }
