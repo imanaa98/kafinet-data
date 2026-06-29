@@ -117,27 +117,8 @@
       "join_date": "۱۴۰۵/۴/۸"
     }
   ],
-  "orders": [
-    {
-      "id": 1,
-      "customer_id": 1,
-      "date": "۱۴۰۵/۴/۸،‏ ۱۷:۲۳:۰۲",
-      "total": 1400000,
-      "status": "تکمیل شده"
-    }
-  ],
-  "order_items": [
-    {
-      "order_id": 1,
-      "product_id": 9,
-      "product_name": "پرینت سیاه‌ سفید دو رو a4 مصرف تیونر بالا",
-      "qty": 10,
-      "unit_price": 140000,
-      "discount": 0,
-      "discounted_price": 140000,
-      "subtotal": 1400000
-    }
-  ],
+  "orders": [],
+  "order_items": [],
   "tariffs": [],
   "internal_news": [],
   "tips": [],
@@ -159,5 +140,5 @@
       "join_date": "۱۴۰۵/۴/۸"
     }
   ],
-  "last_update": "۱۴۰۵/۴/۸،‏ ۱۷:۲۳:۰۵"
+  "last_update": "۱۴۰۵/۴/۸،‏ ۱۷:۲۳:۱۸"
 }
