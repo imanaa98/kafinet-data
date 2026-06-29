@@ -94,7 +94,9 @@
       "debt": 0,
       "address": "تست",
       "join_date": "۱۴۰۵/۴/۷",
-      "points": 1
+      "points": 0,
+      "national": "",
+      "info": ""
     },
     {
       "id": 2,
@@ -140,5 +142,5 @@
       "join_date": "۱۴۰۵/۴/۸"
     }
   ],
-  "last_update": "۱۴۰۵/۴/۸،‏ ۱۷:۲۳:۱۸"
+  "last_update": "۱۴۰۵/۴/۸،‏ ۱۷:۲۳:۴۲"
 }
