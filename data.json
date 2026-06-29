@@ -1,5 +1,13 @@
 {
-  "services": [],
+  "services": [
+    {
+      "id": 1,
+      "name": "پرینت سیاه‌سفید",
+      "category": "پرینت",
+      "price": 80000,
+      "stock": 999
+    }
+  ],
   "customers": [
     {
       "id": 1,
@@ -25,5 +33,5 @@
   "tariffs": [],
   "internal_news": [],
   "tips": [],
-  "last_update": "۱۴۰۵/۴/۸،‏ ۱۰:۴۰:۳۸"
+  "last_update": "۱۴۰۵/۴/۸،‏ ۱۰:۴۱:۰۸"
 }
