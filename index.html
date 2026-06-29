@@ -825,26 +825,13 @@
 
   /* ====== RESPONSIVE ====== */
   @media (max-width: 768px) {
-    #sidebar {
-      width: 56px;
-      min-width: 56px;
-    }
-    .logo-area {
-      padding: 12px 8px;
-    }
-    .logo-icon {
-      width: 36px;
-      height: 36px;
-      font-size: 16px;
-      margin-bottom: 4px;
-    }
+    #sidebar { width: 56px; min-width: 56px; }
+    .logo-area { padding: 12px 8px; }
+    .logo-icon { width: 36px; height: 36px; font-size: 16px; margin-bottom: 4px; }
     .logo-title { display: none; }
     .logo-sub { display: none; }
     .nav-section-title { display: none; }
-    .nav-item {
-      justify-content: center;
-      padding: 10px 6px;
-    }
+    .nav-item { justify-content: center; padding: 10px 6px; }
     .nav-item span { display: none; }
     .nav-icon { font-size: 20px; width: auto; }
     .sidebar-bottom .toggle-btn { font-size: 11px; padding: 6px 8px; }
@@ -896,6 +883,35 @@
 
   #page-tips .page-body { padding: 0; }
   #tips-layout { display: flex; flex: 1; overflow: hidden; height: 100%; }
+
+  /* Drag & Drop Styles */
+  .draggable-row {
+    cursor: grab;
+    transition: all 0.2s;
+  }
+  .draggable-row:active {
+    cursor: grabbing;
+  }
+  .draggable-row.dragging {
+    opacity: 0.5;
+    background: var(--surface3);
+  }
+  .drag-over-row {
+    border-bottom: 2px solid var(--accent) !important;
+  }
+  .drag-handle {
+    cursor: grab;
+    color: var(--muted);
+    font-size: 16px;
+    user-select: none;
+    padding: 4px 6px;
+  }
+  .drag-handle:active {
+    cursor: grabbing;
+  }
+  .drag-handle:hover {
+    color: var(--accent);
+  }
 </style>
 </head>
 <body>
@@ -929,7 +945,10 @@
   <!-- SIDEBAR -->
   <div id="sidebar">
     <div class="logo-area">
-      <div class="logo-icon">KFC</div>
+      <div class="logo-icon">
+        <img src="logo.png" alt="کافینت چنار" style="width:100%;height:100%;object-fit:contain;border-radius:14px;" onerror="this.style.display='none';this.parentElement.textContent='KFC'">
+        <span style="display:none;">KFC</span>
+      </div>
       <div class="logo-title">کافینت چنار</div>
       <div class="logo-sub">مرکز خدمات اینترنتی</div>
     </div>
@@ -1069,7 +1088,7 @@
     <div class="page" id="page-orders">
       <div class="page-body">
         <div class="card mb-4">
-          <div class="form-grid form-grid-3 mb-3">
+          <div class="form-grid form-grid-4 mb-3">
             <div class="field">
               <label>مشتری</label>
               <select id="order-cust"><option value="">انتخاب مشتری...</option></select>
@@ -1082,6 +1101,7 @@
               </div>
             </div>
             <div class="field"><label>تعداد</label><input id="order-qty" type="number" value="1" min="1"></div>
+            <div class="field"><label>تخفیف (%)</label><input id="order-discount" type="number" value="0" min="0" max="100" style="min-height:40px"></div>
           </div>
           <div class="row-center gap-2">
             <button class="btn btn-primary" onclick="addToCart()">➕ افزودن به سبد</button>
@@ -1098,8 +1118,8 @@
           <div id="cart-table">
             <div class="table-wrap" style="border:none">
               <table>
-                <thead><tr><th>خدمت</th><th>تعداد</th><th>هزینه واحد</th><th>جمع</th><th></th></tr></thead>
-                <tbody id="cart-tbody"><tr class="empty-row"><td colspan="5">سبد خالی است</td></tr></tbody>
+                <thead><tr><th>خدمت</th><th>تعداد</th><th>هزینه واحد</th><th>تخفیف</th><th>جمع</th><th></th></tr></thead>
+                <tbody id="cart-tbody"><tr class="empty-row"><td colspan="6">سبد خالی است</td></tr></tbody>
               </table>
             </div>
           </div>
@@ -1128,13 +1148,15 @@
     <div class="page" id="page-customers">
       <div class="page-body">
         <div class="card mb-4">
-          <div class="form-grid form-grid-4 mb-3">
+          <div class="form-grid form-grid-3 mb-3">
             <div class="field"><label>نام</label><input id="cust-fn" placeholder="نام"></div>
             <div class="field"><label>نام‌خانوادگی</label><input id="cust-ln" placeholder="نام‌خانوادگی"></div>
             <div class="field"><label>تلفن</label><input id="cust-phone" placeholder="09..."></div>
+            <div class="field"><label>کد ملی</label><input id="cust-national" placeholder="کد ملی (اختیاری)"></div>
             <div class="field"><label>بدهی (ریال)</label><input id="cust-debt" type="number" placeholder="0"></div>
           </div>
           <div class="field mb-3"><label>آدرس</label><input id="cust-addr" placeholder="آدرس (اختیاری)"></div>
+          <div class="field mb-3"><label>اطلاعات بیشتر</label><textarea id="cust-info" placeholder="توضیحات تکمیلی..." rows="2"></textarea></div>
           <div class="row-center">
             <button class="btn btn-primary" onclick="addCustomer()">➕ افزودن</button>
             <button class="btn btn-secondary" onclick="editCustomer()">✏️ ویرایش</button>
@@ -1151,7 +1173,7 @@
         <div class="card" style="padding:0">
           <div class="table-wrap" style="border:none">
             <table>
-              <thead><tr><th>#</th><th>نام</th><th>تلفن</th><th>بدهی (ریال)</th><th>تاریخ عضویت</th></tr></thead>
+              <thead><tr><th>#</th><th>کد</th><th>نام</th><th>تلفن</th><th>بدهی (ریال)</th><th>تاریخ عضویت</th></tr></thead>
               <tbody id="cust-table"></tbody>
             </table>
           </div>
@@ -1370,11 +1392,11 @@
 
 <script>
 // ============================================
-// SYNC CONFIG - GitHub Repository (بدون توکن در کد)
+// SYNC CONFIG - GitHub Repository
 // ============================================
 const SYNC_CONFIG = {
-  USERNAME: 'imanaa98',     // ← نام کاربری خود را وارد کنید
-  REPO_NAME: 'kafinet-data',            // ← نام ریپازیتوری
+  USERNAME: 'imanaa98',
+  REPO_NAME: 'kafinet-data',
   FILE_PATH: 'data.json',
   get GITHUB_TOKEN() {
     return sessionStorage.getItem('github_token') || '';
@@ -1576,14 +1598,13 @@ function initSync() {
 }
 
 // ============================================
-// LOGIN - فقط توکن از کاربر گرفته می‌شود
+// LOGIN
 // ============================================
 function login() {
   const tokenInput = document.getElementById('login-token');
   const error = document.getElementById('login-error');
   const token = tokenInput.value.trim();
   
-  // اعتبارسنجی توکن
   if (!token || token === '') {
     error.textContent = '❌ لطفاً توکن گیت‌هاب را وارد کنید!';
     tokenInput.focus();
@@ -1601,21 +1622,16 @@ function login() {
     return;
   }
   
-  // ذخیره توکن در sessionStorage (امن - با بستن مرورگر پاک می‌شود)
   sessionStorage.setItem('github_token', token);
-  
   error.textContent = '';
   document.getElementById('login-page').classList.add('hidden');
   document.getElementById('app').classList.add('show');
   
-  // راه‌اندازی برنامه
   initDB();
   loadDashboard();
   initSync();
   updateDate();
   toast('✅ خوش آمدید!', 'success');
-  
-  // نمایش وضعیت
   updateLoginStatus('online', '✅ متصل');
 }
 
@@ -1646,6 +1662,7 @@ const DB = {
 };
 
 function initDB() {
+  // ====== سرویس‌های پیش‌فرض ======
   if (!DB.get('services')) DB.set('services', [
     {id:1,name:'استفاده از سیستم',category:'سیستم',price:50000,stock:20},
     {id:2,name:'پرینت سیاه‌سفید',category:'پرینت',price:5000,stock:999},
@@ -1653,8 +1670,8 @@ function initDB() {
     {id:4,name:'اسکن مدارک',category:'اسکن',price:10000,stock:999},
     {id:5,name:'ثبت‌نام کنکور',category:'ثبت‌نام اینترنتی',price:150000,stock:999},
     {id:6,name:'ثبت‌نام دانشگاه',category:'ثبت‌نام اینترنتی',price:100000,stock:999},
-    {id:7,name:'ثبت‌نام آزمون نظام مهندسی',category:'ثبت‌نام اینترنتی',price:120000,stock:999},
-    {id:8,name:'ثبت‌نام آزمون استخدامی',category:'ثبت‌نام اینترنتی',price:100000,stock:999},
+    {id:7,name:'ثبت‌نام نظام مهندسی',category:'ثبت‌نام اینترنتی',price:120000,stock:999},
+    {id:8,name:'ثبت‌نام استخدامی',category:'ثبت‌نام اینترنتی',price:100000,stock:999},
     {id:9,name:'رزرو نوبت سفارت',category:'ثبت‌نام اینترنتی',price:200000,stock:999},
     {id:10,name:'ثبت‌نام سامانه‌های دولتی',category:'ثبت‌نام اینترنتی',price:80000,stock:999},
     {id:11,name:'تایپ فارسی (هر صفحه)',category:'تایپ',price:30000,stock:999},
@@ -1666,12 +1683,15 @@ function initDB() {
     {id:17,name:'تبدیل فایل PDF',category:'خدمات فایل',price:20000,stock:999},
     {id:18,name:'رایت CD/DVD',category:'خدمات فایل',price:30000,stock:999},
   ]);
+
+  // ====== مشتریان پیش‌فرض با کد ملی و اطلاعات بیشتر ======
   if (!DB.get('customers')) DB.set('customers', [
-    {id:1,first_name:'علی',last_name:'احمدی',phone:'09121234567',address:'تهران',debt:0,join_date:today()},
-    {id:2,first_name:'مریم',last_name:'رضایی',phone:'09351234567',address:'تهران',debt:50000,join_date:today()},
+    {id:1,first_name:'علی',last_name:'احمدی',phone:'09121234567',national:'1234567890',address:'تهران',debt:0,info:'مشتری دائمی',join_date:today()},
+    {id:2,first_name:'مریم',last_name:'رضایی',phone:'09351234567',national:'0987654321',address:'تهران',debt:50000,info:'نیاز به پیگیری',join_date:today()},
+    {id:3,first_name:'محمد',last_name:'کریمی',phone:'09123456789',national:'1122334455',address:'اصفهان',debt:0,info:'',join_date:today()},
   ]);
-  if (!DB.get('orders')) DB.set('orders', []);
-  if (!DB.get('order_items')) DB.set('order_items', []);
+
+  // ====== تعرفه‌های پیش‌فرض ======
   if (!DB.get('tariffs')) DB.set('tariffs', [
     {id:1,name:'استفاده از سیستم',description:'هر ساعت',price:50000,unit:'ساعت',active:'فعال'},
     {id:2,name:'پرینت A4 سیاه‌سفید',description:'هر برگ',price:5000,unit:'برگ',active:'فعال'},
@@ -1682,16 +1702,30 @@ function initDB() {
     {id:7,name:'ثبت‌نام اینترنتی پیچیده',description:'کنکور، استخدامی و...',price:150000,unit:'عدد',active:'فعال'},
     {id:8,name:'گیمینگ',description:'بازی آنلاین',price:80000,unit:'ساعت',active:'فعال'},
   ]);
+
+  // ====== اطلاعیه‌های پیش‌فرض ======
   if (!DB.get('internal_news')) DB.set('internal_news', [
     {id:1,title:'شروع ثبت‌نام کنکور سراسری ۱۴۰۴',content:'ثبت‌نام کنکور سراسری از امروز آغاز شد. مدارک لازم: کارت ملی، شناسنامه، مدرک تحصیلی. هزینه ۱۵۰ هزار تومان.',category:'ثبت نام',date:today(),priority:'فوری',pinned:true,active:true},
     {id:2,title:'آزمون استخدامی دستگاه‌های اجرایی',content:'ثبت‌نام آزمون استخدامی تا پایان هفته ادامه دارد.',category:'ثبت نام',date:today(),priority:'بالا',pinned:true,active:true},
     {id:3,title:'تخفیف ویژه پرینت و فتوکپی',content:'تا پایان این ماه پرینت سیاه‌سفید ۵۰٪ تخفیف.',category:'تخفیف',date:today(),priority:'متوسط',pinned:false,active:true},
   ]);
+
+  // ====== راهنماهای پیش‌فرض ======
   if (!DB.get('tips')) DB.set('tips', [
     {id:1,folder:'کنکور و آموزش',title:'ثبت‌نام کنکور سراسری',url:'https://sanjesh.org',
      body:'مرحله ۱: وارد سایت sanjesh.org شوید\nمرحله ۲: روی گزینه «ثبت‌نام» کلیک کنید\nمرحله ۳: کد ملی و اطلاعات شناسنامه‌ای را وارد کنید\nمرحله ۴: رشته و شهر محل سکونت را انتخاب کنید\nمرحله ۵: مدرک تحصیلی و اطلاعات آموزشی را وارد نمایید\nمرحله ۶: عکس ۳×۴ را با فرمت JPG آپلود کنید\nمرحله ۷: هزینه ثبت‌نام را از طریق درگاه پرداخت کنید\nمرحله ۸: کد رهگیری را دریافت و نگهداری کنید',
      images:[],date:today()},
+    {id:2,folder:'کنکور و آموزش',title:'ثبت‌نام دانشگاه آزاد',url:'https://azmoon.org',
+     body:'سایت: azmoon.org\n\nمرحله ۱: بخش پذیرش دانشجو را انتخاب کنید\nمرحله ۲: کد ملی و اطلاعات فردی را وارد کنید\nمرحله ۳: رشته‌های مورد نظر را اولویت‌بندی کنید\nمرحله ۴: مدارک لازم را اسکن و آپلود کنید\nمرحله ۵: هزینه را پرداخت کنید',
+     images:[],date:today()},
+    {id:3,folder:'استخدامی',title:'ثبت‌نام آزمون استخدامی دولتی',url:'https://استخدام.ir',
+     body:'سایت: استخدام.ir یا سایت سازمان سنجش\n\nمراحل ثبت‌نام:\n۱. ورود با کد ملی\n۲. انتخاب سازمان و رشته شغلی\n۳. تکمیل فرم مشخصات فردی و تحصیلی\n۴. بارگذاری مدارک\n۵. پرداخت هزینه آزمون\n۶. چاپ کارت شرکت در آزمون',
+     images:[],date:today()},
   ]);
+
+  // ====== سفارش‌های پیش‌فرض ======
+  if (!DB.get('orders')) DB.set('orders', []);
+  if (!DB.get('order_items')) DB.set('order_items', []);
 }
 
 // ============================================
@@ -1718,6 +1752,89 @@ function clearSearch(id, fn) {
 function setSyncStatus(status, msg) {
   const el = document.getElementById('sync-status');
   if (el) { el.className = status; el.textContent = msg; }
+}
+
+// ============================================
+// DRAG & DROP - جابجایی ردیف‌ها
+// ============================================
+let dragState = {
+  sourceTable: null,
+  sourceIndex: null,
+  sourceId: null,
+  sourceData: null
+};
+
+function initDragDrop(tableId, itemsKey, renderFn) {
+  const table = document.getElementById(tableId);
+  if (!table) return;
+  
+  let dragRow = null;
+  let dragOverRow = null;
+  
+  table.addEventListener('mousedown', function(e) {
+    const row = e.target.closest('tr.draggable-row');
+    if (!row) return;
+    const handle = e.target.closest('.drag-handle');
+    if (!handle) return;
+    
+    dragRow = row;
+    dragState.sourceTable = tableId;
+    dragState.sourceIndex = Array.from(table.querySelectorAll('tr.draggable-row')).indexOf(row);
+    dragState.sourceId = row.dataset.id;
+    
+    row.classList.add('dragging');
+  });
+  
+  table.addEventListener('mousemove', function(e) {
+    if (!dragRow) return;
+    
+    const rows = table.querySelectorAll('tr.draggable-row');
+    let targetRow = null;
+    
+    rows.forEach(row => {
+      if (row === dragRow) return;
+      const rect = row.getBoundingClientRect();
+      const midY = rect.top + rect.height / 2;
+      if (e.clientY > rect.top && e.clientY < rect.bottom) {
+        targetRow = row;
+      }
+    });
+    
+    if (dragOverRow && dragOverRow !== targetRow) {
+      dragOverRow.classList.remove('drag-over-row');
+    }
+    
+    if (targetRow && targetRow !== dragRow) {
+      targetRow.classList.add('drag-over-row');
+      dragOverRow = targetRow;
+    }
+  });
+  
+  document.addEventListener('mouseup', function(e) {
+    if (!dragRow) return;
+    
+    dragRow.classList.remove('dragging');
+    if (dragOverRow) {
+      dragOverRow.classList.remove('drag-over-row');
+      
+      const items = DB.get(itemsKey) || [];
+      const fromIndex = dragState.sourceIndex;
+      const toIndex = Array.from(table.querySelectorAll('tr.draggable-row')).indexOf(dragOverRow);
+      
+      if (fromIndex !== -1 && toIndex !== -1 && fromIndex !== toIndex) {
+        const item = items.splice(fromIndex, 1)[0];
+        items.splice(toIndex, 0, item);
+        DB.set(itemsKey, items);
+        renderFn();
+        autoSync();
+        toast('ترتیب تغییر کرد ✅', 'success');
+      }
+    }
+    
+    dragRow = null;
+    dragOverRow = null;
+    dragState = { sourceTable: null, sourceIndex: null, sourceId: null, sourceData: null };
+  });
 }
 
 // ============================================
@@ -1819,7 +1936,7 @@ function loadDashboard() {
 }
 
 // ============================================
-// SERVICES (به اختصار)
+// SERVICES (با قابلیت جابجایی)
 // ============================================
 let selService = null;
 let allServices = [];
@@ -1827,18 +1944,32 @@ let allServices = [];
 function loadServices() {
   allServices = DB.get('services')||[];
   renderServices(allServices);
+  // فعال‌سازی کشیدن و رها کردن بعد از رندر
+  setTimeout(() => initDragDrop('svc-table', 'services', loadServices), 100);
 }
 
 function renderServices(data) {
   const tbody = document.getElementById('svc-table');
   tbody.innerHTML = '';
   if (!data.length) { tbody.innerHTML = '<tr class="empty-row"><td colspan="5">هیچ خدمتی ثبت نشده</td></tr>'; return; }
-  data.forEach((s)=>{
+  data.forEach((s, index)=>{
     const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${s.id}</td><td>${s.name}</td>
+    tr.className = 'draggable-row';
+    tr.dataset.id = s.id;
+    tr.innerHTML = `
+      <td><span class="drag-handle">⠿</span> ${s.id}</td>
+      <td>${s.name}</td>
       <td><span class="badge badge-accent">${s.category||'-'}</span></td>
-      <td>${fmtNum(s.price)} ریال</td><td>${s.stock||0}</td>`;
-    tr.onclick = () => { selService = s; document.querySelectorAll('#svc-table tr').forEach(r=>r.classList.remove('selected')); tr.classList.add('selected'); fillServiceForm(s); };
+      <td>${fmtNum(s.price)} ریال</td>
+      <td>${s.stock||0}</td>
+    `;
+    tr.onclick = (e) => {
+      if (e.target.closest('.drag-handle')) return;
+      selService = s;
+      document.querySelectorAll('#svc-table tr').forEach(r=>r.classList.remove('selected'));
+      tr.classList.add('selected');
+      fillServiceForm(s);
+    };
     tbody.appendChild(tr);
   });
 }
@@ -1885,7 +2016,157 @@ function filterServices(q) {
 }
 
 // ============================================
-// ORDERS (به اختصار)
+// TARIFFS (با قابلیت جابجایی)
+// ============================================
+let selTariff = null;
+
+function loadTariffs() {
+  const data = DB.get('tariffs')||[];
+  renderTariffs(data);
+  setTimeout(() => initDragDrop('tar-table', 'tariffs', loadTariffs), 100);
+}
+
+function renderTariffs(data) {
+  const tbody = document.getElementById('tar-table');
+  tbody.innerHTML = '';
+  if (!data.length) { tbody.innerHTML='<tr class="empty-row"><td colspan="6">هیچ تعرفه‌ای ثبت نشده</td></tr>'; return; }
+  data.forEach((t, index)=>{
+    const tr = document.createElement('tr');
+    tr.className = 'draggable-row';
+    tr.dataset.id = t.id;
+    tr.innerHTML = `
+      <td><span class="drag-handle">⠿</span> ${t.id}</td>
+      <td>${t.name}</td>
+      <td>${t.description||'-'}</td>
+      <td>${fmtNum(t.price)} ریال</td>
+      <td>${t.unit||'-'}</td>
+      <td><span class="badge ${t.active==='فعال'?'badge-success':'badge-muted'}">${t.active||'فعال'}</span></td>
+    `;
+    tr.onclick = (e) => {
+      if (e.target.closest('.drag-handle')) return;
+      selTariff=t;
+      document.querySelectorAll('#tar-table tr').forEach(r=>r.classList.remove('selected'));
+      tr.classList.add('selected');
+      document.getElementById('tar-name').value=t.name;
+      document.getElementById('tar-desc').value=t.description||'';
+      document.getElementById('tar-price').value=t.price;
+      document.getElementById('tar-unit').value=t.unit||'';
+    };
+    tbody.appendChild(tr);
+  });
+}
+
+function addTariff() {
+  const n=document.getElementById('tar-name').value.trim();
+  const p=+document.getElementById('tar-price').value;
+  if (!n||!p) { toast('نام و قیمت الزامی','danger'); return; }
+  const data=DB.get('tariffs')||[];
+  data.push({id:nextId(data),name:n,description:document.getElementById('tar-desc').value,price:p,unit:document.getElementById('tar-unit').value,active:'فعال'});
+  DB.set('tariffs',data); loadTariffs(); autoSync(); toast('تعرفه افزوده شد','success');
+}
+
+function editTariff() {
+  if (!selTariff) { toast('انتخاب نشده','danger'); return; }
+  const data=DB.get('tariffs')||[];
+  data.forEach(t=>{ if(t.id===selTariff.id) Object.assign(t,{name:document.getElementById('tar-name').value.trim(),description:document.getElementById('tar-desc').value,price:+document.getElementById('tar-price').value,unit:document.getElementById('tar-unit').value}); });
+  DB.set('tariffs',data); loadTariffs(); autoSync(); toast('ویرایش انجام شد','success');
+}
+
+function deleteTariff() {
+  if (!selTariff) { toast('انتخاب نشده','danger'); return; }
+  if (!confirm('حذف شود؟')) return;
+  DB.set('tariffs',(DB.get('tariffs')||[]).filter(t=>t.id!==selTariff.id));
+  selTariff=null; loadTariffs(); autoSync();
+}
+
+// ============================================
+// CUSTOMERS (با کد ملی و اطلاعات بیشتر)
+// ============================================
+let selCust = null;
+let allCustomers = [];
+
+function loadCustomers() {
+  allCustomers = DB.get('customers')||[];
+  renderCustomers(allCustomers);
+}
+
+function renderCustomers(data) {
+  const tbody = document.getElementById('cust-table');
+  tbody.innerHTML = '';
+  if (!data.length) { tbody.innerHTML='<tr class="empty-row"><td colspan="6">هیچ مشتری‌ای ثبت نشده</td></tr>'; return; }
+  data.forEach((c, index)=>{
+    const tr=document.createElement('tr');
+    const customerCode = `#${String(index+1).padStart(3, '0')}`;
+    tr.innerHTML=`<td>${c.id}</td><td>${customerCode}</td><td>${c.first_name} ${c.last_name}</td>
+      <td>${c.phone||'-'}</td>
+      <td>${c.debt?'<span class="badge badge-danger">'+fmtNum(c.debt)+' ریال</span>':'<span class="badge badge-success">بدون بدهی</span>'}</td>
+      <td>${c.join_date||'-'}</td>`;
+    tr.onclick=()=>{ selCust=c; document.querySelectorAll('#cust-table tr').forEach(r=>r.classList.remove('selected')); tr.classList.add('selected'); fillCustForm(c); };
+    tbody.appendChild(tr);
+  });
+}
+
+function fillCustForm(c) {
+  document.getElementById('cust-fn').value=c.first_name||'';
+  document.getElementById('cust-ln').value=c.last_name||'';
+  document.getElementById('cust-phone').value=c.phone||'';
+  document.getElementById('cust-national').value=c.national||'';
+  document.getElementById('cust-debt').value=c.debt||0;
+  document.getElementById('cust-addr').value=c.address||'';
+  document.getElementById('cust-info').value=c.info||'';
+}
+
+function addCustomer() {
+  const fn=document.getElementById('cust-fn').value.trim();
+  const ln=document.getElementById('cust-ln').value.trim();
+  const ph=document.getElementById('cust-phone').value.trim();
+  if (!fn) { toast('نام الزامی است','danger'); return; }
+  const custs=DB.get('customers')||[];
+  custs.push({
+    id:nextId(custs),
+    first_name:fn,
+    last_name:ln,
+    phone:ph,
+    national:document.getElementById('cust-national').value.trim(),
+    debt:+(document.getElementById('cust-debt').value||0),
+    address:document.getElementById('cust-addr').value,
+    info:document.getElementById('cust-info').value,
+    join_date:today()
+  });
+  DB.set('customers',custs); loadCustomers(); autoSync(); toast('مشتری افزوده شد','success');
+}
+
+function editCustomer() {
+  if (!selCust) { toast('یک ردیف انتخاب کنید','danger'); return; }
+  const custs=DB.get('customers')||[];
+  custs.forEach(c=>{
+    if(c.id===selCust.id) Object.assign(c,{
+      first_name:document.getElementById('cust-fn').value.trim(),
+      last_name:document.getElementById('cust-ln').value.trim(),
+      phone:document.getElementById('cust-phone').value.trim(),
+      national:document.getElementById('cust-national').value.trim(),
+      debt:+(document.getElementById('cust-debt').value||0),
+      address:document.getElementById('cust-addr').value,
+      info:document.getElementById('cust-info').value
+    });
+  });
+  DB.set('customers',custs); loadCustomers(); autoSync(); toast('ویرایش انجام شد','success');
+}
+
+function deleteCustomer() {
+  if (!selCust) { toast('یک ردیف انتخاب کنید','danger'); return; }
+  if (!confirm('حذف شود؟')) return;
+  DB.set('customers',(DB.get('customers')||[]).filter(c=>c.id!==selCust.id));
+  selCust=null; loadCustomers(); autoSync(); toast('حذف شد');
+}
+
+function filterCustomers(q) {
+  const nq=norm(q);
+  renderCustomers(nq?allCustomers.filter(c=>norm(c.first_name+c.last_name).includes(nq)||norm(c.phone||'').includes(nq)||norm(c.national||'').includes(nq)):allCustomers);
+}
+
+// ============================================
+// ORDERS (با تخفیف)
 // ============================================
 let cart = [];
 let allOrders = [];
@@ -1955,13 +2236,33 @@ function addToCart() {
   if (!selProd) { toast('ابتدا خدمت را از لیست انتخاب کنید','danger'); return; }
   const qty = parseInt(document.getElementById('order-qty').value)||1;
   if (qty<1) { toast('تعداد نامعتبر','danger'); return; }
-  const sub = selProd.price * qty;
+  const discount = parseInt(document.getElementById('order-discount').value)||0;
+  if (discount < 0 || discount > 100) { toast('تخفیف باید بین 0 تا 100 باشد','danger'); return; }
+  
+  const unitPrice = selProd.price;
+  const discountedPrice = Math.round(unitPrice * (1 - discount / 100));
+  const sub = discountedPrice * qty;
+  
   const existing = cart.find(c=>c.product_id===selProd.id);
-  if (existing) { existing.qty+=qty; existing.subtotal+=sub; }
-  else cart.push({product_id:selProd.id,product_name:selProd.name,qty,unit_price:selProd.price,subtotal:sub});
+  if (existing) { 
+    existing.qty += qty; 
+    existing.subtotal += sub;
+    existing.discount = discount;
+  } else {
+    cart.push({
+      product_id:selProd.id,
+      product_name:selProd.name,
+      qty,
+      unit_price:unitPrice,
+      discount:discount,
+      discounted_price:discountedPrice,
+      subtotal:sub
+    });
+  }
   refreshCart();
   document.getElementById('order-prod-search').value='';
   document.getElementById('order-qty').value='1';
+  document.getElementById('order-discount').value='0';
   selProd=null;
   toast('افزوده شد','success');
 }
@@ -1969,11 +2270,15 @@ function addToCart() {
 function refreshCart() {
   const tbody = document.getElementById('cart-tbody');
   tbody.innerHTML = '';
-  if (!cart.length) { tbody.innerHTML='<tr class="empty-row"><td colspan="5">سبد خالی است</td></tr>'; document.getElementById('cart-total').textContent='جمع کل: ۰ ریال'; return; }
+  if (!cart.length) { tbody.innerHTML='<tr class="empty-row"><td colspan="6">سبد خالی است</td></tr>'; document.getElementById('cart-total').textContent='جمع کل: ۰ ریال'; return; }
   cart.forEach((item,i)=>{
+    const totalAfterDiscount = item.subtotal;
     tbody.innerHTML += `<tr>
-      <td>${item.product_name}</td><td>${item.qty}</td>
-      <td>${fmtNum(item.unit_price)}</td><td>${fmtNum(item.subtotal)}</td>
+      <td>${item.product_name}</td>
+      <td>${item.qty}</td>
+      <td>${fmtNum(item.unit_price)}</td>
+      <td>${item.discount}%</td>
+      <td>${fmtNum(totalAfterDiscount)}</td>
       <td><button class="btn btn-danger btn-sm" onclick="removeCartItem(${i})">✕</button></td>
     </tr>`;
   });
@@ -2061,114 +2366,6 @@ function filterOrders(q) {
   const custs = DB.get('customers')||[];
   const custMap = {}; custs.forEach(c=>custMap[c.id]=c.first_name+' '+c.last_name);
   renderOrders(nq ? allOrders.filter(o=>norm(custMap[o.customer_id]||'').includes(nq)||String(o.id).includes(nq)) : allOrders);
-}
-
-// ============================================
-// CUSTOMERS (به اختصار)
-// ============================================
-let selCust = null;
-let allCustomers = [];
-
-function loadCustomers() {
-  allCustomers = DB.get('customers')||[];
-  renderCustomers(allCustomers);
-}
-
-function renderCustomers(data) {
-  const tbody = document.getElementById('cust-table');
-  tbody.innerHTML = '';
-  if (!data.length) { tbody.innerHTML='<tr class="empty-row"><td colspan="5">هیچ مشتری‌ای ثبت نشده</td></tr>'; return; }
-  data.forEach(c=>{
-    const tr=document.createElement('tr');
-    tr.innerHTML=`<td>${c.id}</td><td>${c.first_name} ${c.last_name}</td>
-      <td>${c.phone||'-'}</td>
-      <td>${c.debt?'<span class="badge badge-danger">'+fmtNum(c.debt)+' ریال</span>':'<span class="badge badge-success">بدون بدهی</span>'}</td>
-      <td>${c.join_date||'-'}</td>`;
-    tr.onclick=()=>{ selCust=c; document.querySelectorAll('#cust-table tr').forEach(r=>r.classList.remove('selected')); tr.classList.add('selected'); fillCustForm(c); };
-    tbody.appendChild(tr);
-  });
-}
-
-function fillCustForm(c) {
-  document.getElementById('cust-fn').value=c.first_name||'';
-  document.getElementById('cust-ln').value=c.last_name||'';
-  document.getElementById('cust-phone').value=c.phone||'';
-  document.getElementById('cust-debt').value=c.debt||0;
-  document.getElementById('cust-addr').value=c.address||'';
-}
-
-function addCustomer() {
-  const fn=document.getElementById('cust-fn').value.trim();
-  const ln=document.getElementById('cust-ln').value.trim();
-  const ph=document.getElementById('cust-phone').value.trim();
-  if (!fn) { toast('نام الزامی است','danger'); return; }
-  const custs=DB.get('customers')||[];
-  custs.push({id:nextId(custs),first_name:fn,last_name:ln,phone:ph,debt:+(document.getElementById('cust-debt').value||0),address:document.getElementById('cust-addr').value,join_date:today()});
-  DB.set('customers',custs); loadCustomers(); autoSync(); toast('مشتری افزوده شد','success');
-}
-
-function editCustomer() {
-  if (!selCust) { toast('یک ردیف انتخاب کنید','danger'); return; }
-  const custs=DB.get('customers')||[];
-  custs.forEach(c=>{
-    if(c.id===selCust.id) Object.assign(c,{first_name:document.getElementById('cust-fn').value.trim(),last_name:document.getElementById('cust-ln').value.trim(),phone:document.getElementById('cust-phone').value.trim(),debt:+(document.getElementById('cust-debt').value||0),address:document.getElementById('cust-addr').value});
-  });
-  DB.set('customers',custs); loadCustomers(); autoSync(); toast('ویرایش انجام شد','success');
-}
-
-function deleteCustomer() {
-  if (!selCust) { toast('یک ردیف انتخاب کنید','danger'); return; }
-  if (!confirm('حذف شود؟')) return;
-  DB.set('customers',(DB.get('customers')||[]).filter(c=>c.id!==selCust.id));
-  selCust=null; loadCustomers(); autoSync(); toast('حذف شد');
-}
-
-function filterCustomers(q) {
-  const nq=norm(q);
-  renderCustomers(nq?allCustomers.filter(c=>norm(c.first_name+c.last_name).includes(nq)||norm(c.phone||'').includes(nq)):allCustomers);
-}
-
-// ============================================
-// TARIFFS (به اختصار)
-// ============================================
-let selTariff = null;
-
-function loadTariffs() {
-  const data=DB.get('tariffs')||[];
-  const tbody=document.getElementById('tar-table');
-  tbody.innerHTML='';
-  if (!data.length) { tbody.innerHTML='<tr class="empty-row"><td colspan="6">هیچ تعرفه‌ای ثبت نشده</td></tr>'; return; }
-  data.forEach(t=>{
-    const tr=document.createElement('tr');
-    tr.innerHTML=`<td>${t.id}</td><td>${t.name}</td><td>${t.description||'-'}</td>
-      <td>${fmtNum(t.price)} ریال</td><td>${t.unit||'-'}</td>
-      <td><span class="badge ${t.active==='فعال'?'badge-success':'badge-muted'}">${t.active||'فعال'}</span></td>`;
-    tr.onclick=()=>{ selTariff=t; document.querySelectorAll('#tar-table tr').forEach(r=>r.classList.remove('selected')); tr.classList.add('selected'); document.getElementById('tar-name').value=t.name; document.getElementById('tar-desc').value=t.description||''; document.getElementById('tar-price').value=t.price; document.getElementById('tar-unit').value=t.unit||''; };
-    tbody.appendChild(tr);
-  });
-}
-
-function addTariff() {
-  const n=document.getElementById('tar-name').value.trim();
-  const p=+document.getElementById('tar-price').value;
-  if (!n||!p) { toast('نام و قیمت الزامی','danger'); return; }
-  const data=DB.get('tariffs')||[];
-  data.push({id:nextId(data),name:n,description:document.getElementById('tar-desc').value,price:p,unit:document.getElementById('tar-unit').value,active:'فعال'});
-  DB.set('tariffs',data); loadTariffs(); autoSync(); toast('تعرفه افزوده شد','success');
-}
-
-function editTariff() {
-  if (!selTariff) { toast('انتخاب نشده','danger'); return; }
-  const data=DB.get('tariffs')||[];
-  data.forEach(t=>{ if(t.id===selTariff.id) Object.assign(t,{name:document.getElementById('tar-name').value.trim(),description:document.getElementById('tar-desc').value,price:+document.getElementById('tar-price').value,unit:document.getElementById('tar-unit').value}); });
-  DB.set('tariffs',data); loadTariffs(); autoSync(); toast('ویرایش انجام شد','success');
-}
-
-function deleteTariff() {
-  if (!selTariff) { toast('انتخاب نشده','danger'); return; }
-  if (!confirm('حذف شود؟')) return;
-  DB.set('tariffs',(DB.get('tariffs')||[]).filter(t=>t.id!==selTariff.id));
-  selTariff=null; loadTariffs(); autoSync();
 }
 
 // ============================================
@@ -2361,7 +2558,7 @@ function openLightbox(src) {
 function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); }
 
 // ============================================
-// INTERNAL NEWS (به اختصار)
+// INTERNAL NEWS
 // ============================================
 let selNews = null;
 let allNews = [];
@@ -2422,7 +2619,7 @@ function filterNews(q) {
 }
 
 // ============================================
-// REPORTS
+// REPORTS (به اختصار)
 // ============================================
 let repAllData = [];
 let repCols = [];
@@ -2695,10 +2892,8 @@ function updateDate() {
 // ============================================
 // INIT
 // ============================================
-// بررسی آیا توکن در sessionStorage وجود دارد
 const savedToken = sessionStorage.getItem('github_token');
 if (savedToken && savedToken !== '') {
-  // توکن وجود دارد، مستقیماً وارد برنامه شو
   document.getElementById('login-page').classList.add('hidden');
   document.getElementById('app').classList.add('show');
   initDB();
@@ -2712,7 +2907,6 @@ if (savedToken && savedToken !== '') {
   loadDashboard();
   initSync();
 } else {
-  // نمایش صفحه ورود
   document.getElementById('login-page').classList.remove('hidden');
   document.getElementById('app').classList.remove('show');
   document.getElementById('login-token').focus();
@@ -2724,6 +2918,12 @@ console.log(`   USERNAME: ${SYNC_CONFIG.USERNAME}`);
 console.log(`   REPO_NAME: ${SYNC_CONFIG.REPO_NAME}`);
 console.log('   🔑 توکن را در صفحه ورود وارد کنید (امن)');
 console.log('✅ داده‌ها روی ریپازیتوری گیت‌هاب ذخیره می‌شوند (بدون محدودیت)');
+console.log('📌 امکانات جدید:');
+console.log('   🔄 جابجایی سرویس‌ها و تعرفه‌ها با کشیدن');
+console.log('   💳 کد ملی و اطلاعات بیشتر برای مشتریان');
+console.log('   🏷️ کد مشتری به صورت #001, #002, ...');
+console.log('   💰 تخفیف درصدی در فاکتور فروش');
+console.log('   📁 دیتاهای پیش‌فرض برای تست');
 </script>
 </body>
 </html>
