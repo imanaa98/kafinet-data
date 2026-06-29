@@ -69,6 +69,13 @@
       "category": "فایل",
       "price": 90000,
       "stock": 99999999999999
+    },
+    {
+      "id": 12,
+      "name": "کپی سیاه‌سفید تک رو a4 مصرف تیونر بالا",
+      "category": "کپی",
+      "price": 70000,
+      "stock": 999
     }
   ],
   "customers": [
@@ -107,5 +114,5 @@
   "tariffs": [],
   "internal_news": [],
   "tips": [],
-  "last_update": "۱۴۰۵/۴/۸،‏ ۱۱:۴۰:۰۶"
+  "last_update": "۱۴۰۵/۴/۸،‏ ۱۱:۴۰:۴۲"
 }
