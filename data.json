@@ -105,7 +105,8 @@
       "phone": "09120198372",
       "debt": 0,
       "address": "",
-      "join_date": "۱۴۰۵/۴/۷"
+      "join_date": "۱۴۰۵/۴/۷",
+      "points": 1
     },
     {
       "id": 3,
@@ -119,8 +120,27 @@
       "join_date": "۱۴۰۵/۴/۸"
     }
   ],
-  "orders": [],
-  "order_items": [],
+  "orders": [
+    {
+      "id": 1,
+      "customer_id": 2,
+      "date": "۱۴۰۵/۴/۸،‏ ۱۷:۲۴:۲۸",
+      "total": 1000000,
+      "status": "تکمیل شده"
+    }
+  ],
+  "order_items": [
+    {
+      "order_id": 1,
+      "product_id": 8,
+      "product_name": "پرینت سیاه‌ سفید تک رو a4 مصرف تیونر بالا",
+      "qty": 10,
+      "unit_price": 100000,
+      "discount": 0,
+      "discounted_price": 100000,
+      "subtotal": 1000000
+    }
+  ],
   "tariffs": [],
   "internal_news": [],
   "tips": [],
@@ -142,5 +162,5 @@
       "join_date": "۱۴۰۵/۴/۸"
     }
   ],
-  "last_update": "۱۴۰۵/۴/۸،‏ ۱۷:۲۳:۴۲"
+  "last_update": "۱۴۰۵/۴/۸،‏ ۱۷:۲۴:۳۱"
 }
