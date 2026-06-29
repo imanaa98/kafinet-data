@@ -2,8 +2,16 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>کافینت چنار — مرکز خدمات اینترنتی و ثبت‌ نام اینترنتی</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<!-- ====== PWA / HOME SCREEN ====== -->
+<link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogItmF2YbYt9in2YQg2YXYp9mG2K8iLAogICJzaG9ydF9uYW1lIjogItmF2YbYt9in2YQiLAogICJkZXNjcmlwdGlvbiI6ICLZhNmF2YbYr9in2YTYqCDYp9mE2YHYp9mG2K8g2YXYp9mG2K8iLAogICJzdGFydF91cmwiOiAiLiIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiIzFBNTZDNCIsCiAgInRoZW1lX2NvbG9yIjogIiMxQTU2QzQiLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJkYXRhOmltYWdlL3N2Zyt4bWwsJTNDc3ZnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zycgdmlld0JveD0nMCAwIDEwMCAxMDAlJTNFJTNDcmVjdCB3aWR0aD0nMTAwJyBoZWlnaHQ9JzEwMCcgcng9JzIwJyBmaWxsPSclMjMxQTU2QzQnLyUzRSUzQ3RleHQgeD0nNTAlJyB5PSc1MCUnIGZvbnQtc2l6ZT0nNDAnIGZvbnQtd2VpZ2h0PSdib2xkJyB0ZXh0LWFuY2hvcj0nbWlkZGxlJyBkeT0nLjM1ZW0nIGZpbGw9J3doaXRlJyUzRUtGQyUzQy90ZXh0JTNFJTNDL3N2ZyUzRQ0KICAgICAgInNpemVzIjogIjE5MngxOTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9zdmcreG1sIiwKICAgICAgInB1cnBvc2UiOiAiYW55IgogICAgfQogIF0KfQ==">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%231A56C4'/%3E%3Ctext x='50' y='50' font-size='40' font-weight='bold' text-anchor='middle' dy='.35em' fill='white'%3EKFC%3C/text%3E%3C/svg%3E" type="image/svg+xml">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%231A56C4'/%3E%3Ctext x='50' y='50' font-size='40' font-weight='bold' text-anchor='middle' dy='.35em' fill='white'%3EKFC%3C/text%3E%3C/svg%3E">
+
+<title>کافینت چنار</title>
+
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap');
 
@@ -74,6 +82,7 @@
     color: var(--text);
     direction: rtl;
     overflow: hidden;
+    -webkit-tap-highlight-color: transparent;
   }
 
   /* ── Login Page ── */
@@ -160,6 +169,10 @@
     color: var(--muted);
     margin-top: 4px;
   }
+  .login-box .field .hint a {
+    color: var(--accent);
+    text-decoration: none;
+  }
   .login-box .btn {
     width: 100%;
     padding: 12px;
@@ -201,7 +214,9 @@
   .login-box .sync-status-login .dot.offline { background: var(--danger); }
   .login-box .sync-status-login .dot.checking { background: var(--warning); }
 
-  #app { display: flex; height: 100vh; overflow: hidden; }
+  /* ── Main App ── */
+  #app { display: none; height: 100vh; overflow: hidden; }
+  #app.show { display: flex; }
 
   #sidebar {
     width: var(--sidebar-w);
@@ -219,14 +234,18 @@
     padding: 20px 16px 12px;
     border-bottom: 1px solid var(--border);
     text-align: center;
+    flex-shrink: 0;
   }
   .logo-icon {
-    width: 52px; height: 52px;
+    width: 52px;
+    height: 52px;
     background: var(--accent);
     border-radius: 14px;
     display: inline-flex;
-    align-items: center; justify-content: center;
-    font-size: 22px; font-weight: 800;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: 800;
     color: var(--btn-text);
     margin-bottom: 8px;
     box-shadow: 0 4px 12px rgba(26,86,196,0.3);
@@ -256,6 +275,7 @@
     transition: all 0.15s;
     position: relative;
     user-select: none;
+    -webkit-tap-highlight-color: transparent;
   }
   .nav-item:hover { background: var(--surface2); color: var(--text); }
   .nav-item.active {
@@ -275,6 +295,10 @@
   .sidebar-bottom {
     padding: 10px 12px 14px;
     border-top: 1px solid var(--border);
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
   }
 
   #content {
@@ -288,16 +312,17 @@
   #topbar {
     background: var(--surface);
     border-bottom: 1px solid var(--border);
-    padding: 0 24px;
-    height: 58px;
+    padding: 0 16px;
+    height: 56px;
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 10px;
     flex-shrink: 0;
+    min-height: 56px;
   }
-  .topbar-title { font-size: 17px; font-weight: 700; color: var(--text); flex: 1; }
-  .topbar-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
-  .topbar-date { font-size: 12px; color: var(--muted); text-align: left; }
+  .topbar-title { font-size: 16px; font-weight: 700; color: var(--text); flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .topbar-sub { font-size: 11px; color: var(--muted); margin-top: 2px; display: none; }
+  .topbar-date { font-size: 11px; color: var(--muted); text-align: left; white-space: nowrap; }
 
   .page { display: none; flex: 1; flex-direction: column; overflow: hidden; }
   .page.active { display: flex; }
@@ -305,26 +330,27 @@
   .page-body {
     flex: 1;
     overflow-y: auto;
-    padding: 20px 24px 24px;
+    padding: 16px;
+    -webkit-overflow-scrolling: touch;
   }
-  .page-body::-webkit-scrollbar { width: 6px; }
+  .page-body::-webkit-scrollbar { width: 4px; }
   .page-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 
   .card {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    padding: 18px;
+    padding: 16px;
     box-shadow: 0 1px 4px var(--shadow);
   }
 
-  .stat-cards { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 20px; }
+  .stat-cards { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
   .stat-card {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    padding: 16px 20px;
-    min-width: 140px; flex: 1;
+    padding: 14px 16px;
+    min-width: 120px; flex: 1;
     box-shadow: 0 1px 4px var(--shadow);
     position: relative;
     overflow: hidden;
@@ -337,20 +363,22 @@
     background: var(--c, var(--accent));
   }
   .stat-val {
-    font-size: 22px; font-weight: 800;
+    font-size: 20px; font-weight: 800;
     color: var(--c, var(--accent));
-    margin-bottom: 4px;
+    margin-bottom: 2px;
   }
-  .stat-label { font-size: 12px; color: var(--muted); }
+  .stat-label { font-size: 11px; color: var(--muted); }
 
   .btn {
     display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-    padding: 8px 16px;
+    padding: 8px 14px;
     border-radius: var(--radius-sm);
     border: none; cursor: pointer;
     font-family: inherit; font-size: 13px; font-weight: 600;
     transition: all 0.15s;
     white-space: nowrap;
+    -webkit-tap-highlight-color: transparent;
+    min-height: 40px;
   }
   .btn-primary { background: var(--accent); color: var(--btn-text); }
   .btn-primary:hover { background: var(--accent-h); }
@@ -360,15 +388,15 @@
   .btn-secondary:hover { background: var(--surface3); }
   .btn-success { background: var(--success); color: #fff; }
   .btn-success:hover { background: #155d38; }
-  .btn-sm { padding: 5px 11px; font-size: 12px; }
+  .btn-sm { padding: 4px 10px; font-size: 12px; min-height: 32px; }
 
-  .form-grid { display: grid; gap: 12px; }
+  .form-grid { display: grid; gap: 10px; }
   .form-grid-2 { grid-template-columns: 1fr 1fr; }
   .form-grid-3 { grid-template-columns: 1fr 1fr 1fr; }
   .form-grid-4 { grid-template-columns: repeat(4, 1fr); }
 
-  .field { display: flex; flex-direction: column; gap: 4px; }
-  .field label { font-size: 12px; color: var(--muted); font-weight: 500; }
+  .field { display: flex; flex-direction: column; gap: 3px; }
+  .field label { font-size: 11px; color: var(--muted); font-weight: 500; }
   .field input, .field select, .field textarea {
     padding: 8px 12px;
     border: 1px solid var(--border);
@@ -379,12 +407,13 @@
     outline: none;
     transition: border-color 0.15s;
     width: 100%;
+    min-height: 40px;
   }
   .field input:focus, .field select:focus, .field textarea:focus {
     border-color: var(--accent);
     background: var(--surface);
   }
-  .field textarea { resize: vertical; min-height: 90px; }
+  .field textarea { resize: vertical; min-height: 80px; }
 
   .search-wrap {
     position: relative;
@@ -393,7 +422,7 @@
   }
   .search-wrap .search-icon {
     position: absolute; right: 10px;
-    color: var(--muted); pointer-events: none; font-size: 15px;
+    color: var(--muted); pointer-events: none; font-size: 14px;
   }
   .search-wrap input {
     width: 100%;
@@ -405,6 +434,7 @@
     font-family: inherit; font-size: 13px;
     outline: none;
     transition: all 0.15s;
+    min-height: 38px;
   }
   .search-wrap input:focus {
     border-color: var(--accent);
@@ -414,6 +444,7 @@
   .search-wrap .search-clear {
     position: absolute; left: 10px;
     color: var(--muted); cursor: pointer; font-size: 13px;
+    padding: 4px;
   }
 
   .table-wrap {
@@ -421,19 +452,22 @@
     border: 1px solid var(--border);
     border-radius: var(--radius);
     background: var(--surface);
+    -webkit-overflow-scrolling: touch;
   }
   table {
     width: 100%; border-collapse: collapse;
-    font-size: 13px;
+    font-size: 12px;
+    min-width: 500px;
   }
   thead th {
     background: var(--surface2);
     color: var(--accent);
     font-weight: 700;
-    padding: 12px 14px;
+    padding: 10px 12px;
     text-align: center;
     border-bottom: 1px solid var(--border);
     white-space: nowrap;
+    font-size: 11px;
   }
   tbody tr {
     border-bottom: 1px solid var(--border);
@@ -443,13 +477,14 @@
   tbody tr:last-child { border-bottom: none; }
   tbody tr:hover { background: var(--surface2); }
   tbody tr.selected { background: color-mix(in srgb, var(--accent) 10%, transparent); }
-  tbody td { padding: 11px 14px; text-align: center; color: var(--text); }
-  .empty-row td { color: var(--muted); text-align: center; padding: 32px; }
+  tbody td { padding: 8px 10px; text-align: center; color: var(--text); font-size: 12px; }
+  .empty-row td { color: var(--muted); text-align: center; padding: 24px; }
 
   .badge {
     display: inline-flex; align-items: center;
     padding: 2px 8px; border-radius: 20px;
-    font-size: 11px; font-weight: 600;
+    font-size: 10px; font-weight: 600;
+    white-space: nowrap;
   }
   .badge-accent { background: color-mix(in srgb, var(--accent) 15%, transparent); color: var(--accent); }
   .badge-success { background: color-mix(in srgb, var(--success) 15%, transparent); color: var(--success); }
@@ -459,40 +494,47 @@
   .badge-muted { background: var(--surface3); color: var(--muted); }
 
   .section-header {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 6px;
   }
-  .section-title { font-size: 15px; font-weight: 700; color: var(--text); }
+  .section-title { font-size: 14px; font-weight: 700; color: var(--text); }
 
-  .news-cards { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
+  .news-cards { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
   .news-card {
     background: var(--card-news);
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    padding: 14px 16px;
-    min-width: 240px; flex: 1; max-width: 340px;
+    padding: 12px 14px;
+    min-width: 200px; flex: 1; max-width: 320px;
   }
   .news-card.pinned { background: var(--card-pin); }
-  .news-card-title { font-size: 13.5px; font-weight: 700; color: var(--text); margin-bottom: 5px; }
-  .news-card-body { font-size: 12px; color: var(--text2); margin-bottom: 8px; line-height: 1.7; }
-  .news-card-meta { font-size: 11px; color: var(--muted); }
+  .news-card-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .news-card-body { font-size: 11px; color: var(--text2); margin-bottom: 6px; line-height: 1.6; }
+  .news-card-meta { font-size: 10px; color: var(--muted); }
 
   .toggle-btn {
-    display: flex; align-items: center; gap: 8px;
-    padding: 7px 14px; border-radius: 20px;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 8px 14px;
+    border-radius: 20px;
     border: 1px solid var(--border);
     background: var(--surface2);
-    cursor: pointer; font-family: inherit;
-    font-size: 13px; color: var(--text);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--text);
     transition: all 0.15s;
+    min-height: 40px;
+    width: 100%;
   }
   .toggle-btn:hover { border-color: var(--accent); }
   .toggle-btn.on { background: var(--accent); color: var(--btn-text); border-color: var(--accent); }
 
   .tips-sidebar {
-    width: 280px; min-width: 220px;
+    width: 240px; min-width: 160px;
     background: var(--surface);
     border-right: 1px solid var(--border);
     display: flex; flex-direction: column;
@@ -500,18 +542,14 @@
   }
   .tips-main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
 
-  .folder-tree { overflow-y: auto; flex: 1; padding: 8px; }
-  .folder-tree::-webkit-scrollbar { width: 4px; }
-  .folder-tree::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+  .folder-tree { overflow-y: auto; flex: 1; padding: 6px; }
+  .folder-tree::-webkit-scrollbar { width: 3px; }
+  .folder-tree::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 
-  .folder-item {
-    border-radius: var(--radius-sm);
-    overflow: hidden;
-    margin-bottom: 4px;
-  }
+  .folder-item { border-radius: var(--radius-sm); overflow: hidden; margin-bottom: 3px; }
   .folder-header {
-    display: flex; align-items: center; gap: 8px;
-    padding: 10px 12px;
+    display: flex; align-items: center; gap: 6px;
+    padding: 8px 10px;
     cursor: pointer;
     background: var(--surface2);
     border-radius: var(--radius-sm);
@@ -520,69 +558,69 @@
   }
   .folder-header:hover { background: var(--surface3); }
   .folder-header.open { background: color-mix(in srgb, var(--accent) 10%, transparent); color: var(--accent); }
-  .folder-icon { font-size: 16px; flex-shrink: 0; }
-  .folder-name { flex: 1; font-size: 13px; font-weight: 600; }
-  .folder-count { font-size: 11px; color: var(--muted); background: var(--surface3); padding: 1px 7px; border-radius: 10px; }
-  .folder-arrow { font-size: 12px; transition: transform 0.2s; }
+  .folder-icon { font-size: 14px; flex-shrink: 0; }
+  .folder-name { flex: 1; font-size: 12px; font-weight: 600; }
+  .folder-count { font-size: 10px; color: var(--muted); background: var(--surface3); padding: 1px 6px; border-radius: 10px; }
+  .folder-arrow { font-size: 11px; transition: transform 0.2s; }
   .folder-header.open .folder-arrow { transform: rotate(90deg); }
 
   .folder-children {
     display: none;
-    padding: 4px 8px 4px 16px;
+    padding: 3px 6px 3px 12px;
     border-right: 2px solid var(--border);
-    margin-right: 12px;
+    margin-right: 10px;
     margin-top: 2px;
   }
   .folder-children.open { display: block; }
 
   .note-item {
-    display: flex; align-items: center; gap: 8px;
-    padding: 8px 10px;
+    display: flex; align-items: center; gap: 6px;
+    padding: 6px 8px;
     border-radius: 6px;
     cursor: pointer;
-    font-size: 12.5px;
+    font-size: 12px;
     color: var(--text2);
     transition: background 0.1s;
     margin-bottom: 2px;
   }
   .note-item:hover { background: var(--surface2); }
   .note-item.active { background: color-mix(in srgb, var(--accent) 12%, transparent); color: var(--accent); font-weight: 600; }
-  .note-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+  .note-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
 
   .note-viewer {
     flex: 1; overflow-y: auto;
-    padding: 20px;
+    padding: 16px;
+    -webkit-overflow-scrolling: touch;
   }
-  .note-viewer::-webkit-scrollbar { width: 6px; }
+  .note-viewer::-webkit-scrollbar { width: 4px; }
   .note-viewer::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 
   .note-viewer-title {
-    font-size: 18px; font-weight: 800; color: var(--text);
-    margin-bottom: 6px;
+    font-size: 17px; font-weight: 800; color: var(--text);
+    margin-bottom: 4px;
   }
   .note-viewer-meta {
-    font-size: 12px; color: var(--muted);
-    margin-bottom: 16px;
-    padding-bottom: 12px;
+    font-size: 11px; color: var(--muted);
+    margin-bottom: 12px;
+    padding-bottom: 10px;
     border-bottom: 1px solid var(--border);
-    display: flex; gap: 12px; flex-wrap: wrap;
+    display: flex; gap: 10px; flex-wrap: wrap;
   }
   .note-viewer-body {
-    font-size: 13.5px; line-height: 2;
+    font-size: 13px; line-height: 1.9;
     color: var(--text2);
     white-space: pre-wrap;
   }
-  .note-viewer-imgs {
-    display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px;
-  }
+  .note-viewer-imgs { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
   .note-img-thumb {
-    width: 120px; height: 90px;
+    width: 100px; height: 75px;
     object-fit: cover;
-    border-radius: 8px;
+    border-radius: 6px;
     border: 1px solid var(--border);
     cursor: pointer;
     transition: transform 0.15s;
   }
+  .note-img-thumb:hover { transform: scale(1.04); }
 
   .lightbox {
     display: none; position: fixed; inset: 0; z-index: 9999;
@@ -598,9 +636,9 @@
     box-shadow: 0 8px 40px rgba(0,0,0,0.6);
   }
   .lightbox-close {
-    position: absolute; top: 20px; left: 20px;
+    position: absolute; top: 16px; left: 16px;
     background: rgba(255,255,255,0.15); border: none;
-    color: #fff; font-size: 22px; width: 40px; height: 40px;
+    color: #fff; font-size: 20px; width: 36px; height: 36px;
     border-radius: 50%; cursor: pointer; display: flex;
     align-items: center; justify-content: center;
   }
@@ -608,160 +646,152 @@
   .upload-area {
     border: 2px dashed var(--border);
     border-radius: var(--radius);
-    padding: 18px;
+    padding: 14px;
     text-align: center;
     cursor: pointer;
     transition: all 0.15s;
     color: var(--muted);
-    font-size: 13px;
+    font-size: 12px;
   }
   .upload-area:hover, .upload-area.drag-over {
     border-color: var(--accent);
     background: color-mix(in srgb, var(--accent) 5%, transparent);
     color: var(--accent);
   }
-  .upload-area .upload-icon { font-size: 28px; margin-bottom: 6px; }
+  .upload-area .upload-icon { font-size: 24px; margin-bottom: 4px; }
 
   .img-preview-grid {
-    display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px;
+    display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px;
   }
   .img-preview-item {
-    position: relative; width: 80px; height: 70px;
+    position: relative; width: 70px; height: 60px;
   }
   .img-preview-item img {
     width: 100%; height: 100%;
-    object-fit: cover; border-radius: 8px;
+    object-fit: cover; border-radius: 6px;
     border: 1px solid var(--border);
   }
   .img-preview-remove {
-    position: absolute; top: -6px; left: -6px;
-    width: 18px; height: 18px;
+    position: absolute; top: -5px; left: -5px;
+    width: 16px; height: 16px;
     background: var(--danger); color: #fff;
     border-radius: 50%; border: none; cursor: pointer;
-    font-size: 10px; display: flex; align-items: center; justify-content: center;
+    font-size: 9px; display: flex; align-items: center; justify-content: center;
   }
 
   .modal-overlay {
     display: none; position: fixed; inset: 0; z-index: 1000;
     background: rgba(0,0,0,0.5);
     align-items: center; justify-content: center;
+    padding: 16px;
   }
   .modal-overlay.open { display: flex; }
   .modal {
     background: var(--surface);
     border-radius: var(--radius);
-    padding: 24px;
-    width: 580px; max-width: 95vw;
+    padding: 20px;
+    width: 540px;
+    max-width: 100%;
     max-height: 90vh;
     overflow-y: auto;
     box-shadow: 0 8px 32px var(--shadow-md);
   }
   .modal-header {
     display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 18px;
+    margin-bottom: 14px;
   }
-  .modal-title { font-size: 16px; font-weight: 700; }
-  .modal-close { background: none; border: none; color: var(--muted); font-size: 20px; cursor: pointer; }
+  .modal-title { font-size: 15px; font-weight: 700; }
+  .modal-close { background: none; border: none; color: var(--muted); font-size: 18px; cursor: pointer; padding: 4px 8px; }
   .modal-close:hover { color: var(--danger); }
-  .modal-footer { display: flex; gap: 8px; justify-content: flex-end; margin-top: 20px; }
+  .modal-footer { display: flex; gap: 8px; justify-content: flex-end; margin-top: 16px; flex-wrap: wrap; }
 
   #toast {
-    position: fixed; bottom: 24px; left: 24px; z-index: 2000;
+    position: fixed; bottom: 20px; left: 20px; z-index: 2000;
     background: var(--text); color: #fff;
-    padding: 11px 20px; border-radius: var(--radius-sm);
+    padding: 10px 18px; border-radius: var(--radius-sm);
     font-size: 13px; font-weight: 500;
     transform: translateY(80px); opacity: 0;
     transition: all 0.3s;
     box-shadow: 0 4px 16px rgba(0,0,0,0.25);
-    max-width: 320px;
+    max-width: 90%;
   }
   #toast.show { transform: translateY(0); opacity: 1; }
   #toast.success { background: var(--success); }
   #toast.danger { background: var(--danger); }
 
-  .row-center { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
-  .gap-2 { gap: 8px; }
-  .mb-3 { margin-bottom: 12px; }
-  .mb-4 { margin-bottom: 16px; }
-  .mt-3 { margin-top: 12px; }
+  .row-center { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .gap-2 { gap: 6px; }
+  .mb-3 { margin-bottom: 10px; }
+  .mb-4 { margin-bottom: 14px; }
+  .mt-3 { margin-top: 10px; }
   .flex-1 { flex: 1; }
-  .text-muted { color: var(--muted); font-size: 12px; }
+  .text-muted { color: var(--muted); font-size: 11px; }
   .text-accent { color: var(--accent); }
   .font-bold { font-weight: 700; }
-  .divider { height: 1px; background: var(--border); margin: 14px 0; }
+  .divider { height: 1px; background: var(--border); margin: 12px 0; }
+  .tip-box {
+    background: color-mix(in srgb, var(--info) 8%, transparent);
+    border-right: 3px solid var(--info);
+    border-radius: 0 6px 6px 0;
+    padding: 8px 12px;
+    font-size: 12px; color: var(--text2);
+    margin-bottom: 10px;
+    line-height: 1.7;
+  }
 
-  #cart-table { max-height: 160px; overflow-y: auto; }
+  #cart-table { max-height: 140px; overflow-y: auto; }
 
   .chart-container {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    padding: 20px;
-    margin-bottom: 20px;
+    padding: 16px;
+    margin-bottom: 16px;
     position: relative;
-    height: 300px;
+    height: 250px;
   }
   .chart-container canvas {
     width: 100% !important;
     height: 100% !important;
   }
 
-  @media (max-width: 800px) {
-    #sidebar { width: 52px; min-width: 52px; }
-    .logo-area, .nav-section-title, .nav-item span, .sidebar-bottom { display: none; }
-    .nav-item { justify-content: center; padding: 12px; }
-    .nav-icon { font-size: 20px; }
-    .page-body { padding: 12px; }
-    .form-grid-4 { grid-template-columns: 1fr 1fr; }
-    .tips-sidebar { width: 180px; min-width: 140px; }
-    .login-box { padding: 24px 16px; }
-  }
-
-  #page-tips .page-body { padding: 0; }
-  #tips-layout { display: flex; flex: 1; overflow: hidden; height: 100%; }
-
   #sync-status {
-    font-size: 11px;
-    padding: 4px 12px;
+    font-size: 10px;
+    padding: 3px 10px;
     border-radius: 20px;
     background: var(--surface2);
     color: var(--muted);
     border: 1px solid var(--border);
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 4px;
+    white-space: nowrap;
   }
   #sync-status.synced { background: var(--success); color: #fff; border-color: var(--success); }
   #sync-status.syncing { background: var(--warning); color: #fff; border-color: var(--warning); }
   #sync-status.error { background: var(--danger); color: #fff; border-color: var(--danger); }
   #sync-status.offline { background: var(--muted); color: #fff; border-color: var(--muted); }
   
-  .order-actions {
-    display: flex;
-    gap: 4px;
-    justify-content: center;
-  }
-  .order-actions button {
-    padding: 2px 8px;
-    font-size: 11px;
-  }
+  .order-actions { display: flex; gap: 3px; justify-content: center; flex-wrap: wrap; }
+  .order-actions button { padding: 2px 8px; font-size: 10px; min-height: 28px; }
 
   .report-tabs {
     display: flex;
-    gap: 8px;
-    margin-bottom: 16px;
+    gap: 6px;
+    margin-bottom: 12px;
     flex-wrap: wrap;
   }
   .report-tab {
-    padding: 6px 16px;
+    padding: 5px 14px;
     border-radius: 20px;
     border: 1px solid var(--border);
     background: var(--surface2);
     cursor: pointer;
     font-family: inherit;
-    font-size: 13px;
+    font-size: 12px;
     color: var(--text2);
     transition: all 0.15s;
+    min-height: 34px;
   }
   .report-tab:hover { border-color: var(--accent); }
   .report-tab.active {
@@ -774,23 +804,98 @@
     background: transparent;
     border: 1px solid var(--border);
     color: var(--text2);
-    padding: 6px 14px;
+    padding: 8px 14px;
     border-radius: 20px;
     cursor: pointer;
     font-family: inherit;
-    font-size: 12px;
+    font-size: 13px;
     transition: all 0.15s;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 6px;
+    min-height: 40px;
   }
   .logout-btn:hover {
     background: var(--danger);
     color: #fff;
     border-color: var(--danger);
   }
+
+  /* ====== RESPONSIVE ====== */
+  @media (max-width: 768px) {
+    #sidebar {
+      width: 56px;
+      min-width: 56px;
+    }
+    .logo-area {
+      padding: 12px 8px;
+    }
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+    .logo-title { display: none; }
+    .logo-sub { display: none; }
+    .nav-section-title { display: none; }
+    .nav-item {
+      justify-content: center;
+      padding: 10px 6px;
+    }
+    .nav-item span { display: none; }
+    .nav-icon { font-size: 20px; width: auto; }
+    .sidebar-bottom .toggle-btn { font-size: 11px; padding: 6px 8px; }
+    .sidebar-bottom .logout-btn { font-size: 11px; padding: 6px 8px; }
+    .sidebar-bottom .toggle-btn span { display: none; }
+    .sidebar-bottom .logout-btn span { display: none; }
+    .page-body { padding: 10px; }
+    .form-grid-4 { grid-template-columns: 1fr 1fr; }
+    .form-grid-3 { grid-template-columns: 1fr 1fr; }
+    .tips-sidebar { width: 160px; min-width: 120px; }
+    .stat-cards { gap: 6px; }
+    .stat-card { padding: 10px 12px; min-width: 80px; }
+    .stat-val { font-size: 16px; }
+    #topbar { padding: 0 10px; height: 48px; min-height: 48px; gap: 6px; }
+    .topbar-title { font-size: 14px; }
+    .topbar-date { font-size: 10px; }
+    #sync-status { font-size: 9px; padding: 2px 8px; }
+    .card { padding: 12px; }
+    .news-card { min-width: 140px; }
+    .modal { padding: 16px; }
+    .chart-container { height: 180px; }
+    table { font-size: 11px; min-width: 400px; }
+    thead th { padding: 6px 8px; font-size: 10px; }
+    tbody td { padding: 6px 8px; font-size: 11px; }
+    .note-viewer-title { font-size: 15px; }
+    .login-box { padding: 24px 16px; }
+  }
+
+  @media (max-width: 480px) {
+    #sidebar { width: 48px; min-width: 48px; }
+    .nav-item { padding: 8px 4px; }
+    .nav-icon { font-size: 17px; }
+    .form-grid-4 { grid-template-columns: 1fr; }
+    .form-grid-3 { grid-template-columns: 1fr; }
+    .form-grid-2 { grid-template-columns: 1fr; }
+    .tips-sidebar { width: 130px; min-width: 100px; }
+    .tips-sidebar .search-wrap input { font-size: 11px; padding: 4px 28px 4px 28px; }
+    .folder-header { padding: 6px 8px; font-size: 11px; }
+    .note-item { font-size: 11px; padding: 4px 6px; }
+    .stat-card { min-width: 60px; padding: 8px 10px; }
+    .stat-val { font-size: 14px; }
+    .btn { font-size: 12px; padding: 6px 10px; min-height: 34px; }
+    .report-tab { font-size: 11px; padding: 4px 10px; min-height: 30px; }
+    .modal { padding: 12px; }
+    .login-box { padding: 20px 12px; }
+    .login-box .logo-icon { width: 48px; height: 48px; font-size: 22px; }
+    .login-box h1 { font-size: 18px; }
+  }
+
+  #page-tips .page-body { padding: 0; }
+  #tips-layout { display: flex; flex: 1; overflow: hidden; height: 100%; }
 </style>
 </head>
 <body>
@@ -798,19 +903,14 @@
 <!-- ══ LOGIN PAGE ══ -->
 <div id="login-page">
   <div class="login-box">
-    <div class="logo-icon">K</div>
+    <div class="logo-icon">KFC</div>
     <h1>کافینت چنار</h1>
     <div class="sub">مرکز خدمات اینترنتی و ثبت‌ نام اینترنتی</div>
     
     <div class="field">
-      <label>🔑 رمز عبور</label>
-      <input type="password" id="login-password" placeholder="رمز عبور را وارد کنید..." onkeydown="if(event.key==='Enter') login()">
-    </div>
-    
-    <div class="field">
       <label>🔐 توکن گیت‌هاب</label>
       <input type="password" id="login-token" placeholder="توکن خود را وارد کنید..." onkeydown="if(event.key==='Enter') login()">
-      <div class="hint">توکن را از <a href="https://github.com/settings/tokens" target="_blank" style="color:var(--accent)">github.com/settings/tokens</a> دریافت کنید</div>
+      <div class="hint">توکن را از <a href="https://github.com/settings/tokens" target="_blank">github.com/settings/tokens</a> دریافت کنید</div>
     </div>
     
     <button class="btn" onclick="login()">ورود به سیستم</button>
@@ -819,19 +919,19 @@
     
     <div class="sync-status-login" id="login-sync-status">
       <span class="dot checking" id="login-sync-dot"></span>
-      <span id="login-sync-text">در حال اتصال...</span>
+      <span id="login-sync-text">وارد کردن توکن برای اتصال</span>
     </div>
   </div>
 </div>
 
 <!-- ══ MAIN APP ══ -->
-<div id="app" style="display:none">
+<div id="app">
   <!-- SIDEBAR -->
   <div id="sidebar">
     <div class="logo-area">
-      <div class="logo-icon">K</div>
-      <div class="logo-title">کافینت</div>
-      <div class="logo-sub">مرکز خدمات اینترنتی و ثبت‌نام</div>
+      <div class="logo-icon">KFC</div>
+      <div class="logo-title">کافینت چنار</div>
+      <div class="logo-sub">مرکز خدمات اینترنتی</div>
     </div>
     <nav>
       <div class="nav-section-title">منو اصلی</div>
@@ -862,17 +962,19 @@
       </div>
     </nav>
     <div class="sidebar-bottom">
-      <button class="toggle-btn" id="theme-toggle" onclick="toggleTheme()" style="width:100%;justify-content:center;margin-bottom:6px;">
-        🌙 تم تاریک
+      <button class="toggle-btn" id="theme-toggle" onclick="toggleTheme()">
+        🌙 <span>تم تاریک</span>
       </button>
-      <button class="logout-btn" onclick="logout()">🚪 خروج</button>
+      <button class="logout-btn" onclick="logout()">
+        🚪 <span>خروج</span>
+      </button>
     </div>
   </div>
 
   <!-- CONTENT -->
   <div id="content">
     <div id="topbar">
-      <div style="flex:1">
+      <div style="flex:1;min-width:0">
         <div class="topbar-title" id="topbar-title">داشبورد</div>
         <div class="topbar-sub text-muted" id="topbar-sub">خلاصه وضعیت کافینت</div>
       </div>
@@ -909,10 +1011,12 @@
             <div class="stat-label">ثبت‌نام امروز</div>
           </div>
         </div>
+
         <div class="section-header mb-3">
           <div><div class="section-title">📌 اطلاعیه‌های مهم</div></div>
         </div>
         <div class="news-cards" id="dash-news"></div>
+
         <div class="section-header mb-3 mt-3">
           <div class="section-title">🧾 آخرین سفارش‌ها</div>
         </div>
@@ -974,7 +1078,7 @@
               <label>جستجو خدمت</label>
               <input id="order-prod-search" placeholder="نام خدمت را بنویسید..." oninput="searchProducts(this.value)" autocomplete="off">
               <div id="prod-dropdown" style="display:none;position:relative;z-index:100;">
-                <div id="prod-list" style="background:var(--surface);border:1px solid var(--border);border-radius:8px;margin-top:4px;max-height:180px;overflow-y:auto;box-shadow:0 4px 16px var(--shadow-md)"></div>
+                <div id="prod-list" style="background:var(--surface);border:1px solid var(--border);border-radius:8px;margin-top:4px;max-height:160px;overflow-y:auto;box-shadow:0 4px 16px var(--shadow-md)"></div>
               </div>
             </div>
             <div class="field"><label>تعداد</label><input id="order-qty" type="number" value="1" min="1"></div>
@@ -985,6 +1089,7 @@
             <button class="btn btn-danger btn-sm" onclick="clearCart()">🗑️ پاک کردن سبد</button>
           </div>
         </div>
+
         <div class="section-header mb-3">
           <div class="section-title">🛒 سبد خرید</div>
           <div class="font-bold text-accent" id="cart-total">جمع کل: ۰ ریال</div>
@@ -999,9 +1104,10 @@
             </div>
           </div>
         </div>
+
         <div class="section-header mb-3">
           <div class="section-title">📋 تاریخچه سفارش‌ها</div>
-          <div class="flex-1 search-wrap" style="max-width:300px;margin-right:16px">
+          <div class="flex-1 search-wrap" style="max-width:280px;margin-right:12px">
             <span class="search-icon">🔍</span>
             <input placeholder="جستجو..." oninput="filterOrders(this.value)" id="ord-search">
             <span class="search-clear" onclick="clearSearch('ord-search', filterOrders)">✕</span>
@@ -1084,30 +1190,30 @@
     <div class="page" id="page-tips">
       <div id="tips-layout">
         <div class="tips-sidebar">
-          <div style="padding:12px 10px 6px;border-bottom:1px solid var(--border)">
+          <div style="padding:10px 8px 6px;border-bottom:1px solid var(--border)">
             <div class="search-wrap">
               <span class="search-icon">🔍</span>
-              <input id="tips-search" placeholder="جستجو در راهنماها..." oninput="searchTips(this.value)" style="padding-right:32px;padding-left:32px">
+              <input id="tips-search" placeholder="جستجو در راهنماها..." oninput="searchTips(this.value)" style="padding-right:30px;padding-left:30px;min-height:32px;font-size:12px">
               <span class="search-clear" onclick="document.getElementById('tips-search').value='';searchTips('')">✕</span>
             </div>
           </div>
           <div class="folder-tree" id="folder-tree"></div>
-          <div style="padding:10px;border-top:1px solid var(--border)">
-            <button class="btn btn-primary" style="width:100%;font-size:12px" onclick="openNoteModal()">➕ راهنمای جدید</button>
+          <div style="padding:8px;border-top:1px solid var(--border)">
+            <button class="btn btn-primary" style="width:100%;font-size:12px;min-height:36px" onclick="openNoteModal()">➕ راهنمای جدید</button>
           </div>
         </div>
         <div class="tips-main">
           <div id="note-viewer-wrap" style="display:flex;flex-direction:column;flex:1;overflow:hidden">
-            <div style="padding:12px 16px;border-bottom:1px solid var(--border);display:flex;gap:8px;align-items:center;background:var(--surface)">
-              <div id="note-viewer-breadcrumb" class="text-muted" style="flex:1;font-size:12px">یک راهنما را از فهرست انتخاب کنید</div>
-              <button class="btn btn-secondary btn-sm" id="edit-note-btn" style="display:none" onclick="editCurrentNote()">✏️ ویرایش</button>
-              <button class="btn btn-danger btn-sm" id="del-note-btn" style="display:none" onclick="deleteCurrentNote()">🗑️ حذف</button>
+            <div style="padding:10px 14px;border-bottom:1px solid var(--border);display:flex;gap:6px;align-items:center;background:var(--surface);flex-wrap:wrap">
+              <div id="note-viewer-breadcrumb" class="text-muted" style="flex:1;font-size:11px">یک راهنما را از فهرست انتخاب کنید</div>
+              <button class="btn btn-secondary btn-sm" id="edit-note-btn" style="display:none;min-height:30px" onclick="editCurrentNote()">✏️ ویرایش</button>
+              <button class="btn btn-danger btn-sm" id="del-note-btn" style="display:none;min-height:30px" onclick="deleteCurrentNote()">🗑️ حذف</button>
             </div>
             <div class="note-viewer" id="note-viewer">
-              <div style="text-align:center;padding:60px 20px;color:var(--muted)">
-                <div style="font-size:48px;margin-bottom:12px">📂</div>
-                <div style="font-size:15px;font-weight:600;margin-bottom:6px">یک سرویس را انتخاب کنید</div>
-                <div style="font-size:13px">از فهرست سمت راست یک راهنما را باز کنید</div>
+              <div style="text-align:center;padding:40px 20px;color:var(--muted)">
+                <div style="font-size:40px;margin-bottom:10px">📂</div>
+                <div style="font-size:14px;font-weight:600;margin-bottom:4px">یک سرویس را انتخاب کنید</div>
+                <div style="font-size:12px">از فهرست سمت راست یک راهنما را باز کنید</div>
               </div>
             </div>
           </div>
@@ -1196,8 +1302,8 @@
       </div>
     </div>
 
-  </div>
-</div>
+  </div><!-- /content -->
+</div><!-- /app -->
 
 <!-- ══ MODALS ══ -->
 <div class="modal-overlay" id="note-modal">
@@ -1210,7 +1316,7 @@
       <div class="field"><label>عنوان راهنما</label><input id="nm-title" placeholder="مثلاً: ثبت‌نام کنکور سراسری"></div>
       <div class="field"><label>دسته / سرویس</label><input id="nm-folder" list="folder-list" placeholder="مثلاً: کنکور و آموزش"><datalist id="folder-list"></datalist></div>
     </div>
-    <div class="field mb-3"><label>متن راهنما و نکات</label><textarea id="nm-body" style="min-height:140px" placeholder="راهنمای مرحله‌به‌مرحله ثبت‌نام را اینجا بنویسید..."></textarea></div>
+    <div class="field mb-3"><label>متن راهنما و نکات</label><textarea id="nm-body" style="min-height:120px" placeholder="راهنمای مرحله‌به‌مرحله ثبت‌نام را اینجا بنویسید..."></textarea></div>
     <div class="field mb-3"><label>آدرس سایت (اختیاری)</label><input id="nm-url" placeholder="https://..."></div>
     <div class="field mb-3">
       <label>📷 بارگذاری تصویر</label>
@@ -1266,12 +1372,10 @@
 // ============================================
 // SYNC CONFIG - GitHub Repository (بدون توکن در کد)
 // ============================================
-// 🔴 اینجا فقط اطلاعات عمومی را وارد کنید (بدون توکن)
 const SYNC_CONFIG = {
-  USERNAME: 'imanaa98',     // ← نام کاربری گیت‌هاب خود را وارد کنید
-  REPO_NAME: 'kafinet-data',            // ← نام ریپازیتوری که ساختید
-  FILE_PATH: 'data.json',               // ← نام فایل داده‌ها
-  // ⚠️ توکن از sessionStorage گرفته می‌شود (امن)
+  USERNAME: 'imanaa98',     // ← نام کاربری خود را وارد کنید
+  REPO_NAME: 'kafinet-data',            // ← نام ریپازیتوری
+  FILE_PATH: 'data.json',
   get GITHUB_TOKEN() {
     return sessionStorage.getItem('github_token') || '';
   },
@@ -1281,7 +1385,7 @@ const SYNC_CONFIG = {
 };
 
 // ============================================
-// SYNC FUNCTIONS - GitHub Repository
+// SYNC FUNCTIONS
 // ============================================
 let syncTimer = null;
 let isSyncing = false;
@@ -1323,7 +1427,6 @@ async function syncToCloud() {
     
     const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
     
-    // دریافت فایل فعلی برای SHA
     let sha = null;
     try {
       const getResponse = await fetch(getRepoUrl(), {
@@ -1336,22 +1439,15 @@ async function syncToCloud() {
       if (getResponse.ok) {
         const fileData = await getResponse.json();
         sha = fileData.sha;
-      } else if (getResponse.status !== 404) {
-        throw new Error('Failed to get file');
       }
-    } catch (e) {
-      // فایل وجود ندارد، ادامه می‌دیم
-    }
+    } catch (e) {}
     
     const body = {
       message: `همگام‌سازی خودکار - ${nowStr()}`,
       content: content,
       branch: 'main'
     };
-    
-    if (sha) {
-      body.sha = sha;
-    }
+    if (sha) body.sha = sha;
     
     const updateResponse = await fetch(getRepoUrl(), {
       method: 'PUT',
@@ -1363,14 +1459,10 @@ async function syncToCloud() {
       body: JSON.stringify(body)
     });
     
-    if (!updateResponse.ok) {
-      const error = await updateResponse.text();
-      throw new Error(`Sync failed: ${error}`);
-    }
+    if (!updateResponse.ok) throw new Error('Sync failed');
     
     const result = await updateResponse.json();
     currentSHA = result.content.sha;
-    
     setSyncStatus('synced', '✅ همگام شد');
     pendingChanges = false;
     
@@ -1414,7 +1506,6 @@ async function syncFromCloud() {
     
     const fileData = await response.json();
     currentSHA = fileData.sha;
-    
     const content = decodeURIComponent(escape(atob(fileData.content)));
     const data = JSON.parse(content);
     
@@ -1458,19 +1549,10 @@ async function syncFromCloud() {
 
 function autoSync() {
   if (!SYNC_CONFIG.ENABLED) return;
-  
   pendingChanges = true;
-  
-  if (syncTimer) {
-    clearTimeout(syncTimer);
-    syncTimer = null;
-  }
-  
+  if (syncTimer) { clearTimeout(syncTimer); syncTimer = null; }
   syncTimer = setTimeout(() => {
-    if (pendingChanges) {
-      syncToCloud();
-      pendingChanges = false;
-    }
+    if (pendingChanges) { syncToCloud(); pendingChanges = false; }
     syncTimer = null;
   }, SYNC_CONFIG.SAVE_DELAY);
 }
@@ -1480,39 +1562,26 @@ function initSync() {
     const token = SYNC_CONFIG.GITHUB_TOKEN;
     if (token && token !== '') {
       setTimeout(syncFromCloud, 2000);
-      setInterval(() => {
-        syncFromCloud();
-      }, SYNC_CONFIG.CHECK_INTERVAL);
+      setInterval(() => { syncFromCloud(); }, SYNC_CONFIG.CHECK_INTERVAL);
       setSyncStatus('synced', '✅ همگام با ریپازیتوری');
+      updateLoginStatus('online', '✅ متصل');
     } else {
       setSyncStatus('offline', '⚠️ توکن وارد نشده');
+      updateLoginStatus('offline', '⛔ توکن وارد نشده');
     }
   } else {
     setSyncStatus('offline', '💾 حالت آفلاین');
+    updateLoginStatus('offline', '⛔ حالت آفلاین');
   }
 }
 
 // ============================================
-// LOGIN - امن با ورود توکن از کاربر
+// LOGIN - فقط توکن از کاربر گرفته می‌شود
 // ============================================
-const PASSWORD = 'amiriman1998';
-
 function login() {
-  const passInput = document.getElementById('login-password');
   const tokenInput = document.getElementById('login-token');
   const error = document.getElementById('login-error');
-  const pass = passInput.value.trim();
   const token = tokenInput.value.trim();
-  
-  // اعتبارسنجی رمز
-  if (pass !== PASSWORD) {
-    error.textContent = '❌ رمز عبور اشتباه است!';
-    passInput.value = '';
-    passInput.focus();
-    passInput.style.borderColor = 'var(--danger)';
-    setTimeout(() => { passInput.style.borderColor = ''; }, 2000);
-    return;
-  }
   
   // اعتبارسنجی توکن
   if (!token || token === '') {
@@ -1537,8 +1606,7 @@ function login() {
   
   error.textContent = '';
   document.getElementById('login-page').classList.add('hidden');
-  document.getElementById('app').style.display = 'flex';
-  sessionStorage.setItem('kafinet_logged_in', 'true');
+  document.getElementById('app').classList.add('show');
   
   // راه‌اندازی برنامه
   initDB();
@@ -1553,44 +1621,20 @@ function login() {
 
 function logout() {
   if (confirm('آیا از خروج مطمئن هستید؟')) {
-    // پاک کردن توکن از sessionStorage
     sessionStorage.removeItem('github_token');
-    sessionStorage.removeItem('kafinet_logged_in');
-    
-    document.getElementById('app').style.display = 'none';
+    document.getElementById('app').classList.remove('show');
     document.getElementById('login-page').classList.remove('hidden');
-    document.getElementById('login-password').value = '';
     document.getElementById('login-token').value = '';
-    document.getElementById('login-password').focus();
+    document.getElementById('login-token').focus();
     updateLoginStatus('offline', '⛔ قطع');
   }
-}
-
-function checkLogin() {
-  if (sessionStorage.getItem('kafinet_logged_in') === 'true') {
-    const token = sessionStorage.getItem('github_token');
-    if (token && token !== '') {
-      document.getElementById('login-page').classList.add('hidden');
-      document.getElementById('app').style.display = 'flex';
-      return true;
-    } else {
-      // توکن وجود ندارد، لاگین مجدد
-      sessionStorage.removeItem('kafinet_logged_in');
-      return false;
-    }
-  }
-  return false;
 }
 
 function updateLoginStatus(status, text) {
   const dot = document.getElementById('login-sync-dot');
   const txt = document.getElementById('login-sync-text');
-  if (dot) {
-    dot.className = 'dot ' + status;
-  }
-  if (txt) {
-    txt.textContent = text;
-  }
+  if (dot) { dot.className = 'dot ' + status; }
+  if (txt) { txt.textContent = text; }
 }
 
 // ============================================
@@ -1653,21 +1697,11 @@ function initDB() {
 // ============================================
 // UTILS
 // ============================================
-function today() {
-  return new Date().toLocaleDateString('fa-IR');
-}
-function nowStr() {
-  return new Date().toLocaleString('fa-IR');
-}
-function fmtNum(n) {
-  return Number(n||0).toLocaleString('fa-IR');
-}
-function nextId(arr) {
-  return arr.length ? Math.max(...arr.map(x=>x.id||0)) + 1 : 1;
-}
-function norm(s) {
-  return (s||'').replace(/ي/g,'ی').replace(/ك/g,'ک').toLowerCase();
-}
+function today() { return new Date().toLocaleDateString('fa-IR'); }
+function nowStr() { return new Date().toLocaleString('fa-IR'); }
+function fmtNum(n) { return Number(n||0).toLocaleString('fa-IR'); }
+function nextId(arr) { return arr.length ? Math.max(...arr.map(x=>x.id||0)) + 1 : 1; }
+function norm(s) { return (s||'').replace(/ي/g,'ی').replace(/ك/g,'ک').toLowerCase(); }
 
 function toast(msg, type='') {
   const t = document.getElementById('toast');
@@ -1785,7 +1819,7 @@ function loadDashboard() {
 }
 
 // ============================================
-// SERVICES
+// SERVICES (به اختصار)
 // ============================================
 let selService = null;
 let allServices = [];
@@ -1851,7 +1885,7 @@ function filterServices(q) {
 }
 
 // ============================================
-// ORDERS
+// ORDERS (به اختصار)
 // ============================================
 let cart = [];
 let allOrders = [];
@@ -1908,7 +1942,7 @@ function searchProducts(q) {
   list.innerHTML = '';
   matches.slice(0,8).forEach(s=>{
     const d = document.createElement('div');
-    d.style.cssText='padding:9px 14px;cursor:pointer;border-bottom:1px solid var(--border);font-size:13px;color:var(--text)';
+    d.style.cssText='padding:8px 12px;cursor:pointer;border-bottom:1px solid var(--border);font-size:12px;color:var(--text)';
     d.textContent = s.name + ' — ' + fmtNum(s.price) + ' ریال';
     d.onmouseover=()=>d.style.background='var(--surface2)';
     d.onmouseleave=()=>d.style.background='';
@@ -2030,7 +2064,7 @@ function filterOrders(q) {
 }
 
 // ============================================
-// CUSTOMERS
+// CUSTOMERS (به اختصار)
 // ============================================
 let selCust = null;
 let allCustomers = [];
@@ -2095,7 +2129,7 @@ function filterCustomers(q) {
 }
 
 // ============================================
-// TARIFFS
+// TARIFFS (به اختصار)
 // ============================================
 let selTariff = null;
 
@@ -2138,7 +2172,7 @@ function deleteTariff() {
 }
 
 // ============================================
-// TIPS
+// TIPS (به اختصار)
 // ============================================
 let currentNote = null;
 let editingNote = null;
@@ -2164,7 +2198,7 @@ function loadTips(searchQ) {
   Object.keys(folders).forEach(f=>{ const o=document.createElement('option'); o.value=f; dl.appendChild(o); });
 
   if (!Object.keys(folders).length) {
-    tree.innerHTML='<div style="padding:20px;text-align:center;color:var(--muted);font-size:13px">نتیجه‌ای یافت نشد</div>';
+    tree.innerHTML='<div style="padding:20px;text-align:center;color:var(--muted);font-size:12px">نتیجه‌ای یافت نشد</div>';
     return;
   }
 
@@ -2230,7 +2264,7 @@ function showNote(id) {
     </div>
     ${note.url?`<div class="tip-box">🔗 برای دسترسی مستقیم: <a href="${note.url}" target="_blank" style="color:var(--accent)">${note.url}</a></div>`:''}
     <div class="note-viewer-body">${escapeHtml(note.body||'')}</div>
-    ${imgsHtml?`<div class="divider"></div><div style="font-size:13px;font-weight:600;margin-bottom:8px;color:var(--text)">📷 تصاویر</div><div class="note-viewer-imgs">${imgsHtml}</div>`:''}
+    ${imgsHtml?`<div class="divider"></div><div style="font-size:12px;font-weight:600;margin-bottom:6px;color:var(--text)">📷 تصاویر</div><div class="note-viewer-imgs">${imgsHtml}</div>`:''}
   `;
 }
 
@@ -2267,7 +2301,7 @@ function deleteCurrentNote() {
   if (!confirm('این راهنما حذف شود؟')) return;
   DB.set('tips',(DB.get('tips')||[]).filter(t=>t.id!==currentNote.id));
   currentNote=null;
-  document.getElementById('note-viewer').innerHTML='<div style="text-align:center;padding:60px 20px;color:var(--muted)"><div style="font-size:48px;margin-bottom:12px">📂</div><div>راهنما حذف شد</div></div>';
+  document.getElementById('note-viewer').innerHTML='<div style="text-align:center;padding:40px 20px;color:var(--muted)"><div style="font-size:36px;margin-bottom:10px">📂</div><div>راهنما حذف شد</div></div>';
   document.getElementById('edit-note-btn').style.display='none';
   document.getElementById('del-note-btn').style.display='none';
   document.getElementById('note-viewer-breadcrumb').textContent='یک راهنما را انتخاب کنید';
@@ -2327,7 +2361,7 @@ function openLightbox(src) {
 function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); }
 
 // ============================================
-// INTERNAL NEWS
+// INTERNAL NEWS (به اختصار)
 // ============================================
 let selNews = null;
 let allNews = [];
@@ -2508,16 +2542,16 @@ function updateChart(labels, values, title) {
       maintainAspectRatio: false,
       plugins: {
         legend: { labels: { color: textColor } },
-        title: { display: true, text: title, color: textColor, font: { size: 16, weight: 'bold', family: 'Vazirmatn' } }
+        title: { display: true, text: title, color: textColor, font: { size: 14, weight: 'bold', family: 'Vazirmatn' } }
       },
       scales: {
         y: {
           beginAtZero: true,
-          ticks: { color: textColor, callback: function(value) { return value.toLocaleString('fa-IR') + ' ریال'; } },
+          ticks: { color: textColor, callback: function(value) { return value.toLocaleString('fa-IR') + ' ریال'; }, font: { size: 10 } },
           grid: { color: gridColor }
         },
         x: {
-          ticks: { color: textColor, maxRotation: 45, font: { size: 10 } },
+          ticks: { color: textColor, maxRotation: 45, font: { size: 9 } },
           grid: { color: gridColor }
         }
       }
@@ -2640,8 +2674,9 @@ function handleImport(event) {
 function toggleTheme() {
   const isDark = document.documentElement.dataset.theme==='dark';
   document.documentElement.dataset.theme = isDark?'':'dark';
-  document.getElementById('theme-toggle').textContent = isDark?'🌙 تم تاریک':'☀️ تم روشن';
-  document.getElementById('theme-toggle').classList.toggle('on',!isDark);
+  const btn = document.getElementById('theme-toggle');
+  btn.textContent = isDark ? '🌙 تم تاریک' : '☀️ تم روشن';
+  btn.classList.toggle('on',!isDark);
   localStorage.setItem('theme',isDark?'light':'dark');
   if (document.getElementById('page-reports').classList.contains('active')) {
     showReport(currentReportType);
@@ -2660,30 +2695,34 @@ function updateDate() {
 // ============================================
 // INIT
 // ============================================
-if (checkLogin()) {
+// بررسی آیا توکن در sessionStorage وجود دارد
+const savedToken = sessionStorage.getItem('github_token');
+if (savedToken && savedToken !== '') {
+  // توکن وجود دارد، مستقیماً وارد برنامه شو
+  document.getElementById('login-page').classList.add('hidden');
+  document.getElementById('app').classList.add('show');
   initDB();
   if (localStorage.getItem('theme')==='dark') { 
     document.documentElement.dataset.theme='dark'; 
-    document.getElementById('theme-toggle').textContent='☀️ تم روشن'; 
-    document.getElementById('theme-toggle').classList.add('on'); 
+    const btn = document.getElementById('theme-toggle');
+    if (btn) { btn.textContent = '☀️ تم روشن'; btn.classList.add('on'); }
   }
   updateDate();
   setInterval(updateDate, 30000);
   loadDashboard();
   initSync();
-  updateLoginStatus('online', '✅ متصل');
 } else {
+  // نمایش صفحه ورود
   document.getElementById('login-page').classList.remove('hidden');
-  document.getElementById('app').style.display = 'none';
-  document.getElementById('login-password').focus();
-  updateLoginStatus('offline', '⛔ منتظر ورود');
+  document.getElementById('app').classList.remove('show');
+  document.getElementById('login-token').focus();
+  updateLoginStatus('offline', '⛔ منتظر ورود توکن');
 }
 
-console.log('🔐 رمز ورود: amiriman1998');
 console.log('📌 اطلاعات ریپازیتوری خود را در SYNC_CONFIG وارد کنید:');
 console.log(`   USERNAME: ${SYNC_CONFIG.USERNAME}`);
 console.log(`   REPO_NAME: ${SYNC_CONFIG.REPO_NAME}`);
-console.log('   🔑 توکن را هنگام ورود وارد کنید (امن)');
+console.log('   🔑 توکن را در صفحه ورود وارد کنید (امن)');
 console.log('✅ داده‌ها روی ریپازیتوری گیت‌هاب ذخیره می‌شوند (بدون محدودیت)');
 </script>
 </body>
