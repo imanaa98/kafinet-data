@@ -117,7 +117,8 @@
       "debt": 0,
       "address": "",
       "info": "",
-      "join_date": "۱۴۰۵/۴/۸"
+      "join_date": "۱۴۰۵/۴/۸",
+      "points": 5
     }
   ],
   "orders": [
@@ -162,5 +163,5 @@
       "join_date": "۱۴۰۵/۴/۸"
     }
   ],
-  "last_update": "۱۴۰۵/۴/۸،‏ ۱۷:۲۸:۲۹"
+  "last_update": "۱۴۰۵/۴/۸،‏ ۱۷:۲۸:۳۸"
 }
