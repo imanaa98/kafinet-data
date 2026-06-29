@@ -121,6 +121,15 @@
   "tariffs": [],
   "internal_news": [],
   "tips": [],
-  "users": [],
-  "last_update": "۱۴۰۵/۴/۸،‏ ۱۷:۰۹:۳۲"
+  "users": [
+    {
+      "id": 1,
+      "username": "iman",
+      "password": "iman1998",
+      "referral_code": "IMA101",
+      "referred_by": "amir",
+      "join_date": "۱۴۰۵/۴/۸"
+    }
+  ],
+  "last_update": "۱۴۰۵/۴/۸،‏ ۱۷:۰۹:۴۶"
 }
