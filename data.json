@@ -93,12 +93,14 @@
       "phone": "09120198372",
       "national": "",
       "debt": 0,
-      "total_purchase": 5500000,
+      "total_purchase": 5580000,
       "discount_used": true,
-      "next_discount": 0,
+      "next_discount": 10,
       "address": "",
       "info": "",
-      "join_date": "۱۴۰۵/۴/۸"
+      "join_date": "۱۴۰۵/۴/۸",
+      "points": 5,
+      "discount_earned": true
     }
   ],
   "orders": [
@@ -107,6 +109,13 @@
       "customer_id": 1,
       "date": "۱۴۰۵/۴/۸،‏ ۱۸:۴۶:۵۶",
       "total": 5500000,
+      "status": "تکمیل شده"
+    },
+    {
+      "id": 2,
+      "customer_id": 1,
+      "date": "۱۴۰۵/۴/۸،‏ ۱۹:۲۶:۴۵",
+      "total": 80000,
       "status": "تکمیل شده"
     }
   ],
@@ -120,11 +129,21 @@
       "discount": 0,
       "discounted_price": 110000,
       "subtotal": 5500000
+    },
+    {
+      "order_id": 2,
+      "product_id": 2,
+      "product_name": "پرینت سیاه‌ سفید تک رو a4",
+      "qty": 1,
+      "unit_price": 80000,
+      "discount": 0,
+      "discounted_price": 80000,
+      "subtotal": 80000
     }
   ],
   "tariffs": [],
   "internal_news": [],
   "tips": [],
   "users": [],
-  "last_update": "۱۴۰۵/۴/۸،‏ ۱۹:۲۶:۳۱"
+  "last_update": "۱۴۰۵/۴/۸،‏ ۱۹:۲۶:۴۸"
 }
