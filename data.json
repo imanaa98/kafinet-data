@@ -36,6 +36,13 @@
       "stock": 999
     },
     {
+      "id": 11,
+      "name": "کپی سیاه‌سفید دو رو a4",
+      "category": "کپی",
+      "price": 88000,
+      "stock": 999
+    },
+    {
       "id": 4,
       "name": "اسکن",
       "category": "اسکن",
@@ -62,13 +69,6 @@
       "category": "فایل",
       "price": 90000,
       "stock": 99999999999999
-    },
-    {
-      "id": 11,
-      "name": "کپی سیاه‌سفید دو رو a4",
-      "category": "کپی",
-      "price": 88000,
-      "stock": 999
     }
   ],
   "customers": [
@@ -107,5 +107,5 @@
   "tariffs": [],
   "internal_news": [],
   "tips": [],
-  "last_update": "۱۴۰۵/۴/۸،‏ ۱۱:۳۹:۵۵"
+  "last_update": "۱۴۰۵/۴/۸،‏ ۱۱:۴۰:۰۶"
 }
