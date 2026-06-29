@@ -1,13 +1,6 @@
 {
   "services": [
     {
-      "id": 1,
-      "name": "پرینت سیاه‌سفید",
-      "category": "پرینت",
-      "price": 80000,
-      "stock": 999
-    },
-    {
       "id": 2,
       "name": "پرینت سیاه‌سفید تک رو",
       "category": "پرینت",
@@ -40,5 +33,5 @@
   "tariffs": [],
   "internal_news": [],
   "tips": [],
-  "last_update": "۱۴۰۵/۴/۸،‏ ۱۰:۴۱:۴۷"
+  "last_update": "۱۴۰۵/۴/۸،‏ ۱۰:۴۲:۰۵"
 }
