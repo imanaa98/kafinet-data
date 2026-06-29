@@ -34,6 +34,13 @@
       "category": "فایل",
       "price": 90000,
       "stock": 99999999999999
+    },
+    {
+      "id": 7,
+      "name": "ارسال فایل",
+      "category": "فایل",
+      "price": 90000,
+      "stock": 99999999999999
     }
   ],
   "customers": [
@@ -72,5 +79,5 @@
   "tariffs": [],
   "internal_news": [],
   "tips": [],
-  "last_update": "۱۴۰۵/۴/۸،‏ ۱۱:۳۳:۵۹"
+  "last_update": "۱۴۰۵/۴/۸،‏ ۱۱:۳۴:۱۹"
 }
