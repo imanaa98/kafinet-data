@@ -6,13 +6,6 @@
       "category": "پرینت",
       "price": 80000,
       "stock": 999
-    },
-    {
-      "id": 2,
-      "name": "پرینت سیاه‌سفید",
-      "category": "",
-      "price": 80000,
-      "stock": 999
     }
   ],
   "customers": [
@@ -40,5 +33,5 @@
   "tariffs": [],
   "internal_news": [],
   "tips": [],
-  "last_update": "۱۴۰۵/۴/۸،‏ ۱۰:۴۱:۱۸"
+  "last_update": "۱۴۰۵/۴/۸،‏ ۱۰:۴۱:۲۵"
 }
