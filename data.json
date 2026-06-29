@@ -85,7 +85,22 @@
       "stock": 99999999999999
     }
   ],
-  "customers": [],
+  "customers": [
+    {
+      "id": 1,
+      "first_name": "امیرحسین",
+      "last_name": "علی عباسی",
+      "phone": "09120198372",
+      "national": "",
+      "debt": 0,
+      "total_purchase": 0,
+      "discount_used": false,
+      "next_discount": 0,
+      "address": "",
+      "info": "",
+      "join_date": "۱۴۰۵/۴/۸"
+    }
+  ],
   "orders": [
     {
       "id": 1,
@@ -111,5 +126,5 @@
   "internal_news": [],
   "tips": [],
   "users": [],
-  "last_update": "۱۴۰۵/۴/۸،‏ ۱۸:۴۶:۱۲"
+  "last_update": "۱۴۰۵/۴/۸،‏ ۱۸:۴۶:۱۷"
 }
