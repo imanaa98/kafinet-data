@@ -103,47 +103,10 @@
       "discount_earned": true
     }
   ],
-  "orders": [
-    {
-      "id": 1,
-      "customer_id": 1,
-      "date": "۱۴۰۵/۴/۸،‏ ۱۸:۴۶:۵۶",
-      "total": 5500000,
-      "status": "تکمیل شده"
-    },
-    {
-      "id": 2,
-      "customer_id": 1,
-      "date": "۱۴۰۵/۴/۸،‏ ۱۹:۲۶:۴۵",
-      "total": 80000,
-      "status": "تکمیل شده"
-    }
-  ],
-  "order_items": [
-    {
-      "order_id": 1,
-      "product_id": 3,
-      "product_name": "پرینت سیاه‌ سفید دو رو a4",
-      "qty": 50,
-      "unit_price": 110000,
-      "discount": 0,
-      "discounted_price": 110000,
-      "subtotal": 5500000
-    },
-    {
-      "order_id": 2,
-      "product_id": 2,
-      "product_name": "پرینت سیاه‌ سفید تک رو a4",
-      "qty": 1,
-      "unit_price": 80000,
-      "discount": 0,
-      "discounted_price": 80000,
-      "subtotal": 80000
-    }
-  ],
+  "orders": [],
+  "order_items": [],
   "tariffs": [],
   "internal_news": [],
   "tips": [],
-  "users": [],
-  "last_update": "۱۴۰۵/۴/۸،‏ ۱۹:۲۶:۴۸"
+  "last_update": "۱۴۰۵/۴/۸،‏ ۱۹:۴۸:۱۱"
 }
