@@ -111,7 +111,10 @@
       "join_date": "۱۴۰۵/۴/۷",
       "points": 1,
       "national": "",
-      "info": ""
+      "info": "",
+      "total_purchase": 15000000,
+      "discount_used": true,
+      "next_discount": 0
     },
     {
       "id": 3,
@@ -162,6 +165,13 @@
       "id": 5,
       "customer_id": 1,
       "date": "۱۴۰۵/۴/۸،‏ ۱۸:۲۶:۲۶",
+      "total": 15000000,
+      "status": "تکمیل شده"
+    },
+    {
+      "id": 6,
+      "customer_id": 2,
+      "date": "۱۴۰۵/۴/۸،‏ ۱۸:۲۷:۲۵",
       "total": 15000000,
       "status": "تکمیل شده"
     }
@@ -216,6 +226,16 @@
       "discount": 0,
       "discounted_price": 100000,
       "subtotal": 15000000
+    },
+    {
+      "order_id": 6,
+      "product_id": 8,
+      "product_name": "پرینت سیاه‌ سفید تک رو a4 مصرف تیونر بالا",
+      "qty": 150,
+      "unit_price": 100000,
+      "discount": 0,
+      "discounted_price": 100000,
+      "subtotal": 15000000
     }
   ],
   "tariffs": [],
@@ -239,5 +259,5 @@
       "join_date": "۱۴۰۵/۴/۸"
     }
   ],
-  "last_update": "۱۴۰۵/۴/۸،‏ ۱۸:۲۶:۲۹"
+  "last_update": "۱۴۰۵/۴/۸،‏ ۱۸:۲۷:۲۸"
 }
