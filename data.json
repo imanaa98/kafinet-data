@@ -106,7 +106,9 @@
       "debt": 0,
       "address": "",
       "join_date": "۱۴۰۵/۴/۷",
-      "points": 2
+      "points": 0,
+      "national": "",
+      "info": ""
     },
     {
       "id": 3,
@@ -144,5 +146,5 @@
       "join_date": "۱۴۰۵/۴/۸"
     }
   ],
-  "last_update": "۱۴۰۵/۴/۸،‏ ۱۷:۴۶:۵۳"
+  "last_update": "۱۴۰۵/۴/۸،‏ ۱۷:۴۶:۵۸"
 }
