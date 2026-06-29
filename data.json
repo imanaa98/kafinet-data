@@ -129,7 +129,15 @@
       "referral_code": "IMA101",
       "referred_by": "amir",
       "join_date": "۱۴۰۵/۴/۸"
+    },
+    {
+      "id": 2,
+      "username": "amir",
+      "password": "iman1998",
+      "referral_code": "AMI102",
+      "referred_by": "IMA101",
+      "join_date": "۱۴۰۵/۴/۸"
     }
   ],
-  "last_update": "۱۴۰۵/۴/۸،‏ ۱۷:۰۹:۴۶"
+  "last_update": "۱۴۰۵/۴/۸،‏ ۱۷:۱۰:۱۶"
 }
