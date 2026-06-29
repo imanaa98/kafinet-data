@@ -76,6 +76,13 @@
       "category": "کپی",
       "price": 70000,
       "stock": 999
+    },
+    {
+      "id": 13,
+      "name": "کپی سیاه‌سفید دو رو a4 مصرف تیونر بالا",
+      "category": "کپی",
+      "price": 110000,
+      "stock": 999
     }
   ],
   "customers": [
@@ -114,5 +121,5 @@
   "tariffs": [],
   "internal_news": [],
   "tips": [],
-  "last_update": "۱۴۰۵/۴/۸،‏ ۱۱:۴۰:۴۲"
+  "last_update": "۱۴۰۵/۴/۸،‏ ۱۱:۴۱:۰۵"
 }
