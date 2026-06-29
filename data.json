@@ -48,6 +48,13 @@
       "category": "ویرایش",
       "price": 50000,
       "stock": 999999
+    },
+    {
+      "id": 9,
+      "name": "ویرایش عکس",
+      "category": "ویرایش",
+      "price": 50000,
+      "stock": 99999999
     }
   ],
   "customers": [
@@ -75,5 +82,5 @@
   "tariffs": [],
   "internal_news": [],
   "tips": [],
-  "last_update": "۱۴۰۵/۴/۸،‏ ۱۱:۳۰:۰۳"
+  "last_update": "۱۴۰۵/۴/۸،‏ ۱۱:۳۰:۰۸"
 }
