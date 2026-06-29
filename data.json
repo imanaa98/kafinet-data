@@ -27,15 +27,6 @@
       "debt": 0,
       "address": "تست",
       "join_date": "۱۴۰۵/۴/۷"
-    },
-    {
-      "id": 4,
-      "first_name": "test45",
-      "last_name": "",
-      "phone": "",
-      "debt": 0,
-      "address": "",
-      "join_date": "۱۴۰۵/۴/۷"
     }
   ],
   "orders": [],
@@ -43,5 +34,5 @@
   "tariffs": [],
   "internal_news": [],
   "tips": [],
-  "last_update": "۱۴۰۵/۴/۷،‏ ۱۸:۴۷:۲۱"
+  "last_update": "۱۴۰۵/۴/۸،‏ ۸:۵۰:۵۱"
 }
