@@ -97,9 +97,9 @@
       "points": 5,
       "national": "",
       "info": "",
-      "total_purchase": 20000000,
+      "total_purchase": 0,
       "next_discount": 0,
-      "discount_used": true
+      "discount_used": false
     },
     {
       "id": 2,
@@ -112,8 +112,8 @@
       "points": 1,
       "national": "",
       "info": "",
-      "total_purchase": 15000000,
-      "discount_used": true,
+      "total_purchase": 0,
+      "discount_used": false,
       "next_discount": 0
     },
     {
@@ -127,120 +127,16 @@
       "info": "",
       "join_date": "۱۴۰۵/۴/۸",
       "points": 6,
-      "total_purchase": 5860000,
+      "total_purchase": 0,
       "next_discount": 0,
-      "discount_used": true
+      "discount_used": false
     }
   ],
-  "orders": [
-    {
-      "id": 1,
-      "customer_id": 3,
-      "date": "۱۴۰۵/۴/۸،‏ ۱۸:۱۸:۰۸",
-      "total": 5500000,
-      "status": "تکمیل شده"
-    },
-    {
-      "id": 2,
-      "customer_id": 3,
-      "date": "۱۴۰۵/۴/۸،‏ ۱۸:۲۳:۳۰",
-      "total": 360000,
-      "status": "تکمیل شده"
-    },
-    {
-      "id": 3,
-      "customer_id": 1,
-      "date": "۱۴۰۵/۴/۸،‏ ۱۸:۲۵:۲۴",
-      "total": 4900000,
-      "status": "تکمیل شده"
-    },
-    {
-      "id": 4,
-      "customer_id": 1,
-      "date": "۱۴۰۵/۴/۸،‏ ۱۸:۲۵:۴۷",
-      "total": 100000,
-      "status": "تکمیل شده"
-    },
-    {
-      "id": 5,
-      "customer_id": 1,
-      "date": "۱۴۰۵/۴/۸،‏ ۱۸:۲۶:۲۶",
-      "total": 15000000,
-      "status": "تکمیل شده"
-    },
-    {
-      "id": 6,
-      "customer_id": 2,
-      "date": "۱۴۰۵/۴/۸،‏ ۱۸:۲۷:۲۵",
-      "total": 15000000,
-      "status": "تکمیل شده"
-    }
-  ],
-  "order_items": [
-    {
-      "order_id": 1,
-      "product_id": 3,
-      "product_name": "پرینت سیاه‌ سفید دو رو a4",
-      "qty": 50,
-      "unit_price": 110000,
-      "discount": 0,
-      "discounted_price": 110000,
-      "subtotal": 5500000
-    },
-    {
-      "order_id": 2,
-      "product_id": 8,
-      "product_name": "پرینت سیاه‌ سفید تک رو a4 مصرف تیونر بالا",
-      "qty": 4,
-      "unit_price": 100000,
-      "discount": 10,
-      "discounted_price": 90000,
-      "subtotal": 360000
-    },
-    {
-      "order_id": 3,
-      "product_id": 8,
-      "product_name": "پرینت سیاه‌ سفید تک رو a4 مصرف تیونر بالا",
-      "qty": 49,
-      "unit_price": 100000,
-      "discount": 0,
-      "discounted_price": 100000,
-      "subtotal": 4900000
-    },
-    {
-      "order_id": 4,
-      "product_id": 8,
-      "product_name": "پرینت سیاه‌ سفید تک رو a4 مصرف تیونر بالا",
-      "qty": 1,
-      "unit_price": 100000,
-      "discount": 0,
-      "discounted_price": 100000,
-      "subtotal": 100000
-    },
-    {
-      "order_id": 5,
-      "product_id": 8,
-      "product_name": "پرینت سیاه‌ سفید تک رو a4 مصرف تیونر بالا",
-      "qty": 150,
-      "unit_price": 100000,
-      "discount": 0,
-      "discounted_price": 100000,
-      "subtotal": 15000000
-    },
-    {
-      "order_id": 6,
-      "product_id": 8,
-      "product_name": "پرینت سیاه‌ سفید تک رو a4 مصرف تیونر بالا",
-      "qty": 150,
-      "unit_price": 100000,
-      "discount": 0,
-      "discounted_price": 100000,
-      "subtotal": 15000000
-    }
-  ],
+  "orders": [],
+  "order_items": [],
   "tariffs": [],
   "internal_news": [],
   "tips": [],
   "users": [],
-  "last_update": "۱۴۰۵/۴/۸،‏ ۱۸:۴۳:۴۳"
+  "last_update": "۱۴۰۵/۴/۸،‏ ۱۸:۴۴:۲۱"
 }
