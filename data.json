@@ -87,21 +87,6 @@
   ],
   "customers": [
     {
-      "id": 1,
-      "first_name": "ایمان",
-      "last_name": "علی عباسی",
-      "phone": "09194441712",
-      "debt": 0,
-      "address": "تست",
-      "join_date": "۱۴۰۵/۴/۷",
-      "points": 5,
-      "national": "",
-      "info": "",
-      "total_purchase": 5500000,
-      "next_discount": 0,
-      "discount_used": true
-    },
-    {
       "id": 2,
       "first_name": "امیرحسین",
       "last_name": "علی عباسی",
@@ -157,5 +142,5 @@
   "internal_news": [],
   "tips": [],
   "users": [],
-  "last_update": "۱۴۰۵/۴/۸،‏ ۱۸:۴۵:۲۷"
+  "last_update": "۱۴۰۵/۴/۸،‏ ۱۸:۴۵:۵۶"
 }
