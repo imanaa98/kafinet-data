@@ -18,42 +18,6 @@
       "debt": 0,
       "address": "",
       "join_date": "۱۴۰۵/۴/۷"
-    },
-    {
-      "id": 3,
-      "first_name": "علی",
-      "last_name": "احمدی",
-      "phone": "",
-      "debt": 0,
-      "address": "تست",
-      "join_date": "۱۴۰۵/۴/۷"
-    },
-    {
-      "id": 4,
-      "first_name": "تست",
-      "last_name": "",
-      "phone": "",
-      "debt": 0,
-      "address": "",
-      "join_date": "۱۴۰۵/۴/۸"
-    },
-    {
-      "id": 5,
-      "first_name": "2",
-      "last_name": "",
-      "phone": "",
-      "debt": 0,
-      "address": "",
-      "join_date": "۱۴۰۵/۴/۸"
-    },
-    {
-      "id": 6,
-      "first_name": "احمد",
-      "last_name": "",
-      "phone": "",
-      "debt": 0,
-      "address": "",
-      "join_date": "۱۴۰۵/۴/۸"
     }
   ],
   "orders": [],
@@ -61,5 +25,5 @@
   "tariffs": [],
   "internal_news": [],
   "tips": [],
-  "last_update": "۱۴۰۵/۴/۸،‏ ۱۰:۱۴:۱۲"
+  "last_update": "۱۴۰۵/۴/۸،‏ ۱۰:۱۵:۰۹"
 }
