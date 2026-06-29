@@ -121,5 +121,23 @@
   "tariffs": [],
   "internal_news": [],
   "tips": [],
-  "last_update": "۱۴۰۵/۴/۸،‏ ۱۱:۴۴:۵۷"
+  "users": [
+    {
+      "id": 1,
+      "username": "alireza",
+      "password": "123456",
+      "referral_code": "ALI001",
+      "referred_by": "",
+      "join_date": "۱۴۰۵/۴/۸"
+    },
+    {
+      "id": 2,
+      "username": "maryam_r",
+      "password": "123456",
+      "referral_code": "MAR001",
+      "referred_by": "ALI001",
+      "join_date": "۱۴۰۵/۴/۸"
+    }
+  ],
+  "last_update": "۱۴۰۵/۴/۸،‏ ۱۷:۰۷:۵۷"
 }
