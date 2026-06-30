@@ -937,47 +937,21 @@
     color: #3D4461;
   }
 
-  /* ====== STAMP STYLES ====== */
-  .stamp {
-    display: inline-block;
-    padding: 6px 16px;
-    border: 3px solid #8B0000;
-    border-radius: 6px;
-    color: #8B0000;
-    font-weight: 700;
-    font-size: 13px;
-    transform: rotate(-15deg);
-    opacity: 0.85;
-    font-family: 'Vazirmatn', Tahoma, sans-serif;
-    letter-spacing: 1px;
-    background: rgba(139, 0, 0, 0.05);
-    position: relative;
-    box-shadow: 0 2px 8px rgba(139, 0, 0, 0.1);
-  }
-  .stamp::before {
-    content: '';
+  /* ====== STAMP / SEAL STYLES ====== */
+  .stamp-container {
     position: absolute;
-    inset: -4px;
-    border: 1px dashed #8B0000;
-    border-radius: 8px;
-    opacity: 0.3;
+    bottom: 80px;
+    left: 30px;
+    z-index: 10;
   }
-  .stamp .stamp-title {
-    font-size: 15px;
-    font-weight: 800;
-    color: #8B0000;
+  .stamp-container img {
+    width: 110px;
+    height: 110px;
+    opacity: 0.75;
+    transform: rotate(-15deg);
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.15));
   }
-  .stamp .stamp-sub {
-    font-size: 10px;
-    font-weight: 400;
-    opacity: 0.7;
-  }
-  .stamp .stamp-date {
-    font-size: 11px;
-    font-weight: 600;
-    color: #8B0000;
-  }
-  
+
   @media print {
     #app, #sidebar, #topbar, .modal-overlay, #toast, #login-page {
       display: none !important;
@@ -999,11 +973,9 @@
       -webkit-print-color-adjust: exact !important;
       print-color-adjust: exact !important;
     }
-    .stamp {
+    .stamp-container img {
       -webkit-print-color-adjust: exact !important;
       print-color-adjust: exact !important;
-      border-color: #8B0000 !important;
-      background: rgba(139, 0, 0, 0.05) !important;
     }
   }
 
@@ -1143,8 +1115,7 @@
     .note-viewer-title { font-size: 15px; }
     .login-box { padding: 24px 16px; }
     .login-box .logo-icon { width: 64px; height: 64px; }
-    .stamp { font-size: 11px; padding: 4px 12px; }
-    .stamp .stamp-title { font-size: 13px; }
+    .stamp-container img { width: 80px; height: 80px; }
   }
 
   @media (max-width: 480px) {
@@ -1166,8 +1137,7 @@
     .login-box { padding: 20px 12px; }
     .login-box .logo-icon { width: 56px; height: 56px; }
     .login-box h1 { font-size: 18px; }
-    .stamp { font-size: 10px; padding: 3px 10px; }
-    .stamp .stamp-title { font-size: 11px; }
+    .stamp-container img { width: 60px; height: 60px; }
   }
 
   #page-tips .page-body { padding: 0; }
@@ -1422,7 +1392,7 @@
           <div id="cart-table">
             <div class="table-wrap" style="border:none">
               <table>
-                <thead><tr><th>خدمت</th><th>تعداد</th><th>قیمت واحد</th><th>تخفیف %</th><th>تخفیف هر واحد</th><th>سود (تخفیف مجموع)</th><th>جمع</th><th></th></tr></thead>
+                <thead><tr><th>خدمت</th><th>تعداد</th><th>قیمت واحد</th><th>تخفیف %</th><th>تخفیف هر واحد</th><th>سود (تخفیف کل)</th><th>جمع</th><th></th></tr></thead>
                 <tbody id="cart-tbody"><tr class="empty-row"><td colspan="8">سبد خالی است</td></tr></tbody>
               </table>
             </div>
@@ -1722,7 +1692,7 @@
       <div style="font-weight:600;margin-bottom:8px">📋 اقلام سفارش</div>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>خدمت</th><th>تعداد</th><th>قیمت واحد</th><th>تخفیف %</th><th>تخفیف هر واحد</th><th>سود (تخفیف مجموع)</th><th>جمع</th></tr></thead>
+          <thead><tr><th>خدمت</th><th>تعداد</th><th>قیمت واحد</th><th>تخفیف %</th><th>تخفیف هر واحد</th><th>سود (تخفیف کل)</th><th>جمع</th></tr></thead>
           <tbody id="detail-items"></tbody>
         </table>
       </div>
@@ -2742,14 +2712,15 @@ function addToCart() {
   const unitPrice = selProd.price;
   let afterPercentDiscount = Math.round(unitPrice * (1 - discountPercent / 100));
   let finalUnitPrice = Math.max(0, afterPercentDiscount - discountAmount);
-  // سود = تخفیف مجموع = قیمت اصلی - قیمت نهایی
-  const totalDiscount = unitPrice - finalUnitPrice;
+  // سود = تخفیف کل برای این محصول = (قیمت اصلی - قیمت نهایی) × تعداد
+  const totalDiscount = (unitPrice - finalUnitPrice) * qty;
   const sub = finalUnitPrice * qty;
   
   const existing = cart.find(c=>c.product_id===selProd.id && c.discount_percent===discountPercent && c.discount_amount===discountAmount);
   if (existing) { 
     existing.qty += qty; 
     existing.subtotal += sub;
+    existing.total_discount += totalDiscount;
   } else {
     cart.push({
       product_id:selProd.id,
@@ -3026,7 +2997,9 @@ function showOrderDetail(id) {
     tbody.innerHTML = '<tr class="empty-row"><td colspan="7">هیچ آیتمی وجود ندارد</td></tr>';
   } else {
     orderItems.forEach(item=>{
-      const totalDiscount = (item.discount_percent||0) + (item.discount_amount||0);
+      // سود = تخفیف کل = (قیمت اصلی - قیمت نهایی) × تعداد
+      const finalPrice = Math.max(0, Math.round(item.unit_price * (1 - (item.discount_percent||0) / 100)) - (item.discount_amount||0));
+      const totalDiscount = (item.unit_price - finalPrice) * item.qty;
       tbody.innerHTML += `<tr>
         <td>${item.product_name}</td>
         <td>${item.qty}</td>
@@ -3042,9 +3015,12 @@ function showOrderDetail(id) {
   const total = orderItems.reduce((s,i)=>s+(i.subtotal||0),0);
   document.getElementById('detail-total').textContent = fmtNum(total)+' ریال';
   
-  // سود = تخفیف مجموع
-  const totalDiscount = orderItems.reduce((s,i)=>s+((i.discount_percent||0) + (i.discount_amount||0)),0);
-  document.getElementById('detail-profit').textContent = fmtNum(totalDiscount)+' ریال';
+  // سود کل = مجموع تخفیف کل هر آیتم
+  const totalProfit = orderItems.reduce((s,item) => {
+    const finalPrice = Math.max(0, Math.round(item.unit_price * (1 - (item.discount_percent||0) / 100)) - (item.discount_amount||0));
+    return s + ((item.unit_price - finalPrice) * item.qty);
+  }, 0);
+  document.getElementById('detail-profit').textContent = fmtNum(totalProfit)+' ریال';
   
   document.getElementById('order-detail-modal').classList.add('open');
 }
@@ -3076,7 +3052,7 @@ function filterOrders(q) {
 }
 
 // ============================================
-// INVOICE PRINT با مهر خودکار
+// INVOICE PRINT با مهر تصویری
 // ============================================
 function printInvoice() {
   if (!viewedOrderId) { toast('سفارشی انتخاب نشده','danger'); return; }
@@ -3094,7 +3070,12 @@ function printInvoice() {
   const items = DB.get('order_items')||[];
   const orderItems = items.filter(i=>i.order_id===viewedOrderId);
   const total = orderItems.reduce((s,i)=>s+(i.subtotal||0),0);
-  const totalDiscount = orderItems.reduce((s,i)=>s+((i.discount_percent||0) + (i.discount_amount||0)),0);
+  
+  // محاسبه سود کل
+  const totalProfit = orderItems.reduce((s,item) => {
+    const finalPrice = Math.max(0, Math.round(item.unit_price * (1 - (item.discount_percent||0) / 100)) - (item.discount_amount||0));
+    return s + ((item.unit_price - finalPrice) * item.qty);
+  }, 0);
   
   // تاریخ شمسی برای مهر
   const persianDate = new Date().toLocaleDateString('fa-IR');
@@ -3102,14 +3083,9 @@ function printInvoice() {
   
   let html = `
   <div class="invoice-print" style="max-width:800px;margin:0 auto;background:white;padding:30px;font-family:'Vazirmatn',Tahoma,sans-serif;direction:rtl;position:relative;">
-    <!-- مهر خودکار -->
-    <div style="position:absolute;bottom:100px;left:30px;z-index:10;">
-      <div class="stamp">
-        <div class="stamp-title">🇮🇷 کافینت چنار</div>
-        <div class="stamp-sub">مرکز خدمات اینترنتی</div>
-        <div class="stamp-date">📅 ${persianDate}</div>
-        <div style="font-size:9px;opacity:0.6;">${persianTime}</div>
-      </div>
+    <!-- مهر تصویری -->
+    <div class="stamp-container">
+      <img src="stamp.png" alt="مهر" onerror="this.style.display='none';">
     </div>
     
     <div class="invoice-header">
@@ -3174,7 +3150,7 @@ function printInvoice() {
     <div class="invoice-total">
       <span>جمع کل:</span>
       <span>${fmtNum(total)} ریال</span>
-      <span style="color:#C0392B;font-size:12px;">(سود: ${fmtNum(totalDiscount)} ریال)</span>
+      <span style="color:#C0392B;font-size:12px;">(سود: ${fmtNum(totalProfit)} ریال)</span>
     </div>
     
     <div class="invoice-signature">
@@ -3227,28 +3203,12 @@ function printInvoice() {
         .invoice-total { display:flex; justify-content:flex-end; gap:20px; font-size:14px; font-weight:600; padding-top:12px; border-top:2px solid #1A56C4; margin-top:12px; }
         .invoice-signature { display:flex; justify-content:space-between; margin-top:12px; font-size:12px; color:#3D4461; }
         .invoice-footer { text-align:center; font-size:11px; color:#7B849E; margin-top:16px; border-top:1px solid #D6DCE9; padding-top:10px; }
-        .stamp {
-          display:inline-block;
-          padding:6px 16px;
-          border:3px solid #8B0000;
-          border-radius:6px;
-          color:#8B0000;
-          font-weight:700;
-          font-size:13px;
-          transform:rotate(-15deg);
-          opacity:0.85;
-          background:rgba(139,0,0,0.05);
-          font-family:'Vazirmatn',Tahoma,sans-serif;
-          letter-spacing:1px;
-          box-shadow:0 2px 8px rgba(139,0,0,0.1);
-        }
-        .stamp .stamp-title { font-size:15px; font-weight:800; color:#8B0000; }
-        .stamp .stamp-sub { font-size:10px; font-weight:400; opacity:0.7; }
-        .stamp .stamp-date { font-size:11px; font-weight:600; color:#8B0000; }
+        .stamp-container { position:absolute; bottom:80px; left:30px; z-index:10; }
+        .stamp-container img { width:110px; height:110px; opacity:0.75; transform:rotate(-15deg); filter:drop-shadow(0 2px 8px rgba(0,0,0,0.15)); }
         @media print {
           body { background:white; padding:0; }
           .invoice-print { box-shadow:none; border-radius:0; padding:20px; }
-          .stamp { -webkit-print-color-adjust:exact; print-color-adjust:exact; border-color:#8B0000 !important; background:rgba(139,0,0,0.05) !important; }
+          .stamp-container img { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
           .invoice-table th { background:#e9ecef !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
         }
       </style>
@@ -3811,12 +3771,18 @@ if (savedToken && savedToken !== '') {
   updateLoginStatus('offline', '⛔ منتظر ورود توکن');
 }
 
-console.log('📌 تمام تغییرات اعمال شد:');
+console.log('✅ تمام تغییرات اعمال شد:');
 console.log('   ✅ تخفیف هر واحد به جای تخفیف ریالی');
-console.log('   ✅ سود = تخفیف مجموع');
-console.log('   ✅ مهر خودکار با تاریخ شمسی در فاکتور');
+console.log('   ✅ سود = تخفیف کل = (قیمت اصلی - قیمت نهایی) × تعداد');
+console.log('   ✅ مهر تصویری با فایل stamp.png');
+console.log('   ✅ مهر در پایین فاکتور (سمت چپ)');
 console.log('   ✅ نمایش فاکتور در تاریخچه سفارش‌ها');
 console.log('   ✅ دکمه 👁️ برای مشاهده فاکتور');
+console.log('');
+console.log('📌 برای استفاده از مهر:');
+console.log('   فایل stamp.png را در کنار index.html قرار دهید');
+console.log('   اندازه پیشنهادی: 200×200 یا 300×300 پیکسل');
+console.log('   فرمت: PNG با پس‌زمینه شفاف');
 </script>
 </body>
 </html>
