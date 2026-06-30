@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <!-- ====== PWA / HOME SCREEN ====== -->
-<link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogItmF2YbYt9in2YQg2YXYp9mG2K8iLAogICJzaG9ydF9uYW1lIjogItmF2YbYt9in2YQiLAogICJkZXNjcmlwdGlvbiI6ICLZhNmF2YbYr9in2YTYqCDYp9mE2YHYp9mG2K8g2YXYp9mG2K8iLAogICJzdGFydF91cmwiOiAiLiIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiIzFBNTZDNCIsCiAgInRoZW1lX2NvbG9yIjogIiMxQTU2QzQiLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJkYXRhOmltYWdlL3N2Zyt4bWwsJTNDc3ZnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zycgdmlld0JveD0nMCAwIDEwMCAxMDAlJTNFJTNDcmVjdCB3aWR0aD0nMTAwJyBoZWlnaHQ9JzEwMCcgcng9JzIwJyBmaWxsPSclMjMxQTU2QzQnLyUzRSUzQ3RleHQgeD0nNTAlJyB5PSc1MCUnIGZvbnQtc2l6ZT0nNDAnIGZvbnQtd2VpZ2h0PSdib2xkJyB0ZXh0LWFuY2hvcj0nbWlkZGxlJyBkeT0nLjM1ZW0nIGZpbGw9J3doaXRlJyUzRUtGQyUzQy90ZXh0JTNFJTNDL3N2ZyUzRQ0KICAgICAgInNpemVzIjogIjE5MngxOTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9zdmcreG1sIiwKICAgICAgInB1cnBvc2UiOiAiYW55IgogICAgfQogIF0KfQ==">
+<link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogItmF2YbYt9in2YQg2YXYp9mG2K8iLAogICJzaG9ydF9uYW1lIjogItmF2YbYt9in2YQiLAogICJkZXNjcmlwdGlvbiI6ICLZhNmF2YbYr9in2YTYqCDYp9mE2YHYp9mG2K8g2YXYp9mG2K8iLAogICJzdGFydF91cmwiOiAiLiIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiIzFBNTZDNCIsCiAgInRoZW1lX2NvbG9yIjogIiMxQTU2QzQiLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJsb2dvLnBuZyIsCiAgICAgICJzaXplcyI6ICIxOTJ4MTkyIiwKICAgICAgInR5cGUiOiAiaW1hZ2UvcG5nIiwKICAgICAgInB1cnBvc2UiOiAiYW55IgogICAgfSwKICAgIHsKICAgICAgInNyYyI6ICJsb2dvLnBuZyIsCiAgICAgICJzaXplcyI6ICI1MTJ4NTEyIiwKICAgICAgInR5cGUiOiAiaW1hZ2UvcG5nIiwKICAgICAgInB1cnBvc2UiOiAiYW55IgogICAgfQogIF0KfQ==">
 
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%231A56C4'/%3E%3Ctext x='50' y='50' font-size='40' font-weight='bold' text-anchor='middle' dy='.35em' fill='white'%3EKFC%3C/text%3E%3C/svg%3E" type="image/svg+xml">
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%231A56C4'/%3E%3Ctext x='50' y='50' font-size='40' font-weight='bold' text-anchor='middle' dy='.35em' fill='white'%3EKFC%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="logo.png" type="image/png">
+<link rel="apple-touch-icon" href="logo.png">
 
 <title>کافینت چنار</title>
 
@@ -113,18 +113,20 @@
     text-align: center;
   }
   .login-box .logo-icon {
-    width: 64px;
-    height: 64px;
-    background: var(--accent);
+    width: 80px;
+    height: 80px;
     border-radius: 16px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 28px;
-    font-weight: 800;
-    color: var(--btn-text);
     margin-bottom: 16px;
+    overflow: hidden;
     box-shadow: 0 4px 16px rgba(26,86,196,0.3);
+  }
+  .login-box .logo-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
   }
   .login-box h1 {
     font-size: 22px;
@@ -239,16 +241,18 @@
   .logo-icon {
     width: 52px;
     height: 52px;
-    background: var(--accent);
     border-radius: 14px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 22px;
-    font-weight: 800;
-    color: var(--btn-text);
     margin-bottom: 8px;
+    overflow: hidden;
     box-shadow: 0 4px 12px rgba(26,86,196,0.3);
+  }
+  .logo-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
   }
   .logo-title { font-size: 16px; font-weight: 700; color: var(--text); }
   .logo-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
@@ -849,14 +853,17 @@
   .invoice-print .invoice-logo-icon {
     width: 60px;
     height: 60px;
-    background: #1A56C4;
     border-radius: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
-    font-weight: 800;
-    font-size: 24px;
+    overflow: hidden;
+    border: 2px solid #1A56C4;
+  }
+  .invoice-print .invoice-logo-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
   }
   .invoice-print .invoice-shop-name {
     font-size: 20px;
@@ -945,7 +952,7 @@
       print-color-adjust: exact !important;
     }
     .invoice-print .invoice-logo-icon {
-      background: #1A56C4 !important;
+      border: 2px solid #1A56C4 !important;
       -webkit-print-color-adjust: exact !important;
       print-color-adjust: exact !important;
     }
@@ -955,7 +962,7 @@
   @media (max-width: 768px) {
     #sidebar { width: 56px; min-width: 56px; }
     .logo-area { padding: 12px 8px; }
-    .logo-icon { width: 36px; height: 36px; font-size: 16px; margin-bottom: 4px; }
+    .logo-icon { width: 36px; height: 36px; margin-bottom: 4px; }
     .logo-title { display: none; }
     .logo-sub { display: none; }
     .nav-section-title { display: none; }
@@ -986,6 +993,7 @@
     tbody td { padding: 6px 8px; font-size: 11px; }
     .note-viewer-title { font-size: 15px; }
     .login-box { padding: 24px 16px; }
+    .login-box .logo-icon { width: 64px; height: 64px; }
   }
 
   @media (max-width: 480px) {
@@ -1005,7 +1013,7 @@
     .report-tab { font-size: 11px; padding: 4px 10px; min-height: 30px; }
     .modal { padding: 12px; }
     .login-box { padding: 20px 12px; }
-    .login-box .logo-icon { width: 48px; height: 48px; font-size: 22px; }
+    .login-box .logo-icon { width: 56px; height: 56px; }
     .login-box h1 { font-size: 18px; }
   }
 
@@ -1047,7 +1055,9 @@
 <!-- ══ LOGIN PAGE ══ -->
 <div id="login-page">
   <div class="login-box">
-    <div class="logo-icon">KFC</div>
+    <div class="logo-icon">
+      <img src="logo.png" alt="کافینت چنار" onerror="this.parentElement.textContent='KFC';this.parentElement.style.background='#1A56C4';this.parentElement.style.color='white';this.parentElement.style.fontSize='28px';this.parentElement.style.fontWeight='800';">
+    </div>
     <h1>کافینت چنار</h1>
     <div class="sub">مرکز خدمات اینترنتی و ثبت‌ نام اینترنتی</div>
     
@@ -1074,8 +1084,7 @@
   <div id="sidebar">
     <div class="logo-area">
       <div class="logo-icon">
-        <img src="logo.png" alt="کافینت چنار" style="width:100%;height:100%;object-fit:contain;border-radius:14px;" onerror="this.style.display='none';this.parentElement.textContent='KFC'">
-        <span style="display:none;">KFC</span>
+        <img src="logo.png" alt="کافینت چنار" onerror="this.parentElement.textContent='KFC';this.parentElement.style.background='#1A56C4';this.parentElement.style.color='white';this.parentElement.style.fontSize='22px';this.parentElement.style.fontWeight='800';">
       </div>
       <div class="logo-title">کافینت چنار</div>
       <div class="logo-sub">مرکز خدمات اینترنتی</div>
@@ -1304,7 +1313,7 @@
         <div class="card" style="padding:0">
           <div class="table-wrap" style="border:none">
             <table>
-              <thead><tr><th>#</th><th>کد</th><th>نام</th><th>تلفن</th><th>بدهی (ریال)</th><th>تاریخ عضویت</th></tr></thead>
+              <thead><tr><th>#</th><th>کد</th><th>نام</th><th>تلفن</th><th>تعداد خرید</th><th>بدهی (ریال)</th><th>تاریخ عضویت</th></tr></thead>
               <tbody id="cust-table"></tbody>
             </table>
           </div>
@@ -2245,7 +2254,7 @@ function deleteTariff() {
 }
 
 // ============================================
-// CUSTOMERS
+// CUSTOMERS (با تعداد خرید)
 // ============================================
 let selCust = null;
 let allCustomers = [];
@@ -2256,14 +2265,24 @@ function loadCustomers() {
 }
 
 function renderCustomers(data) {
+  const orders = DB.get('orders')||[];
+  const orderCount = {};
+  orders.forEach(o => {
+    if (o.customer_id) {
+      orderCount[o.customer_id] = (orderCount[o.customer_id]||0) + 1;
+    }
+  });
+  
   const tbody = document.getElementById('cust-table');
   tbody.innerHTML = '';
-  if (!data.length) { tbody.innerHTML='<tr class="empty-row"><td colspan="6">هیچ مشتری‌ای ثبت نشده</td></tr>'; return; }
+  if (!data.length) { tbody.innerHTML='<tr class="empty-row"><td colspan="7">هیچ مشتری‌ای ثبت نشده</td></tr>'; return; }
   data.forEach((c, index)=>{
     const tr=document.createElement('tr');
     const customerCode = `#${String(index+1).padStart(3, '0')}`;
+    const count = orderCount[c.id]||0;
     tr.innerHTML=`<td>${c.id}</td><td>${customerCode}</td><td>${c.first_name} ${c.last_name}</td>
       <td>${c.phone||'-'}</td>
+      <td><span class="badge badge-accent">${count}</span></td>
       <td>${c.debt?'<span class="badge badge-danger">'+fmtNum(c.debt)+' ریال</span>':'<span class="badge badge-success">بدون بدهی</span>'}</td>
       <td>${c.join_date||'-'}</td>`;
     tr.onclick=()=>{ selCust=c; document.querySelectorAll('#cust-table tr').forEach(r=>r.classList.remove('selected')); tr.classList.add('selected'); fillCustForm(c); };
@@ -2408,7 +2427,6 @@ function addToCart() {
   if (discountAmount < 0) { toast('تخفیف ریالی نباید منفی باشد','danger'); return; }
   
   const unitPrice = selProd.price;
-  // ابتدا تخفیف درصدی اعمال می‌شود سپس تخفیف ریالی
   let afterPercentDiscount = Math.round(unitPrice * (1 - discountPercent / 100));
   let finalUnitPrice = Math.max(0, afterPercentDiscount - discountAmount);
   const sub = finalUnitPrice * qty;
@@ -2594,7 +2612,7 @@ function closeOrderDetailModal() {
 }
 
 // ============================================
-// INVOICE PRINT
+// INVOICE PRINT (با لوگو)
 // ============================================
 function printInvoice() {
   if (!viewedOrderId) { toast('سفارشی انتخاب نشده','danger'); return; }
@@ -2616,7 +2634,9 @@ function printInvoice() {
   <div class="invoice-print" style="max-width:800px;margin:0 auto;background:white;padding:30px;font-family:'Vazirmatn',Tahoma,sans-serif;direction:rtl;">
     <div class="invoice-header">
       <div class="invoice-logo">
-        <div class="invoice-logo-icon">KFC</div>
+        <div class="invoice-logo-icon">
+          <img src="logo.png" alt="کافینت چنار" onerror="this.parentElement.textContent='KFC';this.parentElement.style.background='#1A56C4';this.parentElement.style.color='white';this.parentElement.style.fontSize='24px';this.parentElement.style.fontWeight='800';">
+        </div>
         <div>
           <div class="invoice-shop-name">کافینت چنار</div>
           <div class="invoice-shop-sub">مرکز خدمات اینترنتی و ثبت‌نام</div>
@@ -2694,7 +2714,6 @@ function printInvoice() {
   container.innerHTML = html;
   container.style.display = 'block';
   
-  // چاپ
   const printWindow = window.open('', '_blank', 'width=800,height=600');
   if (!printWindow) {
     toast('لطفاً باز شدن پنجره را مجاز کنید', 'danger');
@@ -2714,7 +2733,8 @@ function printInvoice() {
         .invoice-print { max-width:800px; margin:0 auto; background:white; padding:30px; border-radius:12px; box-shadow:0 4px 20px rgba(0,0,0,0.1); }
         .invoice-header { display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #1A56C4; padding-bottom:16px; margin-bottom:16px; }
         .invoice-logo { display:flex; align-items:center; gap:12px; }
-        .invoice-logo-icon { width:60px; height:60px; background:#1A56C4; border-radius:14px; display:flex; align-items:center; justify-content:center; color:white; font-weight:800; font-size:24px; }
+        .invoice-logo-icon { width:60px; height:60px; border-radius:14px; display:flex; align-items:center; justify-content:center; overflow:hidden; border:2px solid #1A56C4; }
+        .invoice-logo-icon img { width:100%; height:100%; object-fit:contain; }
         .invoice-shop-name { font-size:20px; font-weight:700; color:#1A56C4; }
         .invoice-shop-sub { font-size:12px; color:#7B849E; }
         .invoice-title { font-size:18px; font-weight:700; color:#1A56C4; text-align:left; }
@@ -3293,12 +3313,12 @@ console.log('📌 اطلاعات ریپازیتوری خود را در SYNC_CONF
 console.log(`   USERNAME: ${SYNC_CONFIG.USERNAME}`);
 console.log(`   REPO_NAME: ${SYNC_CONFIG.REPO_NAME}`);
 console.log('   🔑 توکن را در صفحه ورود وارد کنید (امن)');
-console.log('✅ داده‌ها روی ریپازیتوری گیت‌هاب ذخیره می‌شوند (بدون محدودیت)');
 console.log('📌 امکانات جدید:');
 console.log('   💰 تخفیف درصدی + تخفیف ریالی همزمان');
 console.log('   👁️ نمایش جزئیات سفارش با کلیک');
 console.log('   🖨️ چاپ فاکتور رسمی با لوگو');
 console.log('   🔄 جابجایی سرویس‌ها و تعرفه‌ها با کشیدن');
+console.log('   📊 تعداد خرید هر مشتری در جدول مشتریان');
 </script>
 </body>
 </html>
