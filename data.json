@@ -114,9 +114,9 @@
     {
       "id": 2,
       "customer_id": 1,
-      "date": "۱۴۰۵/۴/۹،‏ ۹:۱۸:۵۹",
+      "date": "",
       "total": 80000,
-      "status": "تکمیل شده"
+      "status": "لغو شده"
     }
   ],
   "order_items": [
@@ -154,5 +154,5 @@
   "tariffs": [],
   "internal_news": [],
   "tips": [],
-  "last_update": "۱۴۰۵/۴/۹،‏ ۹:۳۹:۳۸"
+  "last_update": "۱۴۰۵/۴/۹،‏ ۹:۴۰:۲۲"
 }
