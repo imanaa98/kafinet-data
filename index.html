@@ -958,6 +958,106 @@
     }
   }
 
+  /* ====== CUSTOMER SEARCH DROPDOWN ====== */
+  .customer-search-wrap {
+    position: relative;
+  }
+  .customer-search-wrap input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--surface2);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.15s;
+    min-height: 40px;
+  }
+  .customer-search-wrap input:focus {
+    border-color: var(--accent);
+    background: var(--surface);
+  }
+  .customer-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 100;
+    box-shadow: 0 4px 16px var(--shadow-md);
+    margin-top: 2px;
+  }
+  .customer-dropdown.show {
+    display: block;
+  }
+  .customer-dropdown .item {
+    padding: 8px 12px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--text);
+    transition: background 0.1s;
+  }
+  .customer-dropdown .item:last-child {
+    border-bottom: none;
+  }
+  .customer-dropdown .item:hover {
+    background: var(--surface2);
+  }
+  .customer-dropdown .item .highlight {
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .customer-dropdown .item .sub-info {
+    font-size: 10px;
+    color: var(--muted);
+    display: block;
+    margin-top: 2px;
+  }
+  .selected-customer-info {
+    padding: 8px 12px;
+    background: var(--surface2);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    font-size: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 4px;
+  }
+  .selected-customer-info .info-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--text2);
+  }
+  .selected-customer-info .info-item strong {
+    color: var(--text);
+  }
+  .selected-customer-info .clear-cust {
+    cursor: pointer;
+    color: var(--danger);
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: 1px solid var(--danger);
+    background: transparent;
+    font-size: 11px;
+  }
+  .selected-customer-info .clear-cust:hover {
+    background: var(--danger);
+    color: #fff;
+  }
+
   /* ====== RESPONSIVE ====== */
   @media (max-width: 768px) {
     #sidebar { width: 56px; min-width: 56px; }
@@ -1225,10 +1325,20 @@
     <div class="page" id="page-orders">
       <div class="page-body">
         <div class="card mb-4">
-          <div class="form-grid form-grid-4 mb-3">
+          <!-- ====== CUSTOMER SEARCH ====== -->
+          <div class="form-grid form-grid-2 mb-3">
             <div class="field">
-              <label>مشتری</label>
-              <select id="order-cust"><option value="">انتخاب مشتری...</option></select>
+              <label>🔍 جستجوی مشتری</label>
+              <div class="customer-search-wrap">
+                <input id="customer-search-input" placeholder="نام، کد ملی یا شماره موبایل..." oninput="searchCustomers(this.value)" autocomplete="off">
+                <div class="customer-dropdown" id="customer-dropdown"></div>
+              </div>
+              <div class="selected-customer-info" id="selected-customer-info" style="display:none;">
+                <span class="info-item"><strong>مشتری:</strong> <span id="selected-cust-name"></span></span>
+                <span class="info-item"><span id="selected-cust-phone"></span></span>
+                <span class="info-item"><span id="selected-cust-national"></span></span>
+                <button class="clear-cust" onclick="clearSelectedCustomer()">✕</button>
+              </div>
             </div>
             <div class="field">
               <label>جستجو خدمت</label>
@@ -1237,11 +1347,11 @@
                 <div id="prod-list" style="background:var(--surface);border:1px solid var(--border);border-radius:8px;margin-top:4px;max-height:160px;overflow-y:auto;box-shadow:0 4px 16px var(--shadow-md)"></div>
               </div>
             </div>
+          </div>
+          <div class="form-grid form-grid-4 mb-3">
             <div class="field"><label>تعداد</label><input id="order-qty" type="number" value="1" min="1"></div>
             <div class="field"><label>تخفیف (%)</label><input id="order-discount" type="number" value="0" min="0" max="100"></div>
-          </div>
-          <div class="form-grid form-grid-2 mb-3">
-            <div class="field"><label>تخفیف ریالی</label><input id="order-discount-amount" type="number" value="0" min="0" placeholder="مبلغ ریالی تخفیف"></div>
+            <div class="field"><label>تخفیف ریالی</label><input id="order-discount-amount" type="number" value="0" min="0" placeholder="مبلغ ریالی"></div>
           </div>
           <div class="row-center gap-2">
             <button class="btn btn-primary" onclick="addToCart()">➕ افزودن به سبد</button>
@@ -1930,6 +2040,107 @@ function setSyncStatus(status, msg) {
 }
 
 // ============================================
+// CUSTOMER SEARCH (جستجوی مشتری در فاکتور)
+// ============================================
+let selectedCustomer = null;
+
+function searchCustomers(query) {
+  const q = query.trim();
+  const dropdown = document.getElementById('customer-dropdown');
+  
+  if (!q || q.length < 1) {
+    dropdown.classList.remove('show');
+    dropdown.innerHTML = '';
+    return;
+  }
+  
+  const custs = DB.get('customers')||[];
+  const nq = norm(q);
+  
+  const matches = custs.filter(c => {
+    const fullName = norm(c.first_name + ' ' + c.last_name);
+    const phone = c.phone || '';
+    const national = c.national || '';
+    return fullName.includes(nq) || 
+           phone.includes(q) || 
+           national.includes(q) ||
+           (c.first_name && norm(c.first_name).includes(nq)) ||
+           (c.last_name && norm(c.last_name).includes(nq));
+  }).slice(0, 10);
+  
+  if (!matches.length) {
+    dropdown.classList.add('show');
+    dropdown.innerHTML = `<div class="item" style="color:var(--muted)">❌ مشتری‌ای یافت نشد</div>`;
+    return;
+  }
+  
+  dropdown.classList.add('show');
+  dropdown.innerHTML = matches.map(c => {
+    const fullName = c.first_name + ' ' + c.last_name;
+    let displayName = fullName;
+    if (norm(fullName).includes(nq)) {
+      displayName = highlightText(fullName, q);
+    }
+    return `<div class="item" onclick="selectCustomer(${c.id})">
+      ${displayName}
+      <span class="sub-info">
+        ${c.phone ? '📱 ' + c.phone : ''}
+        ${c.national ? ' | 🆔 ' + c.national : ''}
+        ${c.debt ? ' | 💳 بدهی: ' + fmtNum(c.debt) + ' ریال' : ''}
+      </span>
+    </div>`;
+  }).join('');
+}
+
+function highlightText(text, query) {
+  const idx = norm(text).indexOf(norm(query));
+  if (idx === -1) return text;
+  const before = text.substring(0, idx);
+  const matched = text.substring(idx, idx + query.length);
+  const after = text.substring(idx + query.length);
+  return before + '<span class="highlight">' + matched + '</span>' + after;
+}
+
+function selectCustomer(id) {
+  const custs = DB.get('customers')||[];
+  const cust = custs.find(c => c.id === id);
+  if (!cust) return;
+  
+  selectedCustomer = cust;
+  document.getElementById('customer-dropdown').classList.remove('show');
+  document.getElementById('customer-search-input').value = cust.first_name + ' ' + cust.last_name;
+  
+  const infoDiv = document.getElementById('selected-customer-info');
+  infoDiv.style.display = 'flex';
+  document.getElementById('selected-cust-name').textContent = cust.first_name + ' ' + cust.last_name;
+  document.getElementById('selected-cust-phone').textContent = cust.phone ? '📱 ' + cust.phone : '';
+  document.getElementById('selected-cust-national').textContent = cust.national ? '🆔 ' + cust.national : '';
+  
+  // به‌روزرسانی انتخاب در کشوی مشتری (برای ثبت سفارش)
+  const orderSelect = document.getElementById('order-cust');
+  if (orderSelect) {
+    orderSelect.value = cust.id;
+  }
+  toast('مشتری انتخاب شد ✅', 'success');
+}
+
+function clearSelectedCustomer() {
+  selectedCustomer = null;
+  document.getElementById('customer-search-input').value = '';
+  document.getElementById('selected-customer-info').style.display = 'none';
+  document.getElementById('order-cust').value = '';
+  document.getElementById('customer-dropdown').classList.remove('show');
+}
+
+// مخفی کردن دراپ‌داون با کلیک بیرون
+document.addEventListener('click', function(e) {
+  const wrap = document.querySelector('.customer-search-wrap');
+  if (wrap && !wrap.contains(e.target)) {
+    document.getElementById('customer-dropdown').classList.remove('show');
+  }
+});
+
+// ============================================
 // DRAG & DROP - جابجایی ردیف‌ها
 // ============================================
 let dragState = {
@@ -2364,6 +2575,16 @@ function loadOrderPage() {
   sel.innerHTML = '<option value="">انتخاب مشتری...</option>';
   custs.forEach(c=>{ const o=document.createElement('option'); o.value=c.id; o.textContent=c.first_name+' '+c.last_name; sel.appendChild(o); });
   loadOrders();
+  
+  // انتخاب مشتری قبلی
+  if (selectedCustomer) {
+    document.getElementById('order-cust').value = selectedCustomer.id;
+    document.getElementById('customer-search-input').value = selectedCustomer.first_name + ' ' + selectedCustomer.last_name;
+    document.getElementById('selected-customer-info').style.display = 'flex';
+    document.getElementById('selected-cust-name').textContent = selectedCustomer.first_name + ' ' + selectedCustomer.last_name;
+    document.getElementById('selected-cust-phone').textContent = selectedCustomer.phone ? '📱 ' + selectedCustomer.phone : '';
+    document.getElementById('selected-cust-national').textContent = selectedCustomer.national ? '🆔 ' + selectedCustomer.national : '';
+  }
 }
 
 function loadOrders() {
@@ -3314,10 +3535,10 @@ console.log(`   USERNAME: ${SYNC_CONFIG.USERNAME}`);
 console.log(`   REPO_NAME: ${SYNC_CONFIG.REPO_NAME}`);
 console.log('   🔑 توکن را در صفحه ورود وارد کنید (امن)');
 console.log('📌 امکانات جدید:');
+console.log('   🔍 جستجوی مشتری با نام، کد ملی و شماره موبایل');
 console.log('   💰 تخفیف درصدی + تخفیف ریالی همزمان');
 console.log('   👁️ نمایش جزئیات سفارش با کلیک');
 console.log('   🖨️ چاپ فاکتور رسمی با لوگو');
-console.log('   🔄 جابجایی سرویس‌ها و تعرفه‌ها با کشیدن');
 console.log('   📊 تعداد خرید هر مشتری در جدول مشتریان');
 </script>
 </body>
