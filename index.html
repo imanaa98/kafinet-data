@@ -936,6 +936,47 @@
     font-size: 12px;
     color: #3D4461;
   }
+
+  /* ====== STAMP STYLES ====== */
+  .stamp {
+    display: inline-block;
+    padding: 6px 16px;
+    border: 3px solid #8B0000;
+    border-radius: 6px;
+    color: #8B0000;
+    font-weight: 700;
+    font-size: 13px;
+    transform: rotate(-15deg);
+    opacity: 0.85;
+    font-family: 'Vazirmatn', Tahoma, sans-serif;
+    letter-spacing: 1px;
+    background: rgba(139, 0, 0, 0.05);
+    position: relative;
+    box-shadow: 0 2px 8px rgba(139, 0, 0, 0.1);
+  }
+  .stamp::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border: 1px dashed #8B0000;
+    border-radius: 8px;
+    opacity: 0.3;
+  }
+  .stamp .stamp-title {
+    font-size: 15px;
+    font-weight: 800;
+    color: #8B0000;
+  }
+  .stamp .stamp-sub {
+    font-size: 10px;
+    font-weight: 400;
+    opacity: 0.7;
+  }
+  .stamp .stamp-date {
+    font-size: 11px;
+    font-weight: 600;
+    color: #8B0000;
+  }
   
   @media print {
     #app, #sidebar, #topbar, .modal-overlay, #toast, #login-page {
@@ -957,6 +998,12 @@
       border: 2px solid #1A56C4 !important;
       -webkit-print-color-adjust: exact !important;
       print-color-adjust: exact !important;
+    }
+    .stamp {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      border-color: #8B0000 !important;
+      background: rgba(139, 0, 0, 0.05) !important;
     }
   }
 
@@ -1096,6 +1143,8 @@
     .note-viewer-title { font-size: 15px; }
     .login-box { padding: 24px 16px; }
     .login-box .logo-icon { width: 64px; height: 64px; }
+    .stamp { font-size: 11px; padding: 4px 12px; }
+    .stamp .stamp-title { font-size: 13px; }
   }
 
   @media (max-width: 480px) {
@@ -1117,6 +1166,8 @@
     .login-box { padding: 20px 12px; }
     .login-box .logo-icon { width: 56px; height: 56px; }
     .login-box h1 { font-size: 18px; }
+    .stamp { font-size: 10px; padding: 3px 10px; }
+    .stamp .stamp-title { font-size: 11px; }
   }
 
   #page-tips .page-body { padding: 0; }
@@ -1277,11 +1328,12 @@
 
         <div class="section-header mb-3 mt-3">
           <div class="section-title">🧾 آخرین سفارش‌ها</div>
+          <button class="btn btn-danger btn-sm" onclick="clearAllOrders()" id="clear-all-orders-btn" style="display:none">🗑️ حذف همه</button>
         </div>
         <div class="card" style="padding:0">
           <div class="table-wrap" style="border:none">
             <table>
-              <thead><tr><th>شماره</th><th>تاریخ</th><th>مشتری</th><th>مبلغ (ریال)</th><th>وضعیت</th></tr></thead>
+              <thead><tr><th>شماره</th><th>تاریخ</th><th>مشتری</th><th>مبلغ (ریال)</th><th>وضعیت</th><th>عملیات</th></tr></thead>
               <tbody id="dash-orders"></tbody>
             </table>
           </div>
@@ -1353,7 +1405,7 @@
           <div class="form-grid form-grid-4 mb-3">
             <div class="field"><label>تعداد</label><input id="order-qty" type="number" value="1" min="1"></div>
             <div class="field"><label>تخفیف (%)</label><input id="order-discount" type="number" value="0" min="0" max="100"></div>
-            <div class="field"><label>تخفیف ریالی</label><input id="order-discount-amount" type="number" value="0" min="0" placeholder="مبلغ ریالی"></div>
+            <div class="field"><label>تخفیف هر واحد (ریال)</label><input id="order-discount-amount" type="number" value="0" min="0" placeholder="مبلغ ریالی"></div>
           </div>
           <div class="row-center gap-2">
             <button class="btn btn-primary" onclick="addToCart()">➕ افزودن به سبد</button>
@@ -1370,7 +1422,7 @@
           <div id="cart-table">
             <div class="table-wrap" style="border:none">
               <table>
-                <thead><tr><th>خدمت</th><th>تعداد</th><th>قیمت واحد</th><th>تخفیف %</th><th>تخفیف ریالی</th><th>تخفیف مجموع</th><th>جمع</th><th></th></tr></thead>
+                <thead><tr><th>خدمت</th><th>تعداد</th><th>قیمت واحد</th><th>تخفیف %</th><th>تخفیف هر واحد</th><th>سود (تخفیف مجموع)</th><th>جمع</th><th></th></tr></thead>
                 <tbody id="cart-tbody"><tr class="empty-row"><td colspan="8">سبد خالی است</td></tr></tbody>
               </table>
             </div>
@@ -1612,7 +1664,7 @@
   </div>
 </div>
 
-<!-- ══ ORDER EDIT MODAL (برای ویرایش فاکتور) ══ -->
+<!-- ══ ORDER EDIT MODAL ══ -->
 <div class="modal-overlay" id="order-edit-modal">
   <div class="modal" style="max-width:700px">
     <div class="modal-header">
@@ -1631,7 +1683,7 @@
       <div id="edit-items-container">
         <div class="table-wrap">
           <table>
-            <thead><tr><th>خدمت</th><th>تعداد</th><th>قیمت واحد</th><th>تخفیف %</th><th>تخفیف ریالی</th><th>جمع</th><th>عملیات</th></tr></thead>
+            <thead><tr><th>خدمت</th><th>تعداد</th><th>قیمت واحد</th><th>تخفیف %</th><th>تخفیف هر واحد</th><th>جمع</th><th>عملیات</th></tr></thead>
             <tbody id="edit-items-tbody"></tbody>
           </table>
         </div>
@@ -1670,7 +1722,7 @@
       <div style="font-weight:600;margin-bottom:8px">📋 اقلام سفارش</div>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>خدمت</th><th>تعداد</th><th>قیمت واحد</th><th>تخفیف %</th><th>تخفیف ریالی</th><th>تخفیف مجموع</th><th>جمع</th></tr></thead>
+          <thead><tr><th>خدمت</th><th>تعداد</th><th>قیمت واحد</th><th>تخفیف %</th><th>تخفیف هر واحد</th><th>سود (تخفیف مجموع)</th><th>جمع</th></tr></thead>
           <tbody id="detail-items"></tbody>
         </table>
       </div>
@@ -1972,6 +2024,7 @@ const DB = {
 };
 
 function initDB() {
+  // ====== سرویس‌های پیش‌فرض ======
   if (!DB.get('services')) DB.set('services', [
     {id:1,name:'استفاده از سیستم',category:'سیستم',price:50000,stock:20},
     {id:2,name:'پرینت سیاه‌سفید',category:'پرینت',price:5000,stock:999},
@@ -1993,12 +2046,14 @@ function initDB() {
     {id:18,name:'رایت CD/DVD',category:'خدمات فایل',price:30000,stock:999},
   ]);
 
+  // ====== مشتریان پیش‌فرض ======
   if (!DB.get('customers')) DB.set('customers', [
     {id:1,first_name:'علی',last_name:'احمدی',phone:'09121234567',national:'1234567890',address:'تهران',debt:0,info:'مشتری دائمی',join_date:today()},
     {id:2,first_name:'مریم',last_name:'رضایی',phone:'09351234567',national:'0987654321',address:'تهران',debt:50000,info:'نیاز به پیگیری',join_date:today()},
     {id:3,first_name:'محمد',last_name:'کریمی',phone:'09123456789',national:'1122334455',address:'اصفهان',debt:0,info:'',join_date:today()},
   ]);
 
+  // ====== تعرفه‌های پیش‌فرض ======
   if (!DB.get('tariffs')) DB.set('tariffs', [
     {id:1,name:'استفاده از سیستم',description:'هر ساعت',price:50000,unit:'ساعت',active:'فعال'},
     {id:2,name:'پرینت A4 سیاه‌سفید',description:'هر برگ',price:5000,unit:'برگ',active:'فعال'},
@@ -2010,12 +2065,14 @@ function initDB() {
     {id:8,name:'گیمینگ',description:'بازی آنلاین',price:80000,unit:'ساعت',active:'فعال'},
   ]);
 
+  // ====== اطلاعیه‌های پیش‌فرض ======
   if (!DB.get('internal_news')) DB.set('internal_news', [
     {id:1,title:'شروع ثبت‌نام کنکور سراسری ۱۴۰۴',content:'ثبت‌نام کنکور سراسری از امروز آغاز شد. مدارک لازم: کارت ملی، شناسنامه، مدرک تحصیلی. هزینه ۱۵۰ هزار تومان.',category:'ثبت نام',date:today(),priority:'فوری',pinned:true,active:true},
     {id:2,title:'آزمون استخدامی دستگاه‌های اجرایی',content:'ثبت‌نام آزمون استخدامی تا پایان هفته ادامه دارد.',category:'ثبت نام',date:today(),priority:'بالا',pinned:true,active:true},
     {id:3,title:'تخفیف ویژه پرینت و فتوکپی',content:'تا پایان این ماه پرینت سیاه‌سفید ۵۰٪ تخفیف.',category:'تخفیف',date:today(),priority:'متوسط',pinned:false,active:true},
   ]);
 
+  // ====== راهنماهای پیش‌فرض ======
   if (!DB.get('tips')) DB.set('tips', [
     {id:1,folder:'کنکور و آموزش',title:'ثبت‌نام کنکور سراسری',url:'https://sanjesh.org',
      body:'مرحله ۱: وارد سایت sanjesh.org شوید\nمرحله ۲: روی گزینه «ثبت‌نام» کلیک کنید\nمرحله ۳: کد ملی و اطلاعات شناسنامه‌ای را وارد کنید\nمرحله ۴: رشته و شهر محل سکونت را انتخاب کنید\nمرحله ۵: مدرک تحصیلی و اطلاعات آموزشی را وارد نمایید\nمرحله ۶: عکس ۳×۴ را با فرمت JPG آپلود کنید\nمرحله ۷: هزینه ثبت‌نام را از طریق درگاه پرداخت کنید\nمرحله ۸: کد رهگیری را دریافت و نگهداری کنید',
@@ -2028,6 +2085,7 @@ function initDB() {
      images:[],date:today()},
   ]);
 
+  // ====== سفارش‌ها - خالی ======
   if (!DB.get('orders')) DB.set('orders', []);
   if (!DB.get('order_items')) DB.set('order_items', []);
 }
@@ -2135,10 +2193,6 @@ function selectCustomer(id) {
   document.getElementById('selected-cust-phone').textContent = cust.phone ? '📱 ' + cust.phone : '';
   document.getElementById('selected-cust-national').textContent = cust.national ? '🆔 ' + cust.national : '';
   
-  const orderSelect = document.getElementById('order-cust');
-  if (orderSelect) {
-    orderSelect.value = cust.id;
-  }
   toast('مشتری انتخاب شد ✅', 'success');
 }
 
@@ -2146,8 +2200,19 @@ function clearSelectedCustomer() {
   selectedCustomer = null;
   document.getElementById('customer-search-input').value = '';
   document.getElementById('selected-customer-info').style.display = 'none';
-  document.getElementById('order-cust').value = '';
   document.getElementById('customer-dropdown').classList.remove('show');
+}
+
+// حذف همه سفارش‌ها
+function clearAllOrders() {
+  if (!confirm('آیا از حذف همه سفارش‌ها مطمئن هستید؟')) return;
+  DB.set('orders', []);
+  DB.set('order_items', []);
+  loadDashboard();
+  loadOrders();
+  autoSync();
+  toast('همه سفارش‌ها حذف شدند ✅', 'success');
+  document.getElementById('clear-all-orders-btn').style.display = 'none';
 }
 
 document.addEventListener('click', function(e) {
@@ -2325,17 +2390,39 @@ function loadDashboard() {
   tbody.innerHTML = '';
   const recentOrders = [...orders].reverse().slice(0,12);
   if (!recentOrders.length) {
-    tbody.innerHTML = '<tr class="empty-row"><td colspan="5">هیچ سفارشی ثبت نشده</td></tr>';
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="6">هیچ سفارشی ثبت نشده</td></tr>';
+    document.getElementById('clear-all-orders-btn').style.display = 'none';
   } else {
+    document.getElementById('clear-all-orders-btn').style.display = 'inline-flex';
     recentOrders.forEach(o=>{
-      tbody.innerHTML += `<tr onclick="showOrderDetail(${o.id})" style="cursor:pointer">
+      tbody.innerHTML += `<tr>
         <td>${o.id}</td><td>${o.date||'-'}</td>
         <td>${custMap[o.customer_id]||o.customer_id||'-'}</td>
         <td>${fmtNum(o.total)} ریال</td>
         <td><span class="badge ${o.status==='لغو شده'?'badge-danger':o.status==='در انتظار'?'badge-warning':o.status==='مرجوعی'?'badge-muted':'badge-success'}">${o.status||'تکمیل شده'}</span></td>
+        <td>
+          <div class="order-actions" onclick="event.stopPropagation()">
+            <button class="btn btn-secondary btn-sm" onclick="showOrderDetail(${o.id})">👁️</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteOrderFromDash(${o.id})">🗑️</button>
+          </div>
+        </td>
       </tr>`;
     });
   }
+}
+
+function deleteOrderFromDash(id) {
+  if (!confirm('آیا این سفارش حذف شود؟')) return;
+  let orders = DB.get('orders')||[];
+  orders = orders.filter(o=>o.id!==id);
+  DB.set('orders', orders);
+  let items = DB.get('order_items')||[];
+  items = items.filter(i=>i.order_id!==id);
+  DB.set('order_items', items);
+  loadDashboard();
+  loadOrders();
+  autoSync();
+  toast('سفارش حذف شد', 'success');
 }
 
 // ============================================
@@ -2588,20 +2675,7 @@ let viewedOrderId = null;
 let editItems = [];
 
 function loadOrderPage() {
-  const custs = DB.get('customers')||[];
-  const sel = document.getElementById('order-cust');
-  sel.innerHTML = '<option value="">انتخاب مشتری...</option>';
-  custs.forEach(c=>{ const o=document.createElement('option'); o.value=c.id; o.textContent=c.first_name+' '+c.last_name; sel.appendChild(o); });
   loadOrders();
-  
-  if (selectedCustomer) {
-    document.getElementById('order-cust').value = selectedCustomer.id;
-    document.getElementById('customer-search-input').value = selectedCustomer.first_name + ' ' + selectedCustomer.last_name;
-    document.getElementById('selected-customer-info').style.display = 'flex';
-    document.getElementById('selected-cust-name').textContent = selectedCustomer.first_name + ' ' + selectedCustomer.last_name;
-    document.getElementById('selected-cust-phone').textContent = selectedCustomer.phone ? '📱 ' + selectedCustomer.phone : '';
-    document.getElementById('selected-cust-national').textContent = selectedCustomer.national ? '🆔 ' + selectedCustomer.national : '';
-  }
 }
 
 function loadOrders() {
@@ -2626,6 +2700,7 @@ function renderOrders(data) {
       <td><span class="badge ${statusClass}">${o.status||'تکمیل شده'}</span></td>
       <td>
         <div class="order-actions" onclick="event.stopPropagation()">
+          <button class="btn btn-secondary btn-sm" onclick="showOrderDetail(${o.id})">👁️</button>
           <button class="btn btn-secondary btn-sm" onclick="editOrderFromList(${o.id})">✏️</button>
           <button class="btn btn-danger btn-sm" onclick="deleteOrder(${o.id})">🗑️</button>
         </div>
@@ -2662,11 +2737,12 @@ function addToCart() {
   const discountPercent = parseInt(document.getElementById('order-discount').value)||0;
   const discountAmount = parseInt(document.getElementById('order-discount-amount').value)||0;
   if (discountPercent < 0 || discountPercent > 100) { toast('تخفیف درصدی باید بین 0 تا 100 باشد','danger'); return; }
-  if (discountAmount < 0) { toast('تخفیف ریالی نباید منفی باشد','danger'); return; }
+  if (discountAmount < 0) { toast('تخفیف هر واحد نباید منفی باشد','danger'); return; }
   
   const unitPrice = selProd.price;
   let afterPercentDiscount = Math.round(unitPrice * (1 - discountPercent / 100));
   let finalUnitPrice = Math.max(0, afterPercentDiscount - discountAmount);
+  // سود = تخفیف مجموع = قیمت اصلی - قیمت نهایی
   const totalDiscount = unitPrice - finalUnitPrice;
   const sub = finalUnitPrice * qty;
   
@@ -2699,16 +2775,19 @@ function addToCart() {
 function refreshCart() {
   const tbody = document.getElementById('cart-tbody');
   tbody.innerHTML = '';
-  if (!cart.length) { tbody.innerHTML='<tr class="empty-row"><td colspan="8">سبد خالی است</td></tr>'; document.getElementById('cart-total').textContent='جمع کل: ۰ ریال'; return; }
+  if (!cart.length) { 
+    tbody.innerHTML='<tr class="empty-row"><td colspan="8">سبد خالی است</td></tr>'; 
+    document.getElementById('cart-total').textContent='جمع کل: ۰ ریال'; 
+    return; 
+  }
   cart.forEach((item,i)=>{
-    const totalDiscount = (item.discount_percent || 0) + (item.discount_amount || 0);
     tbody.innerHTML += `<tr>
       <td>${item.product_name}</td>
       <td>${item.qty}</td>
       <td>${fmtNum(item.unit_price)}</td>
       <td>${item.discount_percent}%</td>
       <td>${fmtNum(item.discount_amount)}</td>
-      <td>${fmtNum(totalDiscount)}</td>
+      <td>${fmtNum(item.total_discount)}</td>
       <td>${fmtNum(item.subtotal)}</td>
       <td><button class="btn btn-danger btn-sm" onclick="removeCartItem(${i})">✕</button></td>
     </tr>`;
@@ -2722,21 +2801,53 @@ function clearCart() { cart=[]; refreshCart(); }
 
 function submitOrder() {
   if (!cart.length) { toast('سبد خالی است','danger'); return; }
-  const custId = document.getElementById('order-cust').value;
-  if (!custId) { toast('مشتری انتخاب کنید','danger'); return; }
+  
+  // گرفتن مشتری از selectedCustomer
+  let custId = null;
+  if (selectedCustomer) {
+    custId = selectedCustomer.id;
+  } else {
+    const searchInput = document.getElementById('customer-search-input');
+    if (searchInput) {
+      const searchText = searchInput.value.trim();
+      if (searchText) {
+        const custs = DB.get('customers')||[];
+        const found = custs.find(c => 
+          (c.first_name + ' ' + c.last_name) === searchText ||
+          c.phone === searchText ||
+          c.national === searchText
+        );
+        if (found) {
+          custId = found.id;
+          selectedCustomer = found;
+        }
+      }
+    }
+  }
+  
+  if (!custId) { 
+    toast('لطفاً مشتری را از طریق جستجو انتخاب کنید','danger'); 
+    return; 
+  }
+  
   const orders = DB.get('orders')||[];
   const items = DB.get('order_items')||[];
   const oid = nextId(orders);
   const total = cart.reduce((s,c)=>s+c.subtotal,0);
-  orders.push({id:oid,customer_id:+custId,date:nowStr(),total,status:'تکمیل شده'});
+  orders.push({id:oid,customer_id:custId,date:nowStr(),total,status:'تکمیل شده'});
   cart.forEach(c=>items.push({order_id:oid,...c}));
-  DB.set('orders',orders); DB.set('order_items',items);
-  cart=[]; refreshCart(); loadOrders(); autoSync();
+  DB.set('orders',orders); 
+  DB.set('order_items',items);
+  cart=[]; 
+  refreshCart(); 
+  loadOrders(); 
+  loadDashboard();
+  autoSync();
   toast('سفارش ثبت شد 🎉','success');
 }
 
 // ============================================
-// ORDER EDIT (ویرایش کامل فاکتور)
+// ORDER EDIT
 // ============================================
 function editOrderFromList(id) {
   const orders = DB.get('orders')||[];
@@ -2792,7 +2903,6 @@ function renderEditItems() {
       editItems[idx]._selected = true;
       renderEditItems();
     };
-    const totalDiscount = (item.discount_percent || 0) + (item.discount_amount || 0);
     tr.innerHTML = `
       <td><input style="width:100%;padding:4px;border:1px solid var(--border);border-radius:4px;background:var(--surface2);color:var(--text);font-family:inherit;font-size:12px;" value="${item.product_name}" onchange="editItems[${idx}].product_name=this.value"></td>
       <td><input style="width:60px;padding:4px;border:1px solid var(--border);border-radius:4px;background:var(--surface2);color:var(--text);font-family:inherit;font-size:12px;text-align:center;" type="number" value="${item.qty}" min="1" onchange="editItems[${idx}].qty=+this.value;updateEditTotal();"></td>
@@ -2877,6 +2987,7 @@ function saveOrderEdit() {
   DB.set('order_items', allItems);
   closeOrderEditModal();
   loadOrders();
+  loadDashboard();
   autoSync();
   toast('سفارش با موفقیت ویرایش شد ✅', 'success');
 }
@@ -2931,10 +3042,9 @@ function showOrderDetail(id) {
   const total = orderItems.reduce((s,i)=>s+(i.subtotal||0),0);
   document.getElementById('detail-total').textContent = fmtNum(total)+' ریال';
   
-  // محاسبه سود (فرض می‌کنیم هزینه تمام شده 60% قیمت فروش است)
-  const cost = orderItems.reduce((s,i)=>s+(i.unit_price * i.qty * 0.6),0);
-  const profit = total - cost;
-  document.getElementById('detail-profit').textContent = fmtNum(Math.max(0, profit))+' ریال';
+  // سود = تخفیف مجموع
+  const totalDiscount = orderItems.reduce((s,i)=>s+((i.discount_percent||0) + (i.discount_amount||0)),0);
+  document.getElementById('detail-profit').textContent = fmtNum(totalDiscount)+' ریال';
   
   document.getElementById('order-detail-modal').classList.add('open');
 }
@@ -2953,6 +3063,7 @@ function deleteOrder(id) {
   items = items.filter(i=>i.order_id!==id);
   DB.set('order_items', items);
   loadOrders();
+  loadDashboard();
   autoSync();
   toast('سفارش حذف شد', 'success');
 }
@@ -2965,7 +3076,7 @@ function filterOrders(q) {
 }
 
 // ============================================
-// INVOICE PRINT
+// INVOICE PRINT با مهر خودکار
 // ============================================
 function printInvoice() {
   if (!viewedOrderId) { toast('سفارشی انتخاب نشده','danger'); return; }
@@ -2983,11 +3094,24 @@ function printInvoice() {
   const items = DB.get('order_items')||[];
   const orderItems = items.filter(i=>i.order_id===viewedOrderId);
   const total = orderItems.reduce((s,i)=>s+(i.subtotal||0),0);
-  const cost = orderItems.reduce((s,i)=>s+(i.unit_price * i.qty * 0.6),0);
-  const profit = total - cost;
+  const totalDiscount = orderItems.reduce((s,i)=>s+((i.discount_percent||0) + (i.discount_amount||0)),0);
+  
+  // تاریخ شمسی برای مهر
+  const persianDate = new Date().toLocaleDateString('fa-IR');
+  const persianTime = new Date().toLocaleTimeString('fa-IR');
   
   let html = `
-  <div class="invoice-print" style="max-width:800px;margin:0 auto;background:white;padding:30px;font-family:'Vazirmatn',Tahoma,sans-serif;direction:rtl;">
+  <div class="invoice-print" style="max-width:800px;margin:0 auto;background:white;padding:30px;font-family:'Vazirmatn',Tahoma,sans-serif;direction:rtl;position:relative;">
+    <!-- مهر خودکار -->
+    <div style="position:absolute;bottom:100px;left:30px;z-index:10;">
+      <div class="stamp">
+        <div class="stamp-title">🇮🇷 کافینت چنار</div>
+        <div class="stamp-sub">مرکز خدمات اینترنتی</div>
+        <div class="stamp-date">📅 ${persianDate}</div>
+        <div style="font-size:9px;opacity:0.6;">${persianTime}</div>
+      </div>
+    </div>
+    
     <div class="invoice-header">
       <div class="invoice-logo">
         <div class="invoice-logo-icon">
@@ -3022,8 +3146,7 @@ function printInvoice() {
           <th>تعداد</th>
           <th>قیمت واحد</th>
           <th>تخفیف %</th>
-          <th>تخفیف ریالی</th>
-          <th>تخفیف مجموع</th>
+          <th>تخفیف هر واحد</th>
           <th>جمع</th>
         </tr>
       </thead>
@@ -3031,7 +3154,6 @@ function printInvoice() {
   `;
   
   orderItems.forEach((item, idx) => {
-    const totalDiscount = (item.discount_percent||0) + (item.discount_amount||0);
     html += `
       <tr>
         <td>${idx+1}</td>
@@ -3040,7 +3162,6 @@ function printInvoice() {
         <td>${fmtNum(item.unit_price)}</td>
         <td>${item.discount_percent||0}%</td>
         <td>${fmtNum(item.discount_amount||0)}</td>
-        <td>${fmtNum(totalDiscount)}</td>
         <td>${fmtNum(item.subtotal)}</td>
       </tr>
     `;
@@ -3053,12 +3174,15 @@ function printInvoice() {
     <div class="invoice-total">
       <span>جمع کل:</span>
       <span>${fmtNum(total)} ریال</span>
-      <span style="color:var(--success);font-size:12px;">(سود: ${fmtNum(Math.max(0, profit))} ریال)</span>
+      <span style="color:#C0392B;font-size:12px;">(سود: ${fmtNum(totalDiscount)} ریال)</span>
     </div>
     
     <div class="invoice-signature">
       <div>امضا: .........................</div>
-      <div>تاریخ چاپ: ${nowStr()}</div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span>مهر و تاریخ:</span>
+        <span style="font-size:12px;color:#8B0000;font-weight:600;">${persianDate}</span>
+      </div>
     </div>
     
     <div class="invoice-footer">
@@ -3088,7 +3212,7 @@ function printInvoice() {
         @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700;800&display=swap');
         * { margin:0; padding:0; box-sizing:border-box; }
         body { font-family:'Vazirmatn',Tahoma,sans-serif; padding:20px; background:#f0f0f0; }
-        .invoice-print { max-width:900px; margin:0 auto; background:white; padding:30px; border-radius:12px; box-shadow:0 4px 20px rgba(0,0,0,0.1); }
+        .invoice-print { max-width:900px; margin:0 auto; background:white; padding:30px; border-radius:12px; box-shadow:0 4px 20px rgba(0,0,0,0.1); position:relative; }
         .invoice-header { display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #1A56C4; padding-bottom:16px; margin-bottom:16px; }
         .invoice-logo { display:flex; align-items:center; gap:12px; }
         .invoice-logo-icon { width:60px; height:60px; border-radius:14px; display:flex; align-items:center; justify-content:center; overflow:hidden; border:2px solid #1A56C4; }
@@ -3103,9 +3227,29 @@ function printInvoice() {
         .invoice-total { display:flex; justify-content:flex-end; gap:20px; font-size:14px; font-weight:600; padding-top:12px; border-top:2px solid #1A56C4; margin-top:12px; }
         .invoice-signature { display:flex; justify-content:space-between; margin-top:12px; font-size:12px; color:#3D4461; }
         .invoice-footer { text-align:center; font-size:11px; color:#7B849E; margin-top:16px; border-top:1px solid #D6DCE9; padding-top:10px; }
+        .stamp {
+          display:inline-block;
+          padding:6px 16px;
+          border:3px solid #8B0000;
+          border-radius:6px;
+          color:#8B0000;
+          font-weight:700;
+          font-size:13px;
+          transform:rotate(-15deg);
+          opacity:0.85;
+          background:rgba(139,0,0,0.05);
+          font-family:'Vazirmatn',Tahoma,sans-serif;
+          letter-spacing:1px;
+          box-shadow:0 2px 8px rgba(139,0,0,0.1);
+        }
+        .stamp .stamp-title { font-size:15px; font-weight:800; color:#8B0000; }
+        .stamp .stamp-sub { font-size:10px; font-weight:400; opacity:0.7; }
+        .stamp .stamp-date { font-size:11px; font-weight:600; color:#8B0000; }
         @media print {
           body { background:white; padding:0; }
           .invoice-print { box-shadow:none; border-radius:0; padding:20px; }
+          .stamp { -webkit-print-color-adjust:exact; print-color-adjust:exact; border-color:#8B0000 !important; background:rgba(139,0,0,0.05) !important; }
+          .invoice-table th { background:#e9ecef !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
         }
       </style>
     </head>
@@ -3667,16 +3811,12 @@ if (savedToken && savedToken !== '') {
   updateLoginStatus('offline', '⛔ منتظر ورود توکن');
 }
 
-console.log('📌 اطلاعات ریپازیتوری خود را در SYNC_CONFIG وارد کنید:');
-console.log(`   USERNAME: ${SYNC_CONFIG.USERNAME}`);
-console.log(`   REPO_NAME: ${SYNC_CONFIG.REPO_NAME}`);
-console.log('   🔑 توکن را در صفحه ورود وارد کنید (امن)');
-console.log('📌 امکانات جدید:');
-console.log('   🔍 جستجوی مشتری با نام، کد ملی و شماره موبایل');
-console.log('   💰 تخفیف درصدی + تخفیف ریالی همزمان');
-console.log('   📊 نمایش تخفیف مجموع در سبد خرید و فاکتور');
-console.log('   ✏️ ویرایش کامل فاکتور با امکان تغییر اقلام');
-console.log('   💰 نمایش سود در فاکتور');
+console.log('📌 تمام تغییرات اعمال شد:');
+console.log('   ✅ تخفیف هر واحد به جای تخفیف ریالی');
+console.log('   ✅ سود = تخفیف مجموع');
+console.log('   ✅ مهر خودکار با تاریخ شمسی در فاکتور');
+console.log('   ✅ نمایش فاکتور در تاریخچه سفارش‌ها');
+console.log('   ✅ دکمه 👁️ برای مشاهده فاکتور');
 </script>
 </body>
 </html>
