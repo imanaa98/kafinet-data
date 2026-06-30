@@ -87,17 +87,6 @@
   ],
   "customers": [
     {
-      "id": 1,
-      "first_name": "امیرحسین",
-      "last_name": "علی عباسی",
-      "phone": "09120198372",
-      "national": "",
-      "debt": 0,
-      "address": "",
-      "info": "",
-      "join_date": "۱۴۰۵/۴/۹"
-    },
-    {
       "id": 2,
       "first_name": "ایمان",
       "last_name": "علی عباسی",
@@ -133,5 +122,5 @@
   "tariffs": [],
   "internal_news": [],
   "tips": [],
-  "last_update": "۱۴۰۵/۴/۹،‏ ۱۱:۲۴:۵۰"
+  "last_update": "۱۴۰۵/۴/۹،‏ ۱۱:۲۵:۰۸"
 }
