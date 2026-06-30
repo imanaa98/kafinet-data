@@ -83,6 +83,13 @@
       "category": "فایل",
       "price": 90000,
       "stock": 99999999999999
+    },
+    {
+      "id": 14,
+      "name": "پیش ثبت نام مدرسه",
+      "category": "ثبت نام",
+      "price": 800000,
+      "stock": 999
     }
   ],
   "customers": [
@@ -157,5 +164,5 @@
   "tariffs": [],
   "internal_news": [],
   "tips": [],
-  "last_update": "۱۴۰۵/۴/۹،‏ ۱۸:۲۵:۵۵"
+  "last_update": "۱۴۰۵/۴/۹،‏ ۱۸:۲۷:۵۱"
 }
