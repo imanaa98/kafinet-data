@@ -145,13 +145,6 @@
       "date": "",
       "total": 2600000,
       "status": "تکمیل شده"
-    },
-    {
-      "id": 2,
-      "customer_id": 2,
-      "date": "۱۴۰۵/۴/۹،‏ ۱۸:۲۸:۲۷",
-      "total": 750000,
-      "status": "تکمیل شده"
     }
   ],
   "order_items": [
@@ -166,22 +159,10 @@
       "total_discount": 1000000,
       "final_unit_price": 60000,
       "subtotal": 2600000
-    },
-    {
-      "order_id": 2,
-      "product_id": 14,
-      "product_name": "پیش ثبت نام مدرسه",
-      "qty": 1,
-      "unit_price": 800000,
-      "discount_percent": 0,
-      "discount_amount": 50000,
-      "total_discount": 50000,
-      "final_unit_price": 750000,
-      "subtotal": 750000
     }
   ],
   "tariffs": [],
   "internal_news": [],
   "tips": [],
-  "last_update": "۱۴۰۵/۴/۹،‏ ۱۸:۲۸:۳۰"
+  "last_update": "۱۴۰۵/۴/۹،‏ ۱۹:۲۵:۳۹"
 }
