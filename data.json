@@ -105,13 +105,6 @@
   ],
   "orders": [
     {
-      "id": 1,
-      "customer_id": 1,
-      "date": "۱۴۰۵/۴/۹،‏ ۹:۱۱:۱۸",
-      "total": 1116000,
-      "status": "تکمیل شده"
-    },
-    {
       "id": 2,
       "customer_id": 1,
       "date": "1405-04-09 10:41",
@@ -120,26 +113,6 @@
     }
   ],
   "order_items": [
-    {
-      "order_id": 1,
-      "product_id": 2,
-      "product_name": "پرینت سیاه‌ سفید تک رو a4",
-      "qty": 1,
-      "unit_price": 80000,
-      "discount": 10,
-      "discounted_price": 72000,
-      "subtotal": 72000
-    },
-    {
-      "order_id": 1,
-      "product_id": 10,
-      "product_name": "کپی سیاه‌ سفید تک رو a4",
-      "qty": 20,
-      "unit_price": 58000,
-      "discount": 10,
-      "discounted_price": 52200,
-      "subtotal": 1044000
-    },
     {
       "order_id": 2,
       "product_id": 2,
@@ -154,5 +127,5 @@
   "tariffs": [],
   "internal_news": [],
   "tips": [],
-  "last_update": "۱۴۰۵/۴/۹،‏ ۱۱:۰۴:۲۱"
+  "last_update": "۱۴۰۵/۴/۹،‏ ۱۱:۰۴:۲۸"
 }
