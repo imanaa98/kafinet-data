@@ -885,39 +885,6 @@
     border-color: var(--danger);
   }
 
-  /* ====== مهر فاکتور ====== */
-  .invoice-stamp {
-    text-align: center;
-    margin-top: 50px;
-    padding-top: 24px;
-    border-top: 2px dashed var(--border);
-    opacity: 0.5;
-    font-size: 16px;
-    color: var(--text);
-    font-weight: 700;
-    letter-spacing: 2px;
-  }
-  .invoice-stamp .stamp-icon {
-    font-size: 32px;
-    display: block;
-    margin-bottom: 4px;
-  }
-  .invoice-stamp .stamp-text {
-    font-size: 15px;
-    font-weight: 700;
-  }
-  .invoice-stamp .stamp-sub {
-    font-size: 11px;
-    font-weight: 400;
-    color: var(--muted);
-    opacity: 0.7;
-  }
-  .invoice-stamp .stamp-date {
-    font-size: 11px;
-    color: var(--muted);
-    margin-top: 4px;
-  }
-
   /* ====== RESPONSIVE ====== */
   @media (max-width: 768px) {
     #sidebar { width: 56px; min-width: 56px; }
@@ -1315,8 +1282,6 @@
               <div><span class="label">تلفن:</span> <span class="value" id="cust-display-phone">-</span></div>
               <div><span class="label">کد ملی:</span> <span class="value" id="cust-display-national">-</span></div>
               <div><span class="label">بدهی:</span> <span class="value" id="cust-display-debt">-</span></div>
-              <div><span class="label">امتیاز:</span> <span class="value" id="cust-display-points">-</span></div>
-              <div><span class="label">تخفیف:</span> <span class="value" id="cust-display-discount">-</span></div>
               <div><span class="label">کل خرید:</span> <span class="value" id="cust-display-total">-</span></div>
             </div>
           </div>
@@ -1371,8 +1336,6 @@
             <div class="field"><label>نام‌خانوادگی</label><input id="cust-ln" placeholder="نام‌خانوادگی"></div>
             <div class="field"><label>تلفن</label><input id="cust-phone" placeholder="09..."></div>
             <div class="field"><label>کد ملی</label><input id="cust-national" placeholder="کد ملی (اختیاری)"></div>
-            <div class="field"><label>نام کاربری</label><input id="cust-username" placeholder="نام کاربری (اختیاری)"></div>
-            <div class="field"><label>رمز عبور</label><input id="cust-password" type="password" placeholder="رمز عبور (اختیاری)"></div>
             <div class="field"><label>بدهی (ریال)</label><input id="cust-debt" type="number" placeholder="0"></div>
           </div>
           <div class="field mb-3"><label>آدرس</label><input id="cust-addr" placeholder="آدرس (اختیاری)"></div>
@@ -1393,7 +1356,7 @@
         <div class="card" style="padding:0">
           <div class="table-wrap" style="border:none">
             <table>
-              <thead><tr><th>#</th><th>کد</th><th>نام</th><th>تلفن</th><th>امتیاز</th><th>تخفیف</th><th>کل خرید</th></tr></thead>
+              <thead><tr><th>#</th><th>کد</th><th>نام</th><th>تلفن</th><th>کل خرید</th><th>بدهی</th><th>تاریخ عضویت</th></tr></thead>
               <tbody id="cust-table"></tbody>
             </table>
           </div>
@@ -1426,7 +1389,7 @@
         <div class="card" style="padding:0">
           <div class="table-wrap" style="border:none">
             <table>
-              <thead><tr><th>#</th><th>نام کاربری</th><th>رمز عبور</th><th>کد معرف</th><th>تاریخ ثبت‌نام</th><th>عملیات</th></tr></thead>
+              <thead><tr><th>#</th><th>نام کاربری</th><th>کد معرف</th><th>تاریخ ثبت‌نام</th><th>عملیات</th></tr></thead>
               <tbody id="user-table"></tbody>
             </table>
           </div>
@@ -1744,7 +1707,6 @@ function userRegister() {
   // تولید کد معرف
   const code = username.substring(0, 3).toUpperCase() + String(100 + users.length + 1);
   
-  // اضافه کردن کاربر
   users.push({
     id: nextId(users),
     username: username,
@@ -1759,7 +1721,7 @@ function userRegister() {
   DB.set('users', users);
   autoSync();
   
-  // همچنین به مشتریان اضافه شود (با نام کاربری و رمز عبور)
+  // همچنین به مشتریان اضافه شود
   const customers = DB.get('customers') || [];
   customers.push({
     id: nextId(customers),
@@ -1767,13 +1729,8 @@ function userRegister() {
     last_name: fullname.split(' ').slice(1).join(' ') || '',
     phone: phone,
     national: '',
-    username: username,
-    password: password,
     debt: 0,
     total_purchase: 0,
-    points: 0,
-    discount_earned: false,
-    next_discount: 0,
     address: '',
     info: `کاربر ثبت‌نامی: ${username}`,
     join_date: today()
@@ -1783,14 +1740,12 @@ function userRegister() {
   error.textContent = '';
   toast('✅ ثبت‌نام با موفقیت انجام شد! حالا وارد شوید.', 'success');
   
-  // پاک کردن فرم
   document.getElementById('register-username').value = '';
   document.getElementById('register-password').value = '';
   document.getElementById('register-fullname').value = '';
   document.getElementById('register-phone').value = '';
   document.getElementById('register-referral').value = '';
   
-  // تغییر به تب ورود کاربر
   switchLoginTab('user');
   document.getElementById('login-username').value = username;
 }
@@ -1799,7 +1754,6 @@ function enterApp() {
   document.getElementById('login-page').classList.add('hidden');
   document.getElementById('app').classList.add('show');
   
-  // نمایش وضعیت کاربر
   const badge = document.getElementById('user-mode-badge');
   if (currentUser.isAdmin) {
     badge.textContent = '👑 ادمین';
@@ -2060,8 +2014,8 @@ function initDB() {
   ]);
 
   if (!DB.get('customers')) DB.set('customers', [
-    {id:1,first_name:'علی',last_name:'احمدی',phone:'09121234567',national:'1234567890',username:'',password:'',address:'تهران',debt:0,total_purchase:0,points:0,discount_earned:false,next_discount:0,info:'مشتری دائمی',join_date:today()},
-    {id:2,first_name:'مریم',last_name:'رضایی',phone:'09351234567',national:'0987654321',username:'',password:'',address:'تهران',debt:50000,total_purchase:0,points:0,discount_earned:false,next_discount:0,info:'نیاز به پیگیری',join_date:today()},
+    {id:1,first_name:'علی',last_name:'احمدی',phone:'09121234567',national:'1234567890',address:'تهران',debt:0,total_purchase:0,info:'مشتری دائمی',join_date:today()},
+    {id:2,first_name:'مریم',last_name:'رضایی',phone:'09351234567',national:'0987654321',address:'تهران',debt:50000,total_purchase:0,info:'نیاز به پیگیری',join_date:today()},
   ]);
 
   if (!DB.get('users')) DB.set('users', [
@@ -2228,6 +2182,10 @@ let selService = null;
 let allServices = [];
 
 function loadServices() {
+  if (!isAdmin()) {
+    document.getElementById('svc-table').innerHTML = '<tr class="empty-row"><td colspan="5">دسترسی محدود به ادمین</td></tr>';
+    return;
+  }
   allServices = DB.get('services')||[];
   renderServices(allServices);
   setTimeout(() => initDragDrop('svc-table', 'services', loadServices), 100);
@@ -2311,6 +2269,7 @@ let dragState = { sourceTable: null, sourceIndex: null, sourceId: null, sourceDa
 function initDragDrop(tableId, itemsKey, renderFn) {
   const table = document.getElementById(tableId);
   if (!table) return;
+  if (!isAdmin()) return;
   
   let dragRow = null;
   let dragOverRow = null;
@@ -2320,7 +2279,6 @@ function initDragDrop(tableId, itemsKey, renderFn) {
     if (!row) return;
     const handle = e.target.closest('.drag-handle');
     if (!handle) return;
-    if (!isAdmin()) { toast('تنها ادمین می‌تواند جابجا کند', 'danger'); return; }
     
     dragRow = row;
     dragState.sourceTable = tableId;
@@ -2390,21 +2348,11 @@ let allCustomers = [];
 let selectedCustomerId = null;
 
 function loadCustomers() {
+  if (!isAdmin()) {
+    document.getElementById('cust-table').innerHTML = '<tr class="empty-row"><td colspan="7">دسترسی محدود به ادمین</td></tr>';
+    return;
+  }
   allCustomers = DB.get('customers')||[];
-  // محاسبه امتیاز و تخفیف
-  allCustomers.forEach(c => {
-    const total = c.total_purchase || 0;
-    // امتیاز: هر 1,000,000 ریال = 1 امتیاز
-    c.points = Math.floor(total / 1000000);
-    // تخفیف: فقط یک بار بعد از خرید 5,000,000
-    if (total >= 5000000 && !c.discount_earned) {
-      c.next_discount = 10;
-    } else if (c.discount_earned) {
-      c.next_discount = 0;
-    } else {
-      c.next_discount = 0;
-    }
-  });
   renderCustomers(allCustomers);
 }
 
@@ -2415,13 +2363,11 @@ function renderCustomers(data) {
   data.forEach((c, index)=>{
     const tr=document.createElement('tr');
     const customerCode = `#${String(index+1).padStart(3, '0')}`;
-    const disc = c.next_discount || 0;
-    const pts = c.points || 0;
     tr.innerHTML=`<td>${c.id}</td><td>${customerCode}</td><td>${c.first_name} ${c.last_name}</td>
       <td>${c.phone||'-'}</td>
-      <td><span class="points-badge">⭐ ${pts}</span></td>
-      <td>${disc > 0 ? '<span class="badge badge-gold">'+disc+'%</span>' : '-'}</td>
-      <td>${fmtNum(c.total_purchase||0)}</td>`;
+      <td>${fmtNum(c.total_purchase||0)}</td>
+      <td>${c.debt?'<span class="badge badge-danger">'+fmtNum(c.debt)+' ریال</span>':'<span class="badge badge-success">بدون بدهی</span>'}</td>
+      <td>${c.join_date||'-'}</td>`;
     tr.onclick=()=>{ selCust=c; document.querySelectorAll('#cust-table tr').forEach(r=>r.classList.remove('selected')); tr.classList.add('selected'); fillCustForm(c); };
     tbody.appendChild(tr);
   });
@@ -2432,8 +2378,6 @@ function fillCustForm(c) {
   document.getElementById('cust-ln').value=c.last_name||'';
   document.getElementById('cust-phone').value=c.phone||'';
   document.getElementById('cust-national').value=c.national||'';
-  document.getElementById('cust-username').value=c.username||'';
-  document.getElementById('cust-password').value=c.password||'';
   document.getElementById('cust-debt').value=c.debt||0;
   document.getElementById('cust-addr').value=c.address||'';
   document.getElementById('cust-info').value=c.info||'';
@@ -2451,13 +2395,8 @@ function addCustomer() {
     last_name:document.getElementById('cust-ln').value.trim(),
     phone:ph,
     national:document.getElementById('cust-national').value.trim(),
-    username:document.getElementById('cust-username').value.trim(),
-    password:document.getElementById('cust-password').value.trim(),
     debt:+(document.getElementById('cust-debt').value||0),
     total_purchase:0,
-    points:0,
-    discount_earned:false,
-    next_discount:0,
     address:document.getElementById('cust-addr').value,
     info:document.getElementById('cust-info').value,
     join_date:today()
@@ -2475,8 +2414,6 @@ function editCustomer() {
       last_name:document.getElementById('cust-ln').value.trim(),
       phone:document.getElementById('cust-phone').value.trim(),
       national:document.getElementById('cust-national').value.trim(),
-      username:document.getElementById('cust-username').value.trim(),
-      password:document.getElementById('cust-password').value.trim(),
       debt:+(document.getElementById('cust-debt').value||0),
       address:document.getElementById('cust-addr').value,
       info:document.getElementById('cust-info').value
@@ -2495,7 +2432,7 @@ function deleteCustomer() {
 
 function filterCustomers(q) {
   const nq=norm(q);
-  renderCustomers(nq?allCustomers.filter(c=>norm(c.first_name+c.last_name).includes(nq)||norm(c.phone||'').includes(nq)||norm(c.national||'').includes(nq)||norm(c.username||'').includes(nq)):allCustomers);
+  renderCustomers(nq?allCustomers.filter(c=>norm(c.first_name+c.last_name).includes(nq)||norm(c.phone||'').includes(nq)||norm(c.national||'').includes(nq)):allCustomers);
 }
 
 // ============================================
@@ -2506,7 +2443,7 @@ let allUsers = [];
 
 function loadUsers() {
   if (!isAdmin()) { 
-    document.getElementById('user-table').innerHTML = '<tr class="empty-row"><td colspan="6">دسترسی محدود به ادمین</td></tr>';
+    document.getElementById('user-table').innerHTML = '<tr class="empty-row"><td colspan="5">دسترسی محدود به ادمین</td></tr>';
     return; 
   }
   allUsers = DB.get('users')||[];
@@ -2516,12 +2453,11 @@ function loadUsers() {
 function renderUsers(data) {
   const tbody = document.getElementById('user-table');
   tbody.innerHTML = '';
-  if (!data.length) { tbody.innerHTML='<tr class="empty-row"><td colspan="6">هیچ کاربری ثبت نشده</td></tr>'; return; }
+  if (!data.length) { tbody.innerHTML='<tr class="empty-row"><td colspan="5">هیچ کاربری ثبت نشده</td></tr>'; return; }
   data.forEach((u)=>{
     const tr=document.createElement('tr');
     tr.innerHTML=`<td>${u.id}</td>
       <td>${u.username}</td>
-      <td><span class="badge badge-muted">${u.password}</span></td>
       <td><span class="badge badge-accent">${u.referral_code||'-'}</span></td>
       <td>${u.join_date||'-'}</td>
       <td>
@@ -2645,8 +2581,7 @@ function searchCustomer(q) {
   const matches = custs.filter(c => 
     norm(c.first_name + ' ' + c.last_name).includes(nq) ||
     norm(c.phone||'').includes(nq) ||
-    norm(c.national||'').includes(nq) ||
-    norm(c.username||'').includes(nq)
+    norm(c.national||'').includes(nq)
   );
   
   if (!matches.length) { 
@@ -2660,7 +2595,7 @@ function searchCustomer(q) {
   matches.slice(0,5).forEach(c => {
     const d = document.createElement('div');
     d.style.cssText = 'padding:8px 12px;cursor:pointer;border-bottom:1px solid var(--border);font-size:12px;color:var(--text)';
-    d.textContent = `${c.first_name} ${c.last_name} — ${c.phone||'بدون تلفن'} ${c.username ? '| کاربر: '+c.username : ''}`;
+    d.textContent = `${c.first_name} ${c.last_name} — ${c.phone||'بدون تلفن'} ${c.national ? '| کد ملی: '+c.national : ''}`;
     d.onmouseover = () => d.style.background = 'var(--surface2)';
     d.onmouseleave = () => d.style.background = '';
     d.onclick = () => {
@@ -2684,21 +2619,7 @@ function selectCustomer(id) {
   document.getElementById('cust-display-phone').textContent = selectedCustomer.phone||'-';
   document.getElementById('cust-display-national').textContent = selectedCustomer.national||'-';
   document.getElementById('cust-display-debt').textContent = selectedCustomer.debt ? fmtNum(selectedCustomer.debt)+' ریال' : 'بدون بدهی';
-  
-  // امتیاز: هر 1,000,000 ریال = 1 امتیاز
-  const points = Math.floor((selectedCustomer.total_purchase||0) / 1000000);
-  document.getElementById('cust-display-points').textContent = points + ' امتیاز';
   document.getElementById('cust-display-total').textContent = fmtNum(selectedCustomer.total_purchase||0)+' ریال';
-  
-  // تخفیف فقط یک بار و بعد از خرید بالای 5 میلیون
-  let discount = 0;
-  if (selectedCustomer.total_purchase >= 5000000 && !selectedCustomer.discount_earned) {
-    discount = 10;
-  }
-  document.getElementById('cust-display-discount').textContent = discount > 0 ? discount + '% تخفیف' : 'بدون تخفیف';
-  
-  // اعمال تخفیف خودکار
-  document.getElementById('order-discount').value = discount;
 }
 
 function searchProducts(q) {
@@ -2754,12 +2675,7 @@ function addToCart() {
   refreshCart();
   document.getElementById('order-prod-search').value='';
   document.getElementById('order-qty').value='1';
-  // حفظ تخفیف خودکار
-  let autoDiscount = 0;
-  if (selectedCustomer && selectedCustomer.total_purchase >= 5000000 && !selectedCustomer.discount_earned) {
-    autoDiscount = 10;
-  }
-  document.getElementById('order-discount').value = autoDiscount;
+  document.getElementById('order-discount').value='0';
   selProd=null;
   toast('افزوده شد','success');
 }
@@ -2799,30 +2715,11 @@ function submitOrder() {
   cart.forEach(c=>items.push({order_id:oid,...c}));
   DB.set('orders',orders); DB.set('order_items',items);
   
-  // ====== به‌روزرسانی مشتری ======
+  // ====== به‌روزرسانی کل خرید مشتری ======
   const custs = DB.get('customers')||[];
   const cust = custs.find(c=>c.id===+selectedCustomerId);
   if (cust) {
-    const oldTotal = cust.total_purchase || 0;
-    cust.total_purchase = oldTotal + total;
-    
-    // محاسبه امتیاز جدید (هر 1,000,000 ریال = 1 امتیاز)
-    const newPoints = Math.floor(cust.total_purchase / 1000000);
-    if (newPoints > (cust.points||0)) {
-      const earned = newPoints - (cust.points||0);
-      cust.points = newPoints;
-      toast(`⭐ ${earned} امتیاز به حساب شما اضافه شد! (مجموع: ${cust.points} امتیاز)`, 'success');
-    }
-    
-    // بررسی تخفیف (فقط یک بار بعد از 5 میلیون)
-    if (cust.total_purchase >= 5000000 && !cust.discount_earned) {
-      cust.discount_earned = true;
-      cust.next_discount = 10;
-      toast(`💎 تخفیف 10% برای خرید بعدی شما فعال شد!`, 'success');
-    } else {
-      cust.next_discount = 0;
-    }
-    
+    cust.total_purchase = (cust.total_purchase||0) + total;
     DB.set('customers', custs);
   }
   
@@ -2859,9 +2756,9 @@ function renderOrders(data) {
       <td><span class="badge ${statusClass}">${o.status||'تکمیل شده'}</span></td>
       <td>
         <div class="order-actions">
-          <button class="btn btn-secondary btn-sm" onclick="editOrder(${o.id})">✏️</button>
-          <button class="btn btn-danger btn-sm" onclick="deleteOrder(${o.id})">🗑️</button>
-          <button class="btn btn-primary btn-sm" onclick="printInvoiceWithStamp(${o.id})">🖨️</button>
+          ${isAdmin() ? `<button class="btn btn-secondary btn-sm" onclick="editOrder(${o.id})">✏️</button>` : ''}
+          ${isAdmin() ? `<button class="btn btn-danger btn-sm" onclick="deleteOrder(${o.id})">🗑️</button>` : ''}
+          <button class="btn btn-primary btn-sm" onclick="printInvoice(${o.id})">🖨️</button>
         </div>
       </td>
     </tr>`;
@@ -2908,23 +2805,14 @@ function saveOrderEdit() {
   order.date = document.getElementById('order-edit-date').value.replace('T', ' ');
   order.status = document.getElementById('order-edit-status').value;
   
-  // اگر وضعیت به "لغو شده" تغییر کرد، کل خرید، امتیاز و تخفیف مشتری را کاهش بده
+  // اگر وضعیت به "لغو شده" تغییر کرد، کل خرید مشتری را کاهش بده
   if (oldStatus !== 'لغو شده' && order.status === 'لغو شده') {
     const custs = DB.get('customers')||[];
     const cust = custs.find(c=>c.id===order.customer_id);
     if (cust) {
       cust.total_purchase = Math.max(0, (cust.total_purchase||0) - order.total);
-      // بازنشانی امتیاز (هر 1,000,000 = 1 امتیاز)
-      cust.points = Math.floor(cust.total_purchase / 1000000);
-      // بازنشانی تخفیف
-      if (cust.total_purchase < 5000000) {
-        cust.discount_earned = false;
-        cust.next_discount = 0;
-      } else {
-        cust.next_discount = 10;
-      }
       DB.set('customers', custs);
-      toast(`🔄 مبلغ ${fmtNum(order.total)} ریال از کل خرید و امتیازات کسر شد`, 'warning');
+      toast(`🔄 مبلغ ${fmtNum(order.total)} ریال از کل خرید مشتری کسر شد`, 'warning');
     }
   }
   
@@ -2939,7 +2827,6 @@ function deleteOrder(id) {
   if (!isAdmin()) { toast('تنها ادمین می‌تواند حذف کند', 'danger'); return; }
   if (!confirm('آیا این سفارش حذف شود؟')) return;
   
-  // ابتدا مبلغ سفارش را از کل خرید مشتری کسر کنیم
   const orders = DB.get('orders')||[];
   const order = orders.find(o=>o.id===id);
   if (order) {
@@ -2947,13 +2834,6 @@ function deleteOrder(id) {
     const cust = custs.find(c=>c.id===order.customer_id);
     if (cust) {
       cust.total_purchase = Math.max(0, (cust.total_purchase||0) - order.total);
-      cust.points = Math.floor(cust.total_purchase / 1000000);
-      if (cust.total_purchase < 5000000) {
-        cust.discount_earned = false;
-        cust.next_discount = 0;
-      } else {
-        cust.next_discount = 10;
-      }
       DB.set('customers', custs);
     }
   }
@@ -2976,9 +2856,9 @@ function filterOrders(q) {
 }
 
 // ============================================
-// PRINT INVOICE WITH STAMP
+// PRINT INVOICE (بدون مهر)
 // ============================================
-function printInvoiceWithStamp(orderId) {
+function printInvoice(orderId) {
   const orders = DB.get('orders') || [];
   const items = DB.get('order_items') || [];
   const custs = DB.get('customers') || [];
@@ -3072,40 +2952,8 @@ function printInvoiceWithStamp(orderId) {
           flex-wrap: wrap;
         }
         .customer-info .label { color: #7B849E; min-width: 80px; }
-        .invoice-stamp {
-          text-align: center;
-          margin-top: 50px;
-          padding-top: 24px;
-          border-top: 2px dashed #D6DCE9;
-          opacity: 0.5;
-          font-size: 16px;
-          color: #1A1F36;
-          font-weight: 700;
-          letter-spacing: 2px;
-        }
-        .invoice-stamp .stamp-icon {
-          font-size: 32px;
-          display: block;
-          margin-bottom: 4px;
-        }
-        .invoice-stamp .stamp-text {
-          font-size: 15px;
-          font-weight: 700;
-        }
-        .invoice-stamp .stamp-sub {
-          font-size: 11px;
-          font-weight: 400;
-          color: #7B849E;
-          opacity: 0.7;
-        }
-        .invoice-stamp .stamp-date {
-          font-size: 11px;
-          color: #7B849E;
-          margin-top: 4px;
-        }
         @media print {
           body { padding: 20px; }
-          .no-print { display: none; }
         }
         @media (max-width: 600px) {
           body { padding: 16px; }
@@ -3162,15 +3010,6 @@ function printInvoiceWithStamp(orderId) {
         </tbody>
       </table>
       
-      <!-- ====== مهر ====== -->
-      <div class="invoice-stamp">
-        <span class="stamp-icon">📜</span>
-        <div class="stamp-text">کافینت چنار</div>
-        <div class="stamp-sub">مرکز خدمات اینترنتی و ثبت‌نام</div>
-        <div class="stamp-date">${nowStr()}</div>
-      </div>
-      <!-- ====== پایان مهر ====== -->
-      
       <div style="text-align:center;margin-top:30px;font-size:11px;color:#7B849E;border-top:1px solid #D6DCE9;padding-top:12px;">
         با تشکر از اعتماد شما
       </div>
@@ -3197,7 +3036,9 @@ let selTariff = null;
 function loadTariffs() {
   const data = DB.get('tariffs')||[];
   renderTariffs(data);
-  setTimeout(() => initDragDrop('tar-table', 'tariffs', loadTariffs), 100);
+  if (isAdmin()) {
+    setTimeout(() => initDragDrop('tar-table', 'tariffs', loadTariffs), 100);
+  }
 }
 
 function renderTariffs(data) {
@@ -3206,26 +3047,30 @@ function renderTariffs(data) {
   if (!data.length) { tbody.innerHTML='<tr class="empty-row"><td colspan="6">هیچ تعرفه‌ای ثبت نشده</td></tr>'; return; }
   data.forEach((t)=>{
     const tr = document.createElement('tr');
-    tr.className = 'draggable-row';
-    tr.dataset.id = t.id;
+    if (isAdmin()) {
+      tr.className = 'draggable-row';
+      tr.dataset.id = t.id;
+    }
     tr.innerHTML = `
-      <td><span class="drag-handle">⠿</span> ${t.id}</td>
+      ${isAdmin() ? '<td><span class="drag-handle">⠿</span>' : '<td>'} ${t.id}</td>
       <td>${t.name}</td>
       <td>${t.description||'-'}</td>
       <td>${fmtNum(t.price)} ریال</td>
       <td>${t.unit||'-'}</td>
       <td><span class="badge ${t.active==='فعال'?'badge-success':'badge-muted'}">${t.active||'فعال'}</span></td>
     `;
-    tr.onclick = (e) => {
-      if (e.target.closest('.drag-handle')) return;
-      selTariff=t;
-      document.querySelectorAll('#tar-table tr').forEach(r=>r.classList.remove('selected'));
-      tr.classList.add('selected');
-      document.getElementById('tar-name').value=t.name;
-      document.getElementById('tar-desc').value=t.description||'';
-      document.getElementById('tar-price').value=t.price;
-      document.getElementById('tar-unit').value=t.unit||'';
-    };
+    if (isAdmin()) {
+      tr.onclick = (e) => {
+        if (e.target.closest('.drag-handle')) return;
+        selTariff=t;
+        document.querySelectorAll('#tar-table tr').forEach(r=>r.classList.remove('selected'));
+        tr.classList.add('selected');
+        document.getElementById('tar-name').value=t.name;
+        document.getElementById('tar-desc').value=t.description||'';
+        document.getElementById('tar-price').value=t.price;
+        document.getElementById('tar-unit').value=t.unit||'';
+      };
+    }
     tbody.appendChild(tr);
   });
 }
@@ -3333,8 +3178,13 @@ function showNote(id) {
 
   document.querySelectorAll('.note-item').forEach(n=>n.classList.remove('active'));
   document.querySelector(`.note-item[data-id="${id}"]`)?.classList.add('active');
-  document.getElementById('edit-note-btn').style.display='';
-  document.getElementById('del-note-btn').style.display='';
+  if (isAdmin()) {
+    document.getElementById('edit-note-btn').style.display='';
+    document.getElementById('del-note-btn').style.display='';
+  } else {
+    document.getElementById('edit-note-btn').style.display='none';
+    document.getElementById('del-note-btn').style.display='none';
+  }
   document.getElementById('note-viewer-breadcrumb').textContent = (note.folder||'عمومی') + ' › ' + note.title;
 
   const viewer = document.getElementById('note-viewer');
@@ -3471,7 +3321,9 @@ function renderNews(data) {
       <td><span class="badge badge-accent">${n.category||'-'}</span></td>
       <td><span class="badge ${priClr[n.priority]||'badge-muted'}">${n.priority||'-'}</span></td>
       <td>${n.pinned?'📌':'—'}</td><td>${n.date||'-'}</td>`;
-    tr.onclick=()=>{ selNews=n; document.querySelectorAll('#news-table tr').forEach(r=>r.classList.remove('selected')); tr.classList.add('selected'); document.getElementById('news-title').value=n.title; document.getElementById('news-cat').value=n.category||'عمومی'; document.getElementById('news-pri').value=n.priority||'متوسط'; document.getElementById('news-body').value=n.content||''; };
+    if (isAdmin()) {
+      tr.onclick=()=>{ selNews=n; document.querySelectorAll('#news-table tr').forEach(r=>r.classList.remove('selected')); tr.classList.add('selected'); document.getElementById('news-title').value=n.title; document.getElementById('news-cat').value=n.category||'عمومی'; document.getElementById('news-pri').value=n.priority||'متوسط'; document.getElementById('news-body').value=n.content||''; };
+    }
     tbody.appendChild(tr);
   });
 }
@@ -3848,11 +3700,6 @@ console.log(`   USERNAME: ${SYNC_CONFIG.USERNAME}`);
 console.log(`   REPO_NAME: ${SYNC_CONFIG.REPO_NAME}`);
 console.log('   🔑 توکن را در صفحه ورود وارد کنید (امن)');
 console.log('✅ داده‌ها روی ریپازیتوری گیت‌هاب ذخیره می‌شوند (بدون محدودیت)');
-console.log('📌 امکانات جدید:');
-console.log('   ⭐ امتیاز: هر 1,000,000 ریال = 1 امتیاز');
-console.log('   💰 تخفیف: فقط یک بار بعد از خرید 5,000,000 ریال');
-console.log('   👤 کاربران فقط تعرفه و اطلاعیه می‌بینند');
-console.log('   🖨️ چاپ فاکتور با مهر');
 </script>
 </body>
 </html>
