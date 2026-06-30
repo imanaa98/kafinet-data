@@ -389,6 +389,8 @@
   .btn-success { background: var(--success); color: #fff; }
   .btn-success:hover { background: #155d38; }
   .btn-sm { padding: 4px 10px; font-size: 12px; min-height: 32px; }
+  .btn-outline { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+  .btn-outline:hover { background: var(--accent); color: var(--btn-text); }
 
   .form-grid { display: grid; gap: 10px; }
   .form-grid-2 { grid-template-columns: 1fr 1fr; }
@@ -739,7 +741,7 @@
     line-height: 1.7;
   }
 
-  #cart-table { max-height: 140px; overflow-y: auto; }
+  #cart-table { max-height: 200px; overflow-y: auto; }
 
   .chart-container {
     background: var(--surface);
@@ -821,6 +823,132 @@
     background: var(--danger);
     color: #fff;
     border-color: var(--danger);
+  }
+
+  /* ====== INVOICE STYLES ====== */
+  .invoice-print {
+    background: white !important;
+    padding: 30px 25px !important;
+    color: #1A1F36 !important;
+    font-family: 'Vazirmatn', Tahoma, sans-serif !important;
+    direction: rtl !important;
+  }
+  .invoice-print .invoice-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #1A56C4;
+    padding-bottom: 16px;
+    margin-bottom: 16px;
+  }
+  .invoice-print .invoice-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .invoice-print .invoice-logo-icon {
+    width: 60px;
+    height: 60px;
+    background: #1A56C4;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 800;
+    font-size: 24px;
+  }
+  .invoice-print .invoice-shop-name {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1A56C4;
+  }
+  .invoice-print .invoice-shop-sub {
+    font-size: 12px;
+    color: #7B849E;
+  }
+  .invoice-print .invoice-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1A56C4;
+    text-align: left;
+  }
+  .invoice-print .invoice-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #3D4461;
+    margin-bottom: 12px;
+    padding: 8px 0;
+    border-bottom: 1px dashed #D6DCE9;
+  }
+  .invoice-print .invoice-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    margin: 12px 0;
+  }
+  .invoice-print .invoice-table th {
+    background: #F4F6FB;
+    color: #1A56C4;
+    padding: 8px 10px;
+    border: 1px solid #D6DCE9;
+    text-align: center;
+    font-size: 11px;
+  }
+  .invoice-print .invoice-table td {
+    padding: 6px 10px;
+    border: 1px solid #D6DCE9;
+    text-align: center;
+    color: #1A1F36;
+  }
+  .invoice-print .invoice-total {
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    padding-top: 12px;
+    border-top: 2px solid #1A56C4;
+    margin-top: 12px;
+  }
+  .invoice-print .invoice-footer {
+    text-align: center;
+    font-size: 11px;
+    color: #7B849E;
+    margin-top: 16px;
+    border-top: 1px solid #D6DCE9;
+    padding-top: 10px;
+  }
+  .invoice-print .invoice-signature {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 12px;
+    font-size: 12px;
+    color: #3D4461;
+  }
+  
+  @media print {
+    #app, #sidebar, #topbar, .modal-overlay, #toast, #login-page {
+      display: none !important;
+    }
+    .invoice-print {
+      display: block !important;
+      padding: 20px !important;
+      margin: 0 !important;
+      background: white !important;
+      color: black !important;
+    }
+    .invoice-print .invoice-table th {
+      background: #e9ecef !important;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    .invoice-print .invoice-logo-icon {
+      background: #1A56C4 !important;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
   }
 
   /* ====== RESPONSIVE ====== */
@@ -1101,7 +1229,10 @@
               </div>
             </div>
             <div class="field"><label>تعداد</label><input id="order-qty" type="number" value="1" min="1"></div>
-            <div class="field"><label>تخفیف (%)</label><input id="order-discount" type="number" value="0" min="0" max="100" style="min-height:40px"></div>
+            <div class="field"><label>تخفیف (%)</label><input id="order-discount" type="number" value="0" min="0" max="100"></div>
+          </div>
+          <div class="form-grid form-grid-2 mb-3">
+            <div class="field"><label>تخفیف ریالی</label><input id="order-discount-amount" type="number" value="0" min="0" placeholder="مبلغ ریالی تخفیف"></div>
           </div>
           <div class="row-center gap-2">
             <button class="btn btn-primary" onclick="addToCart()">➕ افزودن به سبد</button>
@@ -1118,8 +1249,8 @@
           <div id="cart-table">
             <div class="table-wrap" style="border:none">
               <table>
-                <thead><tr><th>خدمت</th><th>تعداد</th><th>هزینه واحد</th><th>تخفیف</th><th>جمع</th><th></th></tr></thead>
-                <tbody id="cart-tbody"><tr class="empty-row"><td colspan="6">سبد خالی است</td></tr></tbody>
+                <thead><tr><th>خدمت</th><th>تعداد</th><th>هزینه واحد</th><th>تخفیف %</th><th>تخفیف ریالی</th><th>جمع</th><th></th></tr></thead>
+                <tbody id="cart-tbody"><tr class="empty-row"><td colspan="7">سبد خالی است</td></tr></tbody>
               </table>
             </div>
           </div>
@@ -1380,6 +1511,41 @@
     </div>
   </div>
 </div>
+
+<!-- ══ ORDER DETAIL MODAL ══ -->
+<div class="modal-overlay" id="order-detail-modal">
+  <div class="modal" style="max-width:700px">
+    <div class="modal-header">
+      <div class="modal-title">🧾 جزئیات سفارش</div>
+      <button class="modal-close" onclick="closeOrderDetailModal()">✕</button>
+    </div>
+    <div id="order-detail-content">
+      <div class="row-center mb-3">
+        <div class="field" style="flex:1"><label>شماره سفارش</label><div id="detail-id" style="font-weight:700;font-size:16px">-</div></div>
+        <div class="field" style="flex:1"><label>تاریخ</label><div id="detail-date" class="text-muted">-</div></div>
+        <div class="field" style="flex:1"><label>مشتری</label><div id="detail-customer" style="font-weight:600">-</div></div>
+        <div class="field" style="flex:1"><label>وضعیت</label><div id="detail-status" class="badge badge-success">-</div></div>
+      </div>
+      <div class="divider"></div>
+      <div style="font-weight:600;margin-bottom:8px">📋 اقلام سفارش</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>خدمت</th><th>تعداد</th><th>قیمت واحد</th><th>تخفیف %</th><th>تخفیف ریالی</th><th>جمع</th></tr></thead>
+          <tbody id="detail-items"></tbody>
+        </table>
+      </div>
+      <div class="row-center" style="justify-content:space-between;margin-top:12px">
+        <div><span class="text-muted">جمع کل:</span> <span id="detail-total" class="font-bold text-accent" style="font-size:18px">۰ ریال</span></div>
+        <div class="row-center gap-2">
+          <button class="btn btn-primary btn-sm" onclick="printInvoice()">🖨️ چاپ فاکتور</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ INVOICE PRINT CONTAINER ══ -->
+<div id="invoice-print-container" style="display:none"></div>
 
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
   <button class="lightbox-close" onclick="closeLightbox()">✕</button>
@@ -1925,7 +2091,7 @@ function loadDashboard() {
     tbody.innerHTML = '<tr class="empty-row"><td colspan="5">هیچ سفارشی ثبت نشده</td></tr>';
   } else {
     recentOrders.forEach(o=>{
-      tbody.innerHTML += `<tr>
+      tbody.innerHTML += `<tr onclick="showOrderDetail(${o.id})" style="cursor:pointer">
         <td>${o.id}</td><td>${o.date||'-'}</td>
         <td>${custMap[o.customer_id]||o.customer_id||'-'}</td>
         <td>${fmtNum(o.total)} ریال</td>
@@ -1944,7 +2110,6 @@ let allServices = [];
 function loadServices() {
   allServices = DB.get('services')||[];
   renderServices(allServices);
-  // فعال‌سازی کشیدن و رها کردن بعد از رندر
   setTimeout(() => initDragDrop('svc-table', 'services', loadServices), 100);
 }
 
@@ -2080,7 +2245,7 @@ function deleteTariff() {
 }
 
 // ============================================
-// CUSTOMERS (با کد ملی و اطلاعات بیشتر)
+// CUSTOMERS
 // ============================================
 let selCust = null;
 let allCustomers = [];
@@ -2166,12 +2331,13 @@ function filterCustomers(q) {
 }
 
 // ============================================
-// ORDERS (با تخفیف)
+// ORDERS (با تخفیف درصدی و ریالی)
 // ============================================
 let cart = [];
 let allOrders = [];
 let selProd = null;
 let editingOrderId = null;
+let viewedOrderId = null;
 
 function loadOrderPage() {
   const custs = DB.get('customers')||[];
@@ -2195,14 +2361,14 @@ function renderOrders(data) {
   if (!data.length) { tbody.innerHTML='<tr class="empty-row"><td colspan="6">هیچ سفارشی ثبت نشده</td></tr>'; return; }
   [...data].reverse().forEach(o=>{
     const statusClass = o.status==='لغو شده'?'badge-danger':o.status==='در انتظار'?'badge-warning':o.status==='مرجوعی'?'badge-muted':'badge-success';
-    tbody.innerHTML += `<tr>
+    tbody.innerHTML += `<tr onclick="showOrderDetail(${o.id})" style="cursor:pointer">
       <td>${o.id}</td>
       <td>${o.date||'-'}</td>
       <td>${custMap[o.customer_id]||'-'}</td>
       <td>${fmtNum(o.total)} ریال</td>
       <td><span class="badge ${statusClass}">${o.status||'تکمیل شده'}</span></td>
       <td>
-        <div class="order-actions">
+        <div class="order-actions" onclick="event.stopPropagation()">
           <button class="btn btn-secondary btn-sm" onclick="editOrder(${o.id})">✏️</button>
           <button class="btn btn-danger btn-sm" onclick="deleteOrder(${o.id})">🗑️</button>
         </div>
@@ -2236,26 +2402,30 @@ function addToCart() {
   if (!selProd) { toast('ابتدا خدمت را از لیست انتخاب کنید','danger'); return; }
   const qty = parseInt(document.getElementById('order-qty').value)||1;
   if (qty<1) { toast('تعداد نامعتبر','danger'); return; }
-  const discount = parseInt(document.getElementById('order-discount').value)||0;
-  if (discount < 0 || discount > 100) { toast('تخفیف باید بین 0 تا 100 باشد','danger'); return; }
+  const discountPercent = parseInt(document.getElementById('order-discount').value)||0;
+  const discountAmount = parseInt(document.getElementById('order-discount-amount').value)||0;
+  if (discountPercent < 0 || discountPercent > 100) { toast('تخفیف درصدی باید بین 0 تا 100 باشد','danger'); return; }
+  if (discountAmount < 0) { toast('تخفیف ریالی نباید منفی باشد','danger'); return; }
   
   const unitPrice = selProd.price;
-  const discountedPrice = Math.round(unitPrice * (1 - discount / 100));
-  const sub = discountedPrice * qty;
+  // ابتدا تخفیف درصدی اعمال می‌شود سپس تخفیف ریالی
+  let afterPercentDiscount = Math.round(unitPrice * (1 - discountPercent / 100));
+  let finalUnitPrice = Math.max(0, afterPercentDiscount - discountAmount);
+  const sub = finalUnitPrice * qty;
   
-  const existing = cart.find(c=>c.product_id===selProd.id);
+  const existing = cart.find(c=>c.product_id===selProd.id && c.discount_percent===discountPercent && c.discount_amount===discountAmount);
   if (existing) { 
     existing.qty += qty; 
     existing.subtotal += sub;
-    existing.discount = discount;
   } else {
     cart.push({
       product_id:selProd.id,
       product_name:selProd.name,
       qty,
       unit_price:unitPrice,
-      discount:discount,
-      discounted_price:discountedPrice,
+      discount_percent:discountPercent,
+      discount_amount:discountAmount,
+      final_unit_price:finalUnitPrice,
       subtotal:sub
     });
   }
@@ -2263,6 +2433,7 @@ function addToCart() {
   document.getElementById('order-prod-search').value='';
   document.getElementById('order-qty').value='1';
   document.getElementById('order-discount').value='0';
+  document.getElementById('order-discount-amount').value='0';
   selProd=null;
   toast('افزوده شد','success');
 }
@@ -2270,15 +2441,15 @@ function addToCart() {
 function refreshCart() {
   const tbody = document.getElementById('cart-tbody');
   tbody.innerHTML = '';
-  if (!cart.length) { tbody.innerHTML='<tr class="empty-row"><td colspan="6">سبد خالی است</td></tr>'; document.getElementById('cart-total').textContent='جمع کل: ۰ ریال'; return; }
+  if (!cart.length) { tbody.innerHTML='<tr class="empty-row"><td colspan="7">سبد خالی است</td></tr>'; document.getElementById('cart-total').textContent='جمع کل: ۰ ریال'; return; }
   cart.forEach((item,i)=>{
-    const totalAfterDiscount = item.subtotal;
     tbody.innerHTML += `<tr>
       <td>${item.product_name}</td>
       <td>${item.qty}</td>
       <td>${fmtNum(item.unit_price)}</td>
-      <td>${item.discount}%</td>
-      <td>${fmtNum(totalAfterDiscount)}</td>
+      <td>${item.discount_percent}%</td>
+      <td>${fmtNum(item.discount_amount)}</td>
+      <td>${fmtNum(item.subtotal)}</td>
       <td><button class="btn btn-danger btn-sm" onclick="removeCartItem(${i})">✕</button></td>
     </tr>`;
   });
@@ -2366,6 +2537,211 @@ function filterOrders(q) {
   const custs = DB.get('customers')||[];
   const custMap = {}; custs.forEach(c=>custMap[c.id]=c.first_name+' '+c.last_name);
   renderOrders(nq ? allOrders.filter(o=>norm(custMap[o.customer_id]||'').includes(nq)||String(o.id).includes(nq)) : allOrders);
+}
+
+// ============================================
+// ORDER DETAIL
+// ============================================
+function showOrderDetail(id) {
+  const orders = DB.get('orders')||[];
+  const order = orders.find(o=>o.id===id);
+  if (!order) { toast('سفارش یافت نشد','danger'); return; }
+  viewedOrderId = id;
+  
+  const custs = DB.get('customers')||[];
+  const cust = custs.find(c=>c.id===order.customer_id);
+  const custName = cust ? cust.first_name+' '+cust.last_name : 'نامشخص';
+  
+  document.getElementById('detail-id').textContent = '#'+order.id;
+  document.getElementById('detail-date').textContent = order.date||'-';
+  document.getElementById('detail-customer').textContent = custName;
+  
+  const statusMap = {
+    'تکمیل شده': 'badge-success',
+    'در انتظار': 'badge-warning',
+    'لغو شده': 'badge-danger',
+    'مرجوعی': 'badge-muted'
+  };
+  document.getElementById('detail-status').className = 'badge '+(statusMap[order.status]||'badge-success');
+  document.getElementById('detail-status').textContent = order.status||'تکمیل شده';
+  
+  const items = DB.get('order_items')||[];
+  const orderItems = items.filter(i=>i.order_id===id);
+  const tbody = document.getElementById('detail-items');
+  tbody.innerHTML = '';
+  if (!orderItems.length) {
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="6">هیچ آیتمی وجود ندارد</td></tr>';
+  } else {
+    orderItems.forEach(item=>{
+      tbody.innerHTML += `<tr>
+        <td>${item.product_name}</td>
+        <td>${item.qty}</td>
+        <td>${fmtNum(item.unit_price)}</td>
+        <td>${item.discount_percent||0}%</td>
+        <td>${fmtNum(item.discount_amount||0)}</td>
+        <td>${fmtNum(item.subtotal)}</td>
+      </tr>`;
+    });
+  }
+  
+  document.getElementById('detail-total').textContent = fmtNum(order.total)+' ریال';
+  document.getElementById('order-detail-modal').classList.add('open');
+}
+
+function closeOrderDetailModal() {
+  document.getElementById('order-detail-modal').classList.remove('open');
+  viewedOrderId = null;
+}
+
+// ============================================
+// INVOICE PRINT
+// ============================================
+function printInvoice() {
+  if (!viewedOrderId) { toast('سفارشی انتخاب نشده','danger'); return; }
+  
+  const orders = DB.get('orders')||[];
+  const order = orders.find(o=>o.id===viewedOrderId);
+  if (!order) { toast('سفارش یافت نشد','danger'); return; }
+  
+  const custs = DB.get('customers')||[];
+  const cust = custs.find(c=>c.id===order.customer_id);
+  const custName = cust ? cust.first_name+' '+cust.last_name : 'نامشخص';
+  const custPhone = cust ? cust.phone : '-';
+  const custNational = cust ? cust.national : '-';
+  
+  const items = DB.get('order_items')||[];
+  const orderItems = items.filter(i=>i.order_id===viewedOrderId);
+  
+  let html = `
+  <div class="invoice-print" style="max-width:800px;margin:0 auto;background:white;padding:30px;font-family:'Vazirmatn',Tahoma,sans-serif;direction:rtl;">
+    <div class="invoice-header">
+      <div class="invoice-logo">
+        <div class="invoice-logo-icon">KFC</div>
+        <div>
+          <div class="invoice-shop-name">کافینت چنار</div>
+          <div class="invoice-shop-sub">مرکز خدمات اینترنتی و ثبت‌نام</div>
+          <div class="invoice-shop-sub" style="font-size:11px;">📞 ۰۲۱-۱۲۳۴۵۶۷۸</div>
+        </div>
+      </div>
+      <div class="invoice-title">فاکتور رسمی</div>
+    </div>
+    
+    <div class="invoice-info">
+      <div><strong>شماره فاکتور:</strong> #${order.id}</div>
+      <div><strong>تاریخ:</strong> ${order.date||'-'}</div>
+      <div><strong>وضعیت:</strong> ${order.status||'تکمیل شده'}</div>
+    </div>
+    
+    <div style="margin-bottom:12px;padding:8px 12px;background:#f8f9fa;border-radius:8px;">
+      <div><strong>مشتری:</strong> ${custName}</div>
+      <div><strong>تلفن:</strong> ${custPhone}</div>
+      ${custNational ? `<div><strong>کد ملی:</strong> ${custNational}</div>` : ''}
+    </div>
+    
+    <table class="invoice-table">
+      <thead>
+        <tr>
+          <th>ردیف</th>
+          <th>خدمت</th>
+          <th>تعداد</th>
+          <th>قیمت واحد</th>
+          <th>تخفیف %</th>
+          <th>تخفیف ریالی</th>
+          <th>جمع</th>
+        </tr>
+      </thead>
+      <tbody>
+  `;
+  
+  orderItems.forEach((item, idx) => {
+    html += `
+      <tr>
+        <td>${idx+1}</td>
+        <td>${item.product_name}</td>
+        <td>${item.qty}</td>
+        <td>${fmtNum(item.unit_price)}</td>
+        <td>${item.discount_percent||0}%</td>
+        <td>${fmtNum(item.discount_amount||0)}</td>
+        <td>${fmtNum(item.subtotal)}</td>
+      </tr>
+    `;
+  });
+  
+  const total = orderItems.reduce((s,i)=>s+(i.subtotal||0),0);
+  
+  html += `
+      </tbody>
+    </table>
+    
+    <div class="invoice-total">
+      <span>جمع کل:</span>
+      <span>${fmtNum(total)} ریال</span>
+    </div>
+    
+    <div class="invoice-signature">
+      <div>امضا: .........................</div>
+      <div>تاریخ چاپ: ${nowStr()}</div>
+    </div>
+    
+    <div class="invoice-footer">
+      کافینت چنار - مرکز خدمات اینترنتی و ثبت‌نام اینترنتی<br>
+      کلیه حقوق محفوظ است
+    </div>
+  </div>
+  `;
+  
+  const container = document.getElementById('invoice-print-container');
+  container.innerHTML = html;
+  container.style.display = 'block';
+  
+  // چاپ
+  const printWindow = window.open('', '_blank', 'width=800,height=600');
+  if (!printWindow) {
+    toast('لطفاً باز شدن پنجره را مجاز کنید', 'danger');
+    return;
+  }
+  
+  printWindow.document.write(`
+    <!DOCTYPE html>
+    <html dir="rtl" lang="fa">
+    <head>
+      <meta charset="UTF-8">
+      <title>فاکتور #${order.id}</title>
+      <style>
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700;800&display=swap');
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Vazirmatn',Tahoma,sans-serif; padding:20px; background:#f0f0f0; }
+        .invoice-print { max-width:800px; margin:0 auto; background:white; padding:30px; border-radius:12px; box-shadow:0 4px 20px rgba(0,0,0,0.1); }
+        .invoice-header { display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #1A56C4; padding-bottom:16px; margin-bottom:16px; }
+        .invoice-logo { display:flex; align-items:center; gap:12px; }
+        .invoice-logo-icon { width:60px; height:60px; background:#1A56C4; border-radius:14px; display:flex; align-items:center; justify-content:center; color:white; font-weight:800; font-size:24px; }
+        .invoice-shop-name { font-size:20px; font-weight:700; color:#1A56C4; }
+        .invoice-shop-sub { font-size:12px; color:#7B849E; }
+        .invoice-title { font-size:18px; font-weight:700; color:#1A56C4; text-align:left; }
+        .invoice-info { display:flex; justify-content:space-between; font-size:12px; color:#3D4461; margin-bottom:12px; padding:8px 0; border-bottom:1px dashed #D6DCE9; }
+        .invoice-table { width:100%; border-collapse:collapse; font-size:12px; margin:12px 0; }
+        .invoice-table th { background:#F4F6FB; color:#1A56C4; padding:8px 10px; border:1px solid #D6DCE9; text-align:center; font-size:11px; }
+        .invoice-table td { padding:6px 10px; border:1px solid #D6DCE9; text-align:center; color:#1A1F36; }
+        .invoice-total { display:flex; justify-content:flex-end; gap:20px; font-size:14px; font-weight:600; padding-top:12px; border-top:2px solid #1A56C4; margin-top:12px; }
+        .invoice-signature { display:flex; justify-content:space-between; margin-top:12px; font-size:12px; color:#3D4461; }
+        .invoice-footer { text-align:center; font-size:11px; color:#7B849E; margin-top:16px; border-top:1px solid #D6DCE9; padding-top:10px; }
+        @media print {
+          body { background:white; padding:0; }
+          .invoice-print { box-shadow:none; border-radius:0; padding:20px; }
+        }
+      </style>
+    </head>
+    <body>
+      ${html}
+      <script>
+        window.onload = function() { window.print(); window.close(); }
+      <\/script>
+    </body>
+    </html>
+  `);
+  printWindow.document.close();
+  
+  container.style.display = 'none';
 }
 
 // ============================================
@@ -2919,11 +3295,10 @@ console.log(`   REPO_NAME: ${SYNC_CONFIG.REPO_NAME}`);
 console.log('   🔑 توکن را در صفحه ورود وارد کنید (امن)');
 console.log('✅ داده‌ها روی ریپازیتوری گیت‌هاب ذخیره می‌شوند (بدون محدودیت)');
 console.log('📌 امکانات جدید:');
+console.log('   💰 تخفیف درصدی + تخفیف ریالی همزمان');
+console.log('   👁️ نمایش جزئیات سفارش با کلیک');
+console.log('   🖨️ چاپ فاکتور رسمی با لوگو');
 console.log('   🔄 جابجایی سرویس‌ها و تعرفه‌ها با کشیدن');
-console.log('   💳 کد ملی و اطلاعات بیشتر برای مشتریان');
-console.log('   🏷️ کد مشتری به صورت #001, #002, ...');
-console.log('   💰 تخفیف درصدی در فاکتور فروش');
-console.log('   📁 دیتاهای پیش‌فرض برای تست');
 </script>
 </body>
 </html>
