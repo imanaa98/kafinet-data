@@ -84,5 +84,43 @@
       "price": 90000,
       "stock": 99999999999999
     }
-  ]
+  ],
+  "customers": [
+    {
+      "id": 1,
+      "first_name": "ایمان",
+      "last_name": "",
+      "phone": "",
+      "national": "",
+      "debt": 0,
+      "address": "",
+      "info": "",
+      "join_date": "۱۴۰۵/۴/۹"
+    }
+  ],
+  "orders": [
+    {
+      "id": 2,
+      "customer_id": 1,
+      "date": "1405-04-09 10:41",
+      "total": 80000,
+      "status": "تکمیل شده"
+    }
+  ],
+  "order_items": [
+    {
+      "order_id": 2,
+      "product_id": 2,
+      "product_name": "پرینت سیاه‌ سفید تک رو a4",
+      "qty": 1,
+      "unit_price": 80000,
+      "discount": 0,
+      "discounted_price": 80000,
+      "subtotal": 80000
+    }
+  ],
+  "tariffs": [],
+  "internal_news": [],
+  "tips": [],
+  "last_update": "۱۴۰۵/۴/۹،‏ ۱۲:۲۸:۱۹"
 }
