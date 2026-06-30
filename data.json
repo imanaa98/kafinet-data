@@ -93,14 +93,9 @@
       "phone": "09120198372",
       "national": "",
       "debt": 0,
-      "total_purchase": 5580000,
-      "discount_used": true,
-      "next_discount": 10,
       "address": "",
       "info": "",
-      "join_date": "۱۴۰۵/۴/۸",
-      "points": 5,
-      "discount_earned": true
+      "join_date": "۱۴۰۵/۴/۹"
     }
   ],
   "orders": [
@@ -127,5 +122,5 @@
   "tariffs": [],
   "internal_news": [],
   "tips": [],
-  "last_update": "۱۴۰۵/۴/۹،‏ ۱۱:۰۴:۲۸"
+  "last_update": "۱۴۰۵/۴/۹،‏ ۱۱:۲۴:۲۵"
 }
