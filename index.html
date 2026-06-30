@@ -395,6 +395,8 @@
   .btn-sm { padding: 4px 10px; font-size: 12px; min-height: 32px; }
   .btn-outline { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
   .btn-outline:hover { background: var(--accent); color: var(--btn-text); }
+  .btn-warning { background: var(--warning); color: #fff; }
+  .btn-warning:hover { background: #bf4b00; }
 
   .form-grid { display: grid; gap: 10px; }
   .form-grid-2 { grid-template-columns: 1fr 1fr; }
@@ -696,7 +698,7 @@
     background: var(--surface);
     border-radius: var(--radius);
     padding: 20px;
-    width: 540px;
+    width: 640px;
     max-width: 100%;
     max-height: 90vh;
     overflow-y: auto;
@@ -1368,8 +1370,8 @@
           <div id="cart-table">
             <div class="table-wrap" style="border:none">
               <table>
-                <thead><tr><th>خدمت</th><th>تعداد</th><th>هزینه واحد</th><th>تخفیف %</th><th>تخفیف ریالی</th><th>جمع</th><th></th></tr></thead>
-                <tbody id="cart-tbody"><tr class="empty-row"><td colspan="7">سبد خالی است</td></tr></tbody>
+                <thead><tr><th>خدمت</th><th>تعداد</th><th>قیمت واحد</th><th>تخفیف %</th><th>تخفیف ریالی</th><th>تخفیف مجموع</th><th>جمع</th><th></th></tr></thead>
+                <tbody id="cart-tbody"><tr class="empty-row"><td colspan="8">سبد خالی است</td></tr></tbody>
               </table>
             </div>
           </div>
@@ -1610,23 +1612,42 @@
   </div>
 </div>
 
+<!-- ══ ORDER EDIT MODAL (برای ویرایش فاکتور) ══ -->
 <div class="modal-overlay" id="order-edit-modal">
-  <div class="modal">
+  <div class="modal" style="max-width:700px">
     <div class="modal-header">
       <div class="modal-title">✏️ ویرایش سفارش</div>
       <button class="modal-close" onclick="closeOrderEditModal()">✕</button>
     </div>
-    <div class="field mb-3"><label>مشتری</label><select id="order-edit-cust"></select></div>
-    <div class="field mb-3"><label>تاریخ</label><input id="order-edit-date" type="datetime-local"></div>
-    <div class="field mb-3">
-      <label>وضعیت</label>
-      <select id="order-edit-status">
-        <option>تکمیل شده</option><option>در انتظار</option><option>لغو شده</option><option>مرجوعی</option>
-      </select>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-secondary" onclick="closeOrderEditModal()">انصراف</button>
-      <button class="btn btn-primary" onclick="saveOrderEdit()">💾 ذخیره</button>
+    <div id="order-edit-content">
+      <div class="row-center mb-3">
+        <div class="field" style="flex:1"><label>شماره سفارش</label><div id="edit-order-id" style="font-weight:700;font-size:16px">-</div></div>
+        <div class="field" style="flex:1"><label>مشتری</label><select id="order-edit-cust"></select></div>
+        <div class="field" style="flex:1"><label>تاریخ</label><input id="order-edit-date" type="datetime-local"></div>
+        <div class="field" style="flex:1"><label>وضعیت</label><select id="order-edit-status"><option>تکمیل شده</option><option>در انتظار</option><option>لغو شده</option><option>مرجوعی</option></select></div>
+      </div>
+      <div class="divider"></div>
+      <div style="font-weight:600;margin-bottom:8px">📋 ویرایش اقلام</div>
+      <div id="edit-items-container">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>خدمت</th><th>تعداد</th><th>قیمت واحد</th><th>تخفیف %</th><th>تخفیف ریالی</th><th>جمع</th><th>عملیات</th></tr></thead>
+            <tbody id="edit-items-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="row-center gap-2 mt-3">
+        <button class="btn btn-primary btn-sm" onclick="addEditItem()">➕ افزودن آیتم</button>
+        <button class="btn btn-danger btn-sm" onclick="removeEditItem()">🗑️ حذف آیتم انتخاب شده</button>
+      </div>
+      <div class="divider"></div>
+      <div class="row-center" style="justify-content:space-between">
+        <div><span class="text-muted">جمع کل:</span> <span id="edit-total" class="font-bold text-accent" style="font-size:18px">۰ ریال</span></div>
+        <div class="row-center gap-2">
+          <button class="btn btn-secondary" onclick="closeOrderEditModal()">انصراف</button>
+          <button class="btn btn-success" onclick="saveOrderEdit()">💾 ذخیره تغییرات</button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -1649,13 +1670,17 @@
       <div style="font-weight:600;margin-bottom:8px">📋 اقلام سفارش</div>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>خدمت</th><th>تعداد</th><th>قیمت واحد</th><th>تخفیف %</th><th>تخفیف ریالی</th><th>جمع</th></tr></thead>
+          <thead><tr><th>خدمت</th><th>تعداد</th><th>قیمت واحد</th><th>تخفیف %</th><th>تخفیف ریالی</th><th>تخفیف مجموع</th><th>جمع</th></tr></thead>
           <tbody id="detail-items"></tbody>
         </table>
       </div>
       <div class="row-center" style="justify-content:space-between;margin-top:12px">
-        <div><span class="text-muted">جمع کل:</span> <span id="detail-total" class="font-bold text-accent" style="font-size:18px">۰ ریال</span></div>
+        <div>
+          <span class="text-muted">جمع کل:</span> <span id="detail-total" class="font-bold text-accent" style="font-size:18px">۰ ریال</span>
+          <span style="margin-right:12px;font-size:11px;color:var(--muted)">(سود: <span id="detail-profit" style="color:var(--success);font-weight:600">۰ ریال</span>)</span>
+        </div>
         <div class="row-center gap-2">
+          <button class="btn btn-warning btn-sm" onclick="editOrderFromDetail()">✏️ ویرایش</button>
           <button class="btn btn-primary btn-sm" onclick="printInvoice()">🖨️ چاپ فاکتور</button>
         </div>
       </div>
@@ -1947,7 +1972,6 @@ const DB = {
 };
 
 function initDB() {
-  // ====== سرویس‌های پیش‌فرض ======
   if (!DB.get('services')) DB.set('services', [
     {id:1,name:'استفاده از سیستم',category:'سیستم',price:50000,stock:20},
     {id:2,name:'پرینت سیاه‌سفید',category:'پرینت',price:5000,stock:999},
@@ -1969,14 +1993,12 @@ function initDB() {
     {id:18,name:'رایت CD/DVD',category:'خدمات فایل',price:30000,stock:999},
   ]);
 
-  // ====== مشتریان پیش‌فرض با کد ملی و اطلاعات بیشتر ======
   if (!DB.get('customers')) DB.set('customers', [
     {id:1,first_name:'علی',last_name:'احمدی',phone:'09121234567',national:'1234567890',address:'تهران',debt:0,info:'مشتری دائمی',join_date:today()},
     {id:2,first_name:'مریم',last_name:'رضایی',phone:'09351234567',national:'0987654321',address:'تهران',debt:50000,info:'نیاز به پیگیری',join_date:today()},
     {id:3,first_name:'محمد',last_name:'کریمی',phone:'09123456789',national:'1122334455',address:'اصفهان',debt:0,info:'',join_date:today()},
   ]);
 
-  // ====== تعرفه‌های پیش‌فرض ======
   if (!DB.get('tariffs')) DB.set('tariffs', [
     {id:1,name:'استفاده از سیستم',description:'هر ساعت',price:50000,unit:'ساعت',active:'فعال'},
     {id:2,name:'پرینت A4 سیاه‌سفید',description:'هر برگ',price:5000,unit:'برگ',active:'فعال'},
@@ -1988,14 +2010,12 @@ function initDB() {
     {id:8,name:'گیمینگ',description:'بازی آنلاین',price:80000,unit:'ساعت',active:'فعال'},
   ]);
 
-  // ====== اطلاعیه‌های پیش‌فرض ======
   if (!DB.get('internal_news')) DB.set('internal_news', [
     {id:1,title:'شروع ثبت‌نام کنکور سراسری ۱۴۰۴',content:'ثبت‌نام کنکور سراسری از امروز آغاز شد. مدارک لازم: کارت ملی، شناسنامه، مدرک تحصیلی. هزینه ۱۵۰ هزار تومان.',category:'ثبت نام',date:today(),priority:'فوری',pinned:true,active:true},
     {id:2,title:'آزمون استخدامی دستگاه‌های اجرایی',content:'ثبت‌نام آزمون استخدامی تا پایان هفته ادامه دارد.',category:'ثبت نام',date:today(),priority:'بالا',pinned:true,active:true},
     {id:3,title:'تخفیف ویژه پرینت و فتوکپی',content:'تا پایان این ماه پرینت سیاه‌سفید ۵۰٪ تخفیف.',category:'تخفیف',date:today(),priority:'متوسط',pinned:false,active:true},
   ]);
 
-  // ====== راهنماهای پیش‌فرض ======
   if (!DB.get('tips')) DB.set('tips', [
     {id:1,folder:'کنکور و آموزش',title:'ثبت‌نام کنکور سراسری',url:'https://sanjesh.org',
      body:'مرحله ۱: وارد سایت sanjesh.org شوید\nمرحله ۲: روی گزینه «ثبت‌نام» کلیک کنید\nمرحله ۳: کد ملی و اطلاعات شناسنامه‌ای را وارد کنید\nمرحله ۴: رشته و شهر محل سکونت را انتخاب کنید\nمرحله ۵: مدرک تحصیلی و اطلاعات آموزشی را وارد نمایید\nمرحله ۶: عکس ۳×۴ را با فرمت JPG آپلود کنید\nمرحله ۷: هزینه ثبت‌نام را از طریق درگاه پرداخت کنید\nمرحله ۸: کد رهگیری را دریافت و نگهداری کنید',
@@ -2008,7 +2028,6 @@ function initDB() {
      images:[],date:today()},
   ]);
 
-  // ====== سفارش‌های پیش‌فرض ======
   if (!DB.get('orders')) DB.set('orders', []);
   if (!DB.get('order_items')) DB.set('order_items', []);
 }
@@ -2040,7 +2059,7 @@ function setSyncStatus(status, msg) {
 }
 
 // ============================================
-// CUSTOMER SEARCH (جستجوی مشتری در فاکتور)
+// CUSTOMER SEARCH
 // ============================================
 let selectedCustomer = null;
 
@@ -2116,7 +2135,6 @@ function selectCustomer(id) {
   document.getElementById('selected-cust-phone').textContent = cust.phone ? '📱 ' + cust.phone : '';
   document.getElementById('selected-cust-national').textContent = cust.national ? '🆔 ' + cust.national : '';
   
-  // به‌روزرسانی انتخاب در کشوی مشتری (برای ثبت سفارش)
   const orderSelect = document.getElementById('order-cust');
   if (orderSelect) {
     orderSelect.value = cust.id;
@@ -2132,7 +2150,6 @@ function clearSelectedCustomer() {
   document.getElementById('customer-dropdown').classList.remove('show');
 }
 
-// مخفی کردن دراپ‌داون با کلیک بیرون
 document.addEventListener('click', function(e) {
   const wrap = document.querySelector('.customer-search-wrap');
   if (wrap && !wrap.contains(e.target)) {
@@ -2141,7 +2158,7 @@ document.addEventListener('click', function(e) {
 });
 
 // ============================================
-// DRAG & DROP - جابجایی ردیف‌ها
+// DRAG & DROP
 // ============================================
 let dragState = {
   sourceTable: null,
@@ -2322,7 +2339,7 @@ function loadDashboard() {
 }
 
 // ============================================
-// SERVICES (با قابلیت جابجایی)
+// SERVICES
 // ============================================
 let selService = null;
 let allServices = [];
@@ -2401,7 +2418,7 @@ function filterServices(q) {
 }
 
 // ============================================
-// TARIFFS (با قابلیت جابجایی)
+// TARIFFS
 // ============================================
 let selTariff = null;
 
@@ -2465,7 +2482,7 @@ function deleteTariff() {
 }
 
 // ============================================
-// CUSTOMERS (با تعداد خرید)
+// CUSTOMERS
 // ============================================
 let selCust = null;
 let allCustomers = [];
@@ -2561,13 +2578,14 @@ function filterCustomers(q) {
 }
 
 // ============================================
-// ORDERS (با تخفیف درصدی و ریالی)
+// ORDERS
 // ============================================
 let cart = [];
 let allOrders = [];
 let selProd = null;
 let editingOrderId = null;
 let viewedOrderId = null;
+let editItems = [];
 
 function loadOrderPage() {
   const custs = DB.get('customers')||[];
@@ -2576,7 +2594,6 @@ function loadOrderPage() {
   custs.forEach(c=>{ const o=document.createElement('option'); o.value=c.id; o.textContent=c.first_name+' '+c.last_name; sel.appendChild(o); });
   loadOrders();
   
-  // انتخاب مشتری قبلی
   if (selectedCustomer) {
     document.getElementById('order-cust').value = selectedCustomer.id;
     document.getElementById('customer-search-input').value = selectedCustomer.first_name + ' ' + selectedCustomer.last_name;
@@ -2601,7 +2618,7 @@ function renderOrders(data) {
   if (!data.length) { tbody.innerHTML='<tr class="empty-row"><td colspan="6">هیچ سفارشی ثبت نشده</td></tr>'; return; }
   [...data].reverse().forEach(o=>{
     const statusClass = o.status==='لغو شده'?'badge-danger':o.status==='در انتظار'?'badge-warning':o.status==='مرجوعی'?'badge-muted':'badge-success';
-    tbody.innerHTML += `<tr onclick="showOrderDetail(${o.id})" style="cursor:pointer">
+    tbody.innerHTML += `<tr>
       <td>${o.id}</td>
       <td>${o.date||'-'}</td>
       <td>${custMap[o.customer_id]||'-'}</td>
@@ -2609,7 +2626,7 @@ function renderOrders(data) {
       <td><span class="badge ${statusClass}">${o.status||'تکمیل شده'}</span></td>
       <td>
         <div class="order-actions" onclick="event.stopPropagation()">
-          <button class="btn btn-secondary btn-sm" onclick="editOrder(${o.id})">✏️</button>
+          <button class="btn btn-secondary btn-sm" onclick="editOrderFromList(${o.id})">✏️</button>
           <button class="btn btn-danger btn-sm" onclick="deleteOrder(${o.id})">🗑️</button>
         </div>
       </td>
@@ -2650,6 +2667,7 @@ function addToCart() {
   const unitPrice = selProd.price;
   let afterPercentDiscount = Math.round(unitPrice * (1 - discountPercent / 100));
   let finalUnitPrice = Math.max(0, afterPercentDiscount - discountAmount);
+  const totalDiscount = unitPrice - finalUnitPrice;
   const sub = finalUnitPrice * qty;
   
   const existing = cart.find(c=>c.product_id===selProd.id && c.discount_percent===discountPercent && c.discount_amount===discountAmount);
@@ -2664,6 +2682,7 @@ function addToCart() {
       unit_price:unitPrice,
       discount_percent:discountPercent,
       discount_amount:discountAmount,
+      total_discount:totalDiscount,
       final_unit_price:finalUnitPrice,
       subtotal:sub
     });
@@ -2680,14 +2699,16 @@ function addToCart() {
 function refreshCart() {
   const tbody = document.getElementById('cart-tbody');
   tbody.innerHTML = '';
-  if (!cart.length) { tbody.innerHTML='<tr class="empty-row"><td colspan="7">سبد خالی است</td></tr>'; document.getElementById('cart-total').textContent='جمع کل: ۰ ریال'; return; }
+  if (!cart.length) { tbody.innerHTML='<tr class="empty-row"><td colspan="8">سبد خالی است</td></tr>'; document.getElementById('cart-total').textContent='جمع کل: ۰ ریال'; return; }
   cart.forEach((item,i)=>{
+    const totalDiscount = (item.discount_percent || 0) + (item.discount_amount || 0);
     tbody.innerHTML += `<tr>
       <td>${item.product_name}</td>
       <td>${item.qty}</td>
       <td>${fmtNum(item.unit_price)}</td>
       <td>${item.discount_percent}%</td>
       <td>${fmtNum(item.discount_amount)}</td>
+      <td>${fmtNum(totalDiscount)}</td>
       <td>${fmtNum(item.subtotal)}</td>
       <td><button class="btn btn-danger btn-sm" onclick="removeCartItem(${i})">✕</button></td>
     </tr>`;
@@ -2714,14 +2735,27 @@ function submitOrder() {
   toast('سفارش ثبت شد 🎉','success');
 }
 
-function editOrder(id) {
+// ============================================
+// ORDER EDIT (ویرایش کامل فاکتور)
+// ============================================
+function editOrderFromList(id) {
   const orders = DB.get('orders')||[];
   const order = orders.find(o=>o.id===id);
   if (!order) { toast('سفارش یافت نشد','danger'); return; }
   editingOrderId = id;
-  
-  const sel = document.getElementById('order-edit-cust');
+  openOrderEditModal(order);
+}
+
+function editOrderFromDetail() {
+  if (viewedOrderId) {
+    editOrderFromList(viewedOrderId);
+    closeOrderDetailModal();
+  }
+}
+
+function openOrderEditModal(order) {
   const custs = DB.get('customers')||[];
+  const sel = document.getElementById('order-edit-cust');
   sel.innerHTML = '';
   custs.forEach(c=>{
     const o = document.createElement('option');
@@ -2731,18 +2765,97 @@ function editOrder(id) {
     sel.appendChild(o);
   });
   
+  document.getElementById('edit-order-id').textContent = '#'+order.id;
   document.getElementById('order-edit-date').value = order.date ? order.date.replace(' ', 'T').slice(0,16) : '';
   document.getElementById('order-edit-status').value = order.status||'تکمیل شده';
+  
+  const items = DB.get('order_items')||[];
+  editItems = items.filter(i=>i.order_id===order.id).map(i=>({...i, _selected:false}));
+  renderEditItems();
+  updateEditTotal();
   document.getElementById('order-edit-modal').classList.add('open');
+}
+
+function renderEditItems() {
+  const tbody = document.getElementById('edit-items-tbody');
+  tbody.innerHTML = '';
+  if (!editItems.length) {
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="7">هیچ آیتمی وجود ندارد</td></tr>';
+    return;
+  }
+  editItems.forEach((item, idx)=>{
+    const tr = document.createElement('tr');
+    tr.className = item._selected ? 'selected' : '';
+    tr.dataset.idx = idx;
+    tr.onclick = function() {
+      editItems.forEach(i=>i._selected=false);
+      editItems[idx]._selected = true;
+      renderEditItems();
+    };
+    const totalDiscount = (item.discount_percent || 0) + (item.discount_amount || 0);
+    tr.innerHTML = `
+      <td><input style="width:100%;padding:4px;border:1px solid var(--border);border-radius:4px;background:var(--surface2);color:var(--text);font-family:inherit;font-size:12px;" value="${item.product_name}" onchange="editItems[${idx}].product_name=this.value"></td>
+      <td><input style="width:60px;padding:4px;border:1px solid var(--border);border-radius:4px;background:var(--surface2);color:var(--text);font-family:inherit;font-size:12px;text-align:center;" type="number" value="${item.qty}" min="1" onchange="editItems[${idx}].qty=+this.value;updateEditTotal();"></td>
+      <td><input style="width:80px;padding:4px;border:1px solid var(--border);border-radius:4px;background:var(--surface2);color:var(--text);font-family:inherit;font-size:12px;text-align:center;" type="number" value="${item.unit_price}" min="0" onchange="editItems[${idx}].unit_price=+this.value;updateEditTotal();"></td>
+      <td><input style="width:60px;padding:4px;border:1px solid var(--border);border-radius:4px;background:var(--surface2);color:var(--text);font-family:inherit;font-size:12px;text-align:center;" type="number" value="${item.discount_percent||0}" min="0" max="100" onchange="editItems[${idx}].discount_percent=+this.value;updateEditTotal();"></td>
+      <td><input style="width:80px;padding:4px;border:1px solid var(--border);border-radius:4px;background:var(--surface2);color:var(--text);font-family:inherit;font-size:12px;text-align:center;" type="number" value="${item.discount_amount||0}" min="0" onchange="editItems[${idx}].discount_amount=+this.value;updateEditTotal();"></td>
+      <td id="edit-item-subtotal-${idx}">${fmtNum(item.subtotal)}</td>
+      <td><button class="btn btn-danger btn-sm" onclick="removeEditItem(${idx})">✕</button></td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function updateEditTotal() {
+  editItems.forEach((item, idx) => {
+    let afterPercent = Math.round(item.unit_price * (1 - (item.discount_percent||0) / 100));
+    let finalPrice = Math.max(0, afterPercent - (item.discount_amount||0));
+    item.subtotal = finalPrice * (item.qty||1);
+    const subEl = document.getElementById('edit-item-subtotal-'+idx);
+    if (subEl) subEl.textContent = fmtNum(item.subtotal);
+  });
+  const total = editItems.reduce((s,i)=>s+(i.subtotal||0),0);
+  document.getElementById('edit-total').textContent = fmtNum(total)+' ریال';
+}
+
+function addEditItem() {
+  editItems.push({
+    product_id: 0,
+    product_name: 'خدمت جدید',
+    qty: 1,
+    unit_price: 0,
+    discount_percent: 0,
+    discount_amount: 0,
+    subtotal: 0,
+    _selected: false
+  });
+  renderEditItems();
+  updateEditTotal();
+}
+
+function removeEditItem(idx) {
+  if (idx !== undefined) {
+    editItems.splice(idx, 1);
+  } else {
+    const selectedIdx = editItems.findIndex(i=>i._selected);
+    if (selectedIdx === -1) { toast('یک آیتم انتخاب کنید','danger'); return; }
+    if (!confirm('این آیتم حذف شود؟')) return;
+    editItems.splice(selectedIdx, 1);
+  }
+  renderEditItems();
+  updateEditTotal();
 }
 
 function closeOrderEditModal() {
   document.getElementById('order-edit-modal').classList.remove('open');
   editingOrderId = null;
+  editItems = [];
 }
 
 function saveOrderEdit() {
   if (!editingOrderId) return;
+  if (!editItems.length) { toast('حداقل یک آیتم باید وجود داشته باشد','danger'); return; }
+  
   const orders = DB.get('orders')||[];
   const order = orders.find(o=>o.id===editingOrderId);
   if (!order) { toast('خطا','danger'); return; }
@@ -2750,32 +2863,22 @@ function saveOrderEdit() {
   order.customer_id = +document.getElementById('order-edit-cust').value;
   order.date = document.getElementById('order-edit-date').value.replace('T', ' ');
   order.status = document.getElementById('order-edit-status').value;
+  order.total = editItems.reduce((s,i)=>s+(i.subtotal||0),0);
+  
+  let allItems = DB.get('order_items')||[];
+  allItems = allItems.filter(i=>i.order_id!==editingOrderId);
+  editItems.forEach(i=>{
+    delete i._selected;
+    i.order_id = editingOrderId;
+    allItems.push(i);
+  });
   
   DB.set('orders', orders);
+  DB.set('order_items', allItems);
   closeOrderEditModal();
   loadOrders();
   autoSync();
-  toast('سفارش ویرایش شد ✅', 'success');
-}
-
-function deleteOrder(id) {
-  if (!confirm('آیا این سفارش حذف شود؟')) return;
-  let orders = DB.get('orders')||[];
-  orders = orders.filter(o=>o.id!==id);
-  DB.set('orders', orders);
-  let items = DB.get('order_items')||[];
-  items = items.filter(i=>i.order_id!==id);
-  DB.set('order_items', items);
-  loadOrders();
-  autoSync();
-  toast('سفارش حذف شد', 'success');
-}
-
-function filterOrders(q) {
-  const nq = norm(q);
-  const custs = DB.get('customers')||[];
-  const custMap = {}; custs.forEach(c=>custMap[c.id]=c.first_name+' '+c.last_name);
-  renderOrders(nq ? allOrders.filter(o=>norm(custMap[o.customer_id]||'').includes(nq)||String(o.id).includes(nq)) : allOrders);
+  toast('سفارش با موفقیت ویرایش شد ✅', 'success');
 }
 
 // ============================================
@@ -2809,21 +2912,30 @@ function showOrderDetail(id) {
   const tbody = document.getElementById('detail-items');
   tbody.innerHTML = '';
   if (!orderItems.length) {
-    tbody.innerHTML = '<tr class="empty-row"><td colspan="6">هیچ آیتمی وجود ندارد</td></tr>';
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="7">هیچ آیتمی وجود ندارد</td></tr>';
   } else {
     orderItems.forEach(item=>{
+      const totalDiscount = (item.discount_percent||0) + (item.discount_amount||0);
       tbody.innerHTML += `<tr>
         <td>${item.product_name}</td>
         <td>${item.qty}</td>
         <td>${fmtNum(item.unit_price)}</td>
         <td>${item.discount_percent||0}%</td>
         <td>${fmtNum(item.discount_amount||0)}</td>
+        <td>${fmtNum(totalDiscount)}</td>
         <td>${fmtNum(item.subtotal)}</td>
       </tr>`;
     });
   }
   
-  document.getElementById('detail-total').textContent = fmtNum(order.total)+' ریال';
+  const total = orderItems.reduce((s,i)=>s+(i.subtotal||0),0);
+  document.getElementById('detail-total').textContent = fmtNum(total)+' ریال';
+  
+  // محاسبه سود (فرض می‌کنیم هزینه تمام شده 60% قیمت فروش است)
+  const cost = orderItems.reduce((s,i)=>s+(i.unit_price * i.qty * 0.6),0);
+  const profit = total - cost;
+  document.getElementById('detail-profit').textContent = fmtNum(Math.max(0, profit))+' ریال';
+  
   document.getElementById('order-detail-modal').classList.add('open');
 }
 
@@ -2832,8 +2944,28 @@ function closeOrderDetailModal() {
   viewedOrderId = null;
 }
 
+function deleteOrder(id) {
+  if (!confirm('آیا این سفارش حذف شود؟')) return;
+  let orders = DB.get('orders')||[];
+  orders = orders.filter(o=>o.id!==id);
+  DB.set('orders', orders);
+  let items = DB.get('order_items')||[];
+  items = items.filter(i=>i.order_id!==id);
+  DB.set('order_items', items);
+  loadOrders();
+  autoSync();
+  toast('سفارش حذف شد', 'success');
+}
+
+function filterOrders(q) {
+  const nq = norm(q);
+  const custs = DB.get('customers')||[];
+  const custMap = {}; custs.forEach(c=>custMap[c.id]=c.first_name+' '+c.last_name);
+  renderOrders(nq ? allOrders.filter(o=>norm(custMap[o.customer_id]||'').includes(nq)||String(o.id).includes(nq)) : allOrders);
+}
+
 // ============================================
-// INVOICE PRINT (با لوگو)
+// INVOICE PRINT
 // ============================================
 function printInvoice() {
   if (!viewedOrderId) { toast('سفارشی انتخاب نشده','danger'); return; }
@@ -2850,6 +2982,9 @@ function printInvoice() {
   
   const items = DB.get('order_items')||[];
   const orderItems = items.filter(i=>i.order_id===viewedOrderId);
+  const total = orderItems.reduce((s,i)=>s+(i.subtotal||0),0);
+  const cost = orderItems.reduce((s,i)=>s+(i.unit_price * i.qty * 0.6),0);
+  const profit = total - cost;
   
   let html = `
   <div class="invoice-print" style="max-width:800px;margin:0 auto;background:white;padding:30px;font-family:'Vazirmatn',Tahoma,sans-serif;direction:rtl;">
@@ -2888,6 +3023,7 @@ function printInvoice() {
           <th>قیمت واحد</th>
           <th>تخفیف %</th>
           <th>تخفیف ریالی</th>
+          <th>تخفیف مجموع</th>
           <th>جمع</th>
         </tr>
       </thead>
@@ -2895,6 +3031,7 @@ function printInvoice() {
   `;
   
   orderItems.forEach((item, idx) => {
+    const totalDiscount = (item.discount_percent||0) + (item.discount_amount||0);
     html += `
       <tr>
         <td>${idx+1}</td>
@@ -2903,12 +3040,11 @@ function printInvoice() {
         <td>${fmtNum(item.unit_price)}</td>
         <td>${item.discount_percent||0}%</td>
         <td>${fmtNum(item.discount_amount||0)}</td>
+        <td>${fmtNum(totalDiscount)}</td>
         <td>${fmtNum(item.subtotal)}</td>
       </tr>
     `;
   });
-  
-  const total = orderItems.reduce((s,i)=>s+(i.subtotal||0),0);
   
   html += `
       </tbody>
@@ -2917,6 +3053,7 @@ function printInvoice() {
     <div class="invoice-total">
       <span>جمع کل:</span>
       <span>${fmtNum(total)} ریال</span>
+      <span style="color:var(--success);font-size:12px;">(سود: ${fmtNum(Math.max(0, profit))} ریال)</span>
     </div>
     
     <div class="invoice-signature">
@@ -2935,7 +3072,7 @@ function printInvoice() {
   container.innerHTML = html;
   container.style.display = 'block';
   
-  const printWindow = window.open('', '_blank', 'width=800,height=600');
+  const printWindow = window.open('', '_blank', 'width=900,height=700');
   if (!printWindow) {
     toast('لطفاً باز شدن پنجره را مجاز کنید', 'danger');
     return;
@@ -2951,7 +3088,7 @@ function printInvoice() {
         @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700;800&display=swap');
         * { margin:0; padding:0; box-sizing:border-box; }
         body { font-family:'Vazirmatn',Tahoma,sans-serif; padding:20px; background:#f0f0f0; }
-        .invoice-print { max-width:800px; margin:0 auto; background:white; padding:30px; border-radius:12px; box-shadow:0 4px 20px rgba(0,0,0,0.1); }
+        .invoice-print { max-width:900px; margin:0 auto; background:white; padding:30px; border-radius:12px; box-shadow:0 4px 20px rgba(0,0,0,0.1); }
         .invoice-header { display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #1A56C4; padding-bottom:16px; margin-bottom:16px; }
         .invoice-logo { display:flex; align-items:center; gap:12px; }
         .invoice-logo-icon { width:60px; height:60px; border-radius:14px; display:flex; align-items:center; justify-content:center; overflow:hidden; border:2px solid #1A56C4; }
@@ -2960,9 +3097,9 @@ function printInvoice() {
         .invoice-shop-sub { font-size:12px; color:#7B849E; }
         .invoice-title { font-size:18px; font-weight:700; color:#1A56C4; text-align:left; }
         .invoice-info { display:flex; justify-content:space-between; font-size:12px; color:#3D4461; margin-bottom:12px; padding:8px 0; border-bottom:1px dashed #D6DCE9; }
-        .invoice-table { width:100%; border-collapse:collapse; font-size:12px; margin:12px 0; }
-        .invoice-table th { background:#F4F6FB; color:#1A56C4; padding:8px 10px; border:1px solid #D6DCE9; text-align:center; font-size:11px; }
-        .invoice-table td { padding:6px 10px; border:1px solid #D6DCE9; text-align:center; color:#1A1F36; }
+        .invoice-table { width:100%; border-collapse:collapse; font-size:11px; margin:12px 0; }
+        .invoice-table th { background:#F4F6FB; color:#1A56C4; padding:6px 8px; border:1px solid #D6DCE9; text-align:center; font-size:10px; }
+        .invoice-table td { padding:5px 8px; border:1px solid #D6DCE9; text-align:center; color:#1A1F36; }
         .invoice-total { display:flex; justify-content:flex-end; gap:20px; font-size:14px; font-weight:600; padding-top:12px; border-top:2px solid #1A56C4; margin-top:12px; }
         .invoice-signature { display:flex; justify-content:space-between; margin-top:12px; font-size:12px; color:#3D4461; }
         .invoice-footer { text-align:center; font-size:11px; color:#7B849E; margin-top:16px; border-top:1px solid #D6DCE9; padding-top:10px; }
@@ -2986,7 +3123,7 @@ function printInvoice() {
 }
 
 // ============================================
-// TIPS (به اختصار)
+// TIPS
 // ============================================
 let currentNote = null;
 let editingNote = null;
@@ -3236,7 +3373,7 @@ function filterNews(q) {
 }
 
 // ============================================
-// REPORTS (به اختصار)
+// REPORTS
 // ============================================
 let repAllData = [];
 let repCols = [];
@@ -3537,9 +3674,9 @@ console.log('   🔑 توکن را در صفحه ورود وارد کنید (ا�
 console.log('📌 امکانات جدید:');
 console.log('   🔍 جستجوی مشتری با نام، کد ملی و شماره موبایل');
 console.log('   💰 تخفیف درصدی + تخفیف ریالی همزمان');
-console.log('   👁️ نمایش جزئیات سفارش با کلیک');
-console.log('   🖨️ چاپ فاکتور رسمی با لوگو');
-console.log('   📊 تعداد خرید هر مشتری در جدول مشتریان');
+console.log('   📊 نمایش تخفیف مجموع در سبد خرید و فاکتور');
+console.log('   ✏️ ویرایش کامل فاکتور با امکان تغییر اقلام');
+console.log('   💰 نمایش سود در فاکتور');
 </script>
 </body>
 </html>
