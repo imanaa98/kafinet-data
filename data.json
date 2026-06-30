@@ -85,19 +85,7 @@
       "stock": 99999999999999
     }
   ],
-  "customers": [
-    {
-      "id": 4,
-      "first_name": "سعید",
-      "last_name": "خراسانی",
-      "phone": "",
-      "national": "",
-      "debt": 0,
-      "address": "",
-      "info": "",
-      "join_date": "۱۴۰۵/۴/۹"
-    }
-  ],
+  "customers": [],
   "orders": [
     {
       "id": 2,
@@ -122,5 +110,5 @@
   "tariffs": [],
   "internal_news": [],
   "tips": [],
-  "last_update": "۱۴۰۵/۴/۹،‏ ۱۲:۰۵:۴۹"
+  "last_update": "۱۴۰۵/۴/۹،‏ ۱۲:۰۶:۱۸"
 }
