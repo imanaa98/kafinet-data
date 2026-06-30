@@ -143,6 +143,16 @@
   ],
   "tariffs": [],
   "internal_news": [],
-  "tips": [],
-  "last_update": "۱۴۰۵/۴/۹،‏ ۱۱:۳۷:۵۳"
+  "tips": [
+    {
+      "id": 1,
+      "title": "تست",
+      "folder": "تست",
+      "body": "تست",
+      "url": "تست",
+      "images": [],
+      "date": "۱۴۰۵/۴/۹"
+    }
+  ],
+  "last_update": "۱۴۰۵/۴/۹،‏ ۱۱:۳۸:۰۸"
 }
