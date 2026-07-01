@@ -118,6 +118,13 @@
       "category": "کپی",
       "price": 48000,
       "stock": 999
+    },
+    {
+      "id": 19,
+      "name": "پرینت سیاه‌ سفید تک رو a5",
+      "category": "پرینت",
+      "price": 40000,
+      "stock": 999
     }
   ],
   "customers": [
@@ -264,5 +271,5 @@
   "tariffs": [],
   "internal_news": [],
   "tips": [],
-  "last_update": "۱۴۰۵/۴/۱۰،‏ ۱۱:۳۲:۱۳"
+  "last_update": "۱۴۰۵/۴/۱۰،‏ ۱۱:۳۴:۱۰"
 }
