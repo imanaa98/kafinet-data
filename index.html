@@ -3,15 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-<!-- ====== PWA / HOME SCREEN ====== -->
 <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogItmF2YbYt9in2YQg2YXYp9mG2K8iLAogICJzaG9ydF9uYW1lIjogItmF2YbYt9in2YQiLAogICJkZXNjcmlwdGlvbiI6ICLZhNmF2YbYr9in2YTYqCDYp9mE2YHYp9mG2K8g2YXYp9mG2K8iLAogICJzdGFydF91cmwiOiAiLiIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiIzFBNTZDNCIsCiAgInRoZW1lX2NvbG9yIjogIiMxQTU2QzQiLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJsb2dvLnBuZyIsCiAgICAgICJzaXplcyI6ICIxOTJ4MTkyIiwKICAgICAgInR5cGUiOiAiaW1hZ2UvcG5nIiwKICAgICAgInB1cnBvc2UiOiAiYW55IgogICAgfSwKICAgIHsKICAgICAgInNyYyI6ICJsb2dvLnBuZyIsCiAgICAgICJzaXplcyI6ICI1MTJ4NTEyIiwKICAgICAgInR5cGUiOiAiaW1hZ2UvcG5nIiwKICAgICAgInB1cnBvc2UiOiAiYW55IgogICAgfQogIF0KfQ==">
-
 <link rel="icon" href="logo.png" type="image/png">
 <link rel="apple-touch-icon" href="logo.png">
-
 <title>کافینت چنار</title>
-
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap');
 
@@ -411,7 +406,8 @@
     border-radius: var(--radius-sm);
     background: var(--surface2);
     color: var(--text);
-    font-family: inherit; font-size: 13px;
+    font-family: inherit;
+    font-size: 13px;
     outline: none;
     transition: border-color 0.15s;
     width: 100%;
@@ -1177,6 +1173,13 @@
     color: #1A7F4B !important;
     font-weight: 700 !important;
   }
+  
+  /* Persian DatePicker for edit order */
+  .persian-date-input {
+    font-family: 'Vazirmatn', Tahoma, sans-serif !important;
+    direction: rtl !important;
+    text-align: center !important;
+  }
 </style>
 </head>
 <body>
@@ -1651,7 +1654,10 @@
       <div class="row-center mb-3">
         <div class="field" style="flex:1"><label>شماره سفارش</label><div id="edit-order-id" style="font-weight:700;font-size:16px">-</div></div>
         <div class="field" style="flex:1"><label>مشتری</label><select id="order-edit-cust"></select></div>
-        <div class="field" style="flex:1"><label>تاریخ</label><input id="order-edit-date" type="datetime-local"></div>
+        <div class="field" style="flex:1"><label>تاریخ و ساعت (شمسی)</label>
+          <input id="order-edit-date" class="persian-date-input" placeholder="مثال: 1403/01/15 14:30" 
+                 onfocus="this.type='text'" onblur="this.type='text'">
+        </div>
         <div class="field" style="flex:1"><label>وضعیت</label><select id="order-edit-status"><option>تکمیل شده</option><option>در انتظار</option><option>لغو شده</option><option>مرجوعی</option></select></div>
       </div>
       <div class="divider"></div>
@@ -2856,30 +2862,11 @@ function openOrderEditModal(order) {
   
   document.getElementById('edit-order-id').textContent = '#'+order.id;
   
-  // تنظیم تاریخ به فرمت صحیح برای input type datetime-local
+  // تنظیم تاریخ به فرمت شمسی برای نمایش در فیلد متنی
   if (order.date) {
-    const dateStr = order.date;
-    // تبدیل فرمت '1403/01/15 14:30:25' به '2024-04-04T14:30'
-    const parts = dateStr.split(' ');
-    if (parts.length === 2) {
-      const dateParts = parts[0].split('/');
-      const timeParts = parts[1].split(':');
-      if (dateParts.length === 3 && timeParts.length >= 2) {
-        // تبدیل سال شمسی به میلادی (تقریبی)
-        const year = parseInt(dateParts[0]) + 621;
-        const month = String(parseInt(dateParts[1])).padStart(2, '0');
-        const day = String(parseInt(dateParts[2])).padStart(2, '0');
-        const hour = String(parseInt(timeParts[0])).padStart(2, '0');
-        const min = String(parseInt(timeParts[1])).padStart(2, '0');
-        document.getElementById('order-edit-date').value = `${year}-${month}-${day}T${hour}:${min}`;
-      } else {
-        document.getElementById('order-edit-date').value = '';
-      }
-    } else {
-      document.getElementById('order-edit-date').value = '';
-    }
+    document.getElementById('order-edit-date').value = order.date;
   } else {
-    document.getElementById('order-edit-date').value = '';
+    document.getElementById('order-edit-date').value = nowStr();
   }
   
   document.getElementById('order-edit-status').value = order.status||'تکمیل شده';
@@ -2976,19 +2963,23 @@ function saveOrderEdit() {
   
   order.customer_id = +document.getElementById('order-edit-cust').value;
   
-  // دریافت تاریخ از input و تبدیل به فرمت ذخیره
-  const dateInput = document.getElementById('order-edit-date').value;
-  if (dateInput) {
-    const d = new Date(dateInput);
-    const year = d.getFullYear();
-    const month = String(d.getMonth() + 1).padStart(2, '0');
-    const day = String(d.getDate()).padStart(2, '0');
-    const hours = String(d.getHours()).padStart(2, '0');
-    const mins = String(d.getMinutes()).padStart(2, '0');
-    const secs = String(d.getSeconds()).padStart(2, '0');
-    // تبدیل سال میلادی به شمسی (تقریبی)
-    const persianYear = year - 621;
-    order.date = `${persianYear}/${month}/${day} ${hours}:${mins}:${secs}`;
+  // دریافت تاریخ از فیلد متنی به صورت مستقیم (فرمت شمسی)
+  const dateValue = document.getElementById('order-edit-date').value.trim();
+  if (dateValue) {
+    // بررسی فرمت: 1403/01/15 14:30 یا 1403/01/15 14:30:25
+    const parts = dateValue.split(' ');
+    if (parts.length >= 2) {
+      const dateParts = parts[0].split('/');
+      const timeParts = parts[1].split(':');
+      if (dateParts.length === 3 && timeParts.length >= 2) {
+        // فرمت صحیح است
+        order.date = dateValue;
+      } else {
+        order.date = dateValue; // در هر صورت ذخیره شود
+      }
+    } else {
+      order.date = dateValue;
+    }
   } else {
     order.date = nowStr();
   }
@@ -3828,6 +3819,7 @@ console.log('   ✅ تلفن: 086-43220702');
 console.log('   ✅ آدرس: محلات - میدان چنار - پلاک 71');
 console.log('   ✅ سود با رنگ سبز و عنوان "سود شما"');
 console.log('   ✅ تاریخ و ساعت فاکتور به صورت فارسی نمایش داده می‌شود');
+console.log('   ✅ ویرایش سفارش با تاریخ شمسی به صورت دستی و مستقیم');
 </script>
 </body>
 </html>
