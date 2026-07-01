@@ -125,6 +125,13 @@
       "category": "پرینت",
       "price": 40000,
       "stock": 999
+    },
+    {
+      "id": 20,
+      "name": "پرینت سیاه‌ سفید دو رو a5",
+      "category": "پرینت",
+      "price": 50000,
+      "stock": 999
     }
   ],
   "customers": [
@@ -271,5 +278,5 @@
   "tariffs": [],
   "internal_news": [],
   "tips": [],
-  "last_update": "۱۴۰۵/۴/۱۰،‏ ۱۱:۳۴:۱۰"
+  "last_update": "۱۴۰۵/۴/۱۰،‏ ۱۱:۳۴:۲۰"
 }
