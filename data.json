@@ -90,6 +90,13 @@
       "category": "ثبت نام",
       "price": 800000,
       "stock": 999
+    },
+    {
+      "id": 15,
+      "name": "کپی سیاه‌ سفید تک رو a5 مصرف تیونر بالا",
+      "category": "کپی",
+      "price": 50000,
+      "stock": 999
     }
   ],
   "customers": [
@@ -236,5 +243,5 @@
   "tariffs": [],
   "internal_news": [],
   "tips": [],
-  "last_update": "۱۴۰۵/۴/۱۰،‏ ۱۱:۳۰:۵۳"
+  "last_update": "۱۴۰۵/۴/۱۰،‏ ۱۱:۳۱:۰۵"
 }
