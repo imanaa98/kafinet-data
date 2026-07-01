@@ -1171,6 +1171,12 @@
   .drag-handle:hover {
     color: var(--accent);
   }
+  
+  /* رنگ سبز برای سود در فاکتور */
+  .invoice-print .profit-green {
+    color: #1A7F4B !important;
+    font-weight: 700 !important;
+  }
 </style>
 </head>
 <body>
@@ -3141,6 +3147,7 @@ function printInvoice() {
           <div class="invoice-shop-name">کافینت چنار</div>
           <div class="invoice-shop-sub">مرکز خدمات اینترنتی و ثبت‌نام</div>
           <div class="invoice-shop-sub" style="font-size:11px;">📞 086-43220702</div>
+          <div class="invoice-shop-sub" style="font-size:11px;">🏠 محلات - میدان چنار - پلاک 71</div>
         </div>
       </div>
       <div class="invoice-title">فاکتور رسمی</div>
@@ -3194,7 +3201,7 @@ function printInvoice() {
     <div class="invoice-total">
       <span>جمع کل:</span>
       <span>${fmtNum(total)} ریال</span>
-      <span style="color:#C0392B;font-size:12px;">(سود: ${fmtNum(totalProfit)} ریال)</span>
+      <span style="color:#1A7F4B;font-weight:700;font-size:13px;">(سود شما: ${fmtNum(totalProfit)} ریال)</span>
     </div>
     
     <div class="invoice-signature">
@@ -3245,6 +3252,7 @@ function printInvoice() {
         .invoice-table th { background:#F4F6FB; color:#1A56C4; padding:6px 8px; border:1px solid #D6DCE9; text-align:center; font-size:10px; }
         .invoice-table td { padding:5px 8px; border:1px solid #D6DCE9; text-align:center; color:#1A1F36; }
         .invoice-total { display:flex; justify-content:flex-end; gap:20px; font-size:14px; font-weight:600; padding-top:12px; border-top:2px solid #1A56C4; margin-top:12px; }
+        .invoice-total .profit-green { color:#1A7F4B; font-weight:700; }
         .invoice-signature { display:flex; justify-content:space-between; margin-top:12px; font-size:12px; color:#3D4461; }
         .invoice-footer { text-align:center; font-size:11px; color:#7B849E; margin-top:16px; border-top:1px solid #D6DCE9; padding-top:10px; }
         .stamp-container { position:absolute; bottom:80px; left:30px; z-index:10; }
@@ -3815,10 +3823,11 @@ if (savedToken && savedToken !== '') {
   updateLoginStatus('offline', '⛔ منتظر ورود توکن');
 }
 
-console.log('✅ تاریخ در ویرایش فاکتور اصلاح شد');
-console.log('   ✅ تاریخ با فرمت صحیح در input نمایش داده می‌شود');
-console.log('   ✅ تاریخ به فرمت ذخیره شده در دیتابیس تبدیل می‌شود');
-console.log('   ✅ فاکتور در تاریخچه سفارش‌ها نمایش داده می‌شود');
+console.log('✅ فاکتور با موارد درخواستی به‌روز شد:');
+console.log('   ✅ تلفن: 086-43220702');
+console.log('   ✅ آدرس: محلات - میدان چنار - پلاک 71');
+console.log('   ✅ سود با رنگ سبز و عنوان "سود شما"');
+console.log('   ✅ تاریخ و ساعت فاکتور به صورت فارسی نمایش داده می‌شود');
 </script>
 </body>
 </html>
