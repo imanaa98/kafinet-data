@@ -206,7 +206,7 @@
       "last_name": "حیدری",
       "phone": "09181663303",
       "national": "0569746086",
-      "debt": 300000,
+      "debt": 0,
       "address": "",
       "info": "",
       "join_date": "۱۴۰۵/۴/۱۰"
@@ -385,5 +385,5 @@
   "tariffs": [],
   "internal_news": [],
   "tips": [],
-  "last_update": "۱۴۰۵/۴/۱۰،‏ ۱۱:۴۲:۱۲"
+  "last_update": "۱۴۰۵/۴/۱۰،‏ ۱۱:۴۲:۵۳"
 }
