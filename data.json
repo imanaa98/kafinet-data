@@ -111,6 +111,13 @@
       "category": "کپی",
       "price": 38000,
       "stock": 999
+    },
+    {
+      "id": 18,
+      "name": "کپی سیاه‌ سفید دو رو a5",
+      "category": "کپی",
+      "price": 48000,
+      "stock": 999
     }
   ],
   "customers": [
@@ -257,5 +264,5 @@
   "tariffs": [],
   "internal_news": [],
   "tips": [],
-  "last_update": "۱۴۰۵/۴/۱۰،‏ ۱۱:۳۲:۰۳"
+  "last_update": "۱۴۰۵/۴/۱۰،‏ ۱۱:۳۲:۱۳"
 }
