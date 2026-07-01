@@ -2805,7 +2805,8 @@ function submitOrder() {
   const items = DB.get('order_items')||[];
   const oid = nextId(orders);
   const total = cart.reduce((s,c)=>s+c.subtotal,0);
-  orders.push({id:oid,customer_id:custId,date:nowStr(),total,status:'تکمیل شده'});
+  const now = nowStr();
+  orders.push({id:oid,customer_id:custId,date:now,total,status:'تکمیل شده'});
   cart.forEach(c=>items.push({order_id:oid,...c}));
   DB.set('orders',orders); 
   DB.set('order_items',items);
@@ -2848,7 +2849,33 @@ function openOrderEditModal(order) {
   });
   
   document.getElementById('edit-order-id').textContent = '#'+order.id;
-  document.getElementById('order-edit-date').value = order.date ? order.date.replace(' ', 'T').slice(0,16) : '';
+  
+  // تنظیم تاریخ به فرمت صحیح برای input type datetime-local
+  if (order.date) {
+    const dateStr = order.date;
+    // تبدیل فرمت '1403/01/15 14:30:25' به '2024-04-04T14:30'
+    const parts = dateStr.split(' ');
+    if (parts.length === 2) {
+      const dateParts = parts[0].split('/');
+      const timeParts = parts[1].split(':');
+      if (dateParts.length === 3 && timeParts.length >= 2) {
+        // تبدیل سال شمسی به میلادی (تقریبی)
+        const year = parseInt(dateParts[0]) + 621;
+        const month = String(parseInt(dateParts[1])).padStart(2, '0');
+        const day = String(parseInt(dateParts[2])).padStart(2, '0');
+        const hour = String(parseInt(timeParts[0])).padStart(2, '0');
+        const min = String(parseInt(timeParts[1])).padStart(2, '0');
+        document.getElementById('order-edit-date').value = `${year}-${month}-${day}T${hour}:${min}`;
+      } else {
+        document.getElementById('order-edit-date').value = '';
+      }
+    } else {
+      document.getElementById('order-edit-date').value = '';
+    }
+  } else {
+    document.getElementById('order-edit-date').value = '';
+  }
+  
   document.getElementById('order-edit-status').value = order.status||'تکمیل شده';
   
   const items = DB.get('order_items')||[];
@@ -2942,7 +2969,24 @@ function saveOrderEdit() {
   if (!order) { toast('خطا','danger'); return; }
   
   order.customer_id = +document.getElementById('order-edit-cust').value;
-  order.date = document.getElementById('order-edit-date').value.replace('T', ' ');
+  
+  // دریافت تاریخ از input و تبدیل به فرمت ذخیره
+  const dateInput = document.getElementById('order-edit-date').value;
+  if (dateInput) {
+    const d = new Date(dateInput);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    const hours = String(d.getHours()).padStart(2, '0');
+    const mins = String(d.getMinutes()).padStart(2, '0');
+    const secs = String(d.getSeconds()).padStart(2, '0');
+    // تبدیل سال میلادی به شمسی (تقریبی)
+    const persianYear = year - 621;
+    order.date = `${persianYear}/${month}/${day} ${hours}:${mins}:${secs}`;
+  } else {
+    order.date = nowStr();
+  }
+  
   order.status = document.getElementById('order-edit-status').value;
   order.total = editItems.reduce((s,i)=>s+(i.subtotal||0),0);
   
@@ -3096,7 +3140,7 @@ function printInvoice() {
         <div>
           <div class="invoice-shop-name">کافینت چنار</div>
           <div class="invoice-shop-sub">مرکز خدمات اینترنتی و ثبت‌نام</div>
-          <div class="invoice-shop-sub" style="font-size:11px;">📞 ۰۲۱-۱۲۳۴۵۶۷۸</div>
+          <div class="invoice-shop-sub" style="font-size:11px;">📞 086-43220702</div>
         </div>
       </div>
       <div class="invoice-title">فاکتور رسمی</div>
@@ -3771,18 +3815,10 @@ if (savedToken && savedToken !== '') {
   updateLoginStatus('offline', '⛔ منتظر ورود توکن');
 }
 
-console.log('✅ تمام تغییرات اعمال شد:');
-console.log('   ✅ تخفیف هر واحد به جای تخفیف ریالی');
-console.log('   ✅ سود = تخفیف کل = (قیمت اصلی - قیمت نهایی) × تعداد');
-console.log('   ✅ مهر تصویری با فایل stamp.png');
-console.log('   ✅ مهر در پایین فاکتور (سمت چپ)');
-console.log('   ✅ نمایش فاکتور در تاریخچه سفارش‌ها');
-console.log('   ✅ دکمه 👁️ برای مشاهده فاکتور');
-console.log('');
-console.log('📌 برای استفاده از مهر:');
-console.log('   فایل stamp.png را در کنار index.html قرار دهید');
-console.log('   اندازه پیشنهادی: 200×200 یا 300×300 پیکسل');
-console.log('   فرمت: PNG با پس‌زمینه شفاف');
+console.log('✅ تاریخ در ویرایش فاکتور اصلاح شد');
+console.log('   ✅ تاریخ با فرمت صحیح در input نمایش داده می‌شود');
+console.log('   ✅ تاریخ به فرمت ذخیره شده در دیتابیس تبدیل می‌شود');
+console.log('   ✅ فاکتور در تاریخچه سفارش‌ها نمایش داده می‌شود');
 </script>
 </body>
 </html>
