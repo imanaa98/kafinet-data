@@ -241,7 +241,7 @@
     {
       "id": 4,
       "customer_id": 2,
-      "date": "",
+      "date": "1405-04-10 10:00",
       "total": 270000,
       "status": "تکمیل شده"
     }
@@ -359,5 +359,5 @@
   "tariffs": [],
   "internal_news": [],
   "tips": [],
-  "last_update": "۱۴۰۵/۴/۱۰،‏ ۱۱:۳۷:۵۹"
+  "last_update": "۱۴۰۵/۴/۱۰،‏ ۱۱:۳۸:۲۷"
 }
