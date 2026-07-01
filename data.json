@@ -132,6 +132,13 @@
       "category": "پرینت",
       "price": 50000,
       "stock": 999
+    },
+    {
+      "id": 21,
+      "name": "پرینت سیاه‌ سفید تک رو a5 مصرف تیونر بالا",
+      "category": "پرینت",
+      "price": 50000,
+      "stock": 999
     }
   ],
   "customers": [
@@ -278,5 +285,5 @@
   "tariffs": [],
   "internal_news": [],
   "tips": [],
-  "last_update": "۱۴۰۵/۴/۱۰،‏ ۱۱:۳۴:۲۰"
+  "last_update": "۱۴۰۵/۴/۱۰،‏ ۱۱:۳۵:۰۱"
 }
