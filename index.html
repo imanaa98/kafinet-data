@@ -1174,11 +1174,43 @@
     font-weight: 700 !important;
   }
   
-  /* Persian DatePicker for edit order */
+  /* Persian DatePicker for edit order - style to show Persian digits */
   .persian-date-input {
     font-family: 'Vazirmatn', Tahoma, sans-serif !important;
     direction: rtl !important;
     text-align: center !important;
+    font-size: 14px !important;
+    padding: 8px 12px !important;
+    border: 1px solid var(--border) !important;
+    border-radius: var(--radius-sm) !important;
+    background: var(--surface2) !important;
+    color: var(--text) !important;
+    width: 100% !important;
+    min-height: 40px !important;
+    outline: none !important;
+    transition: border-color 0.15s !important;
+  }
+  .persian-date-input:focus {
+    border-color: var(--accent) !important;
+    background: var(--surface) !important;
+  }
+  /* Force Persian digits in input */
+  .persian-date-input::placeholder {
+    font-family: 'Vazirmatn', Tahoma, sans-serif !important;
+    direction: rtl !important;
+  }
+  /* Override browser default date picker */
+  .persian-date-input::-webkit-datetime-edit {
+    font-family: 'Vazirmatn', Tahoma, sans-serif !important;
+    direction: rtl !important;
+    color: var(--text) !important;
+  }
+  .persian-date-input::-webkit-calendar-picker-indicator {
+    filter: invert(0.5);
+    cursor: pointer;
+  }
+  .persian-date-input::-webkit-inner-spin-button {
+    display: none;
   }
 </style>
 </head>
@@ -1655,8 +1687,8 @@
         <div class="field" style="flex:1"><label>شماره سفارش</label><div id="edit-order-id" style="font-weight:700;font-size:16px">-</div></div>
         <div class="field" style="flex:1"><label>مشتری</label><select id="order-edit-cust"></select></div>
         <div class="field" style="flex:1"><label>تاریخ و ساعت (شمسی)</label>
-          <input id="order-edit-date" class="persian-date-input" placeholder="مثال: 1403/01/15 14:30" 
-                 onfocus="this.type='text'" onblur="this.type='text'">
+          <input id="order-edit-date" class="persian-date-input" type="text" placeholder="مثال: ۱۴۰۳/۰۱/۱۵ ۱۴:۳۰" 
+                 value="" dir="rtl" style="font-family:'Vazirmatn',Tahoma,sans-serif;text-align:center;font-size:14px;">
         </div>
         <div class="field" style="flex:1"><label>وضعیت</label><select id="order-edit-status"><option>تکمیل شده</option><option>در انتظار</option><option>لغو شده</option><option>مرجوعی</option></select></div>
       </div>
@@ -3820,6 +3852,7 @@ console.log('   ✅ آدرس: محلات - میدان چنار - پلاک 71');
 console.log('   ✅ سود با رنگ سبز و عنوان "سود شما"');
 console.log('   ✅ تاریخ و ساعت فاکتور به صورت فارسی نمایش داده می‌شود');
 console.log('   ✅ ویرایش سفارش با تاریخ شمسی به صورت دستی و مستقیم');
+console.log('   ✅ فونت و اعداد در فیلد تاریخ شمسی با فونت و اعداد فارسی نمایش داده می‌شود');
 </script>
 </body>
 </html>
