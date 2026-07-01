@@ -139,6 +139,13 @@
       "category": "پرینت",
       "price": 50000,
       "stock": 999
+    },
+    {
+      "id": 22,
+      "name": "پرینت سیاه‌ سفید دو رو a5 مصرف تیونر بالا",
+      "category": "پرینت",
+      "price": 60000,
+      "stock": 999
     }
   ],
   "customers": [
@@ -285,5 +292,5 @@
   "tariffs": [],
   "internal_news": [],
   "tips": [],
-  "last_update": "۱۴۰۵/۴/۱۰،‏ ۱۱:۳۵:۰۱"
+  "last_update": "۱۴۰۵/۴/۱۰،‏ ۱۱:۳۵:۱۶"
 }
