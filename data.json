@@ -104,6 +104,13 @@
       "category": "کپی",
       "price": 60000,
       "stock": 999
+    },
+    {
+      "id": 17,
+      "name": "کپی سیاه‌ سفید تک رو a5",
+      "category": "کپی",
+      "price": 38000,
+      "stock": 999
     }
   ],
   "customers": [
@@ -250,5 +257,5 @@
   "tariffs": [],
   "internal_news": [],
   "tips": [],
-  "last_update": "۱۴۰۵/۴/۱۰،‏ ۱۱:۳۱:۳۸"
+  "last_update": "۱۴۰۵/۴/۱۰،‏ ۱۱:۳۲:۰۳"
 }
