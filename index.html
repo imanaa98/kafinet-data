@@ -1212,6 +1212,56 @@
   .persian-date-input::-webkit-inner-spin-button {
     display: none;
   }
+
+  /* Persian DateTime Picker Dropdown */
+  .persian-datetime-wrapper {
+    position: relative;
+    width: 100%;
+  }
+  .persian-datetime-wrapper select {
+    font-family: 'Vazirmatn', Tahoma, sans-serif !important;
+    direction: rtl !important;
+    text-align: center !important;
+    font-size: 13px !important;
+    padding: 6px 8px !important;
+    border: 1px solid var(--border) !important;
+    border-radius: var(--radius-sm) !important;
+    background: var(--surface2) !important;
+    color: var(--text) !important;
+    width: 100% !important;
+    min-height: 38px !important;
+    outline: none !important;
+    cursor: pointer !important;
+  }
+  .persian-datetime-wrapper select:focus {
+    border-color: var(--accent) !important;
+    background: var(--surface) !important;
+  }
+  .persian-datetime-wrapper select option {
+    font-family: 'Vazirmatn', Tahoma, sans-serif !important;
+    direction: rtl !important;
+  }
+  .persian-datetime-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .persian-datetime-row select {
+    flex: 1;
+    min-width: 60px;
+  }
+  .persian-datetime-row .sep {
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 600;
+    padding: 0 2px;
+  }
+  .persian-datetime-row .label-sm {
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 500;
+  }
 </style>
 </head>
 <body>
@@ -1687,8 +1737,19 @@
         <div class="field" style="flex:1"><label>شماره سفارش</label><div id="edit-order-id" style="font-weight:700;font-size:16px">-</div></div>
         <div class="field" style="flex:1"><label>مشتری</label><select id="order-edit-cust"></select></div>
         <div class="field" style="flex:1"><label>تاریخ و ساعت (شمسی)</label>
-          <input id="order-edit-date" class="persian-date-input" type="text" placeholder="مثال: ۱۴۰۳/۰۱/۱۵ ۱۴:۳۰" 
-                 value="" dir="rtl" style="font-family:'Vazirmatn',Tahoma,sans-serif;text-align:center;font-size:14px;">
+          <div class="persian-datetime-wrapper">
+            <div class="persian-datetime-row" id="persian-datetime-picker">
+              <select id="edit-date-year" class="persian-date-select"></select>
+              <span class="sep">/</span>
+              <select id="edit-date-month" class="persian-date-select"></select>
+              <span class="sep">/</span>
+              <select id="edit-date-day" class="persian-date-select"></select>
+              <span class="sep" style="margin-right:4px;">—</span>
+              <select id="edit-date-hour" class="persian-date-select"></select>
+              <span class="sep">:</span>
+              <select id="edit-date-minute" class="persian-date-select"></select>
+            </div>
+          </div>
         </div>
         <div class="field" style="flex:1"><label>وضعیت</label><select id="order-edit-status"><option>تکمیل شده</option><option>در انتظار</option><option>لغو شده</option><option>مرجوعی</option></select></div>
       </div>
@@ -2863,6 +2924,133 @@ function submitOrder() {
 }
 
 // ============================================
+// PERSIAN DATETIME PICKER HELPERS
+// ============================================
+function getPersianDateParts(dateStr) {
+  // dateStr format: 1403/01/15 14:30:25 or 1403/01/15 14:30
+  if (!dateStr) return null;
+  const parts = dateStr.split(' ');
+  if (parts.length < 2) return null;
+  const dateParts = parts[0].split('/');
+  const timeParts = parts[1].split(':');
+  if (dateParts.length !== 3 || timeParts.length < 2) return null;
+  return {
+    year: parseInt(dateParts[0]),
+    month: parseInt(dateParts[1]),
+    day: parseInt(dateParts[2]),
+    hour: parseInt(timeParts[0]),
+    minute: parseInt(timeParts[1])
+  };
+}
+
+function toPersianNum(num) {
+  return String(num).replace(/[0-9]/g, function(w) {
+    return String.fromCharCode(w.charCodeAt(0) + 1728);
+  });
+}
+
+function padPersian(num) {
+  return toPersianNum(String(num).padStart(2, '0'));
+}
+
+function initPersianDatePickers() {
+  const yearSelect = document.getElementById('edit-date-year');
+  const monthSelect = document.getElementById('edit-date-month');
+  const daySelect = document.getElementById('edit-date-day');
+  const hourSelect = document.getElementById('edit-date-hour');
+  const minuteSelect = document.getElementById('edit-date-minute');
+  
+  if (!yearSelect) return;
+  
+  // Populate years (1390-1410)
+  yearSelect.innerHTML = '';
+  for (let y = 1390; y <= 1410; y++) {
+    const opt = document.createElement('option');
+    opt.value = y;
+    opt.textContent = toPersianNum(y);
+    yearSelect.appendChild(opt);
+  }
+  
+  // Populate months (1-12)
+  monthSelect.innerHTML = '';
+  const monthNames = ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'];
+  for (let m = 1; m <= 12; m++) {
+    const opt = document.createElement('option');
+    opt.value = m;
+    opt.textContent = toPersianNum(m) + ' ' + monthNames[m-1];
+    monthSelect.appendChild(opt);
+  }
+  
+  // Populate days (1-31)
+  daySelect.innerHTML = '';
+  for (let d = 1; d <= 31; d++) {
+    const opt = document.createElement('option');
+    opt.value = d;
+    opt.textContent = toPersianNum(d);
+    daySelect.appendChild(opt);
+  }
+  
+  // Populate hours (0-23)
+  hourSelect.innerHTML = '';
+  for (let h = 0; h <= 23; h++) {
+    const opt = document.createElement('option');
+    opt.value = h;
+    opt.textContent = padPersian(h);
+    hourSelect.appendChild(opt);
+  }
+  
+  // Populate minutes (0-59)
+  minuteSelect.innerHTML = '';
+  for (let m = 0; m <= 59; m++) {
+    const opt = document.createElement('option');
+    opt.value = m;
+    opt.textContent = padPersian(m);
+    minuteSelect.appendChild(opt);
+  }
+}
+
+function setPersianDateTime(dateStr) {
+  const parts = getPersianDateParts(dateStr);
+  if (!parts) {
+    // Set to current time
+    const now = new Date();
+    // Convert Gregorian to Persian (rough approximation)
+    const pYear = now.getFullYear() - 621;
+    const pMonth = now.getMonth() + 1;
+    const pDay = now.getDate();
+    const pHour = now.getHours();
+    const pMinute = now.getMinutes();
+    setPickerValues(pYear, pMonth, pDay, pHour, pMinute);
+    return;
+  }
+  setPickerValues(parts.year, parts.month, parts.day, parts.hour, parts.minute);
+}
+
+function setPickerValues(year, month, day, hour, minute) {
+  const yearSelect = document.getElementById('edit-date-year');
+  const monthSelect = document.getElementById('edit-date-month');
+  const daySelect = document.getElementById('edit-date-day');
+  const hourSelect = document.getElementById('edit-date-hour');
+  const minuteSelect = document.getElementById('edit-date-minute');
+  
+  if (yearSelect) yearSelect.value = year;
+  if (monthSelect) monthSelect.value = month;
+  if (daySelect) daySelect.value = day;
+  if (hourSelect) hourSelect.value = hour;
+  if (minuteSelect) minuteSelect.value = minute;
+}
+
+function getPersianDateTimeFromPicker() {
+  const year = parseInt(document.getElementById('edit-date-year').value);
+  const month = parseInt(document.getElementById('edit-date-month').value);
+  const day = parseInt(document.getElementById('edit-date-day').value);
+  const hour = parseInt(document.getElementById('edit-date-hour').value);
+  const minute = parseInt(document.getElementById('edit-date-minute').value);
+  
+  return `${year}/${String(month).padStart(2, '0')}/${String(day).padStart(2, '0')} ${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
+}
+
+// ============================================
 // ORDER EDIT
 // ============================================
 function editOrderFromList(id) {
@@ -2894,11 +3082,14 @@ function openOrderEditModal(order) {
   
   document.getElementById('edit-order-id').textContent = '#'+order.id;
   
-  // تنظیم تاریخ به فرمت شمسی برای نمایش در فیلد متنی
+  // Initialize pickers if not done yet
+  initPersianDatePickers();
+  
+  // Set date from order
   if (order.date) {
-    document.getElementById('order-edit-date').value = order.date;
+    setPersianDateTime(order.date);
   } else {
-    document.getElementById('order-edit-date').value = nowStr();
+    setPersianDateTime(nowStr());
   }
   
   document.getElementById('order-edit-status').value = order.status||'تکمیل شده';
@@ -2995,23 +3186,10 @@ function saveOrderEdit() {
   
   order.customer_id = +document.getElementById('order-edit-cust').value;
   
-  // دریافت تاریخ از فیلد متنی به صورت مستقیم (فرمت شمسی)
-  const dateValue = document.getElementById('order-edit-date').value.trim();
+  // دریافت تاریخ از picker
+  const dateValue = getPersianDateTimeFromPicker();
   if (dateValue) {
-    // بررسی فرمت: 1403/01/15 14:30 یا 1403/01/15 14:30:25
-    const parts = dateValue.split(' ');
-    if (parts.length >= 2) {
-      const dateParts = parts[0].split('/');
-      const timeParts = parts[1].split(':');
-      if (dateParts.length === 3 && timeParts.length >= 2) {
-        // فرمت صحیح است
-        order.date = dateValue;
-      } else {
-        order.date = dateValue; // در هر صورت ذخیره شود
-      }
-    } else {
-      order.date = dateValue;
-    }
+    order.date = dateValue;
   } else {
     order.date = nowStr();
   }
@@ -3851,8 +4029,8 @@ console.log('   ✅ تلفن: 086-43220702');
 console.log('   ✅ آدرس: محلات - میدان چنار - پلاک 71');
 console.log('   ✅ سود با رنگ سبز و عنوان "سود شما"');
 console.log('   ✅ تاریخ و ساعت فاکتور به صورت فارسی نمایش داده می‌شود');
-console.log('   ✅ ویرایش سفارش با تاریخ شمسی به صورت دستی و مستقیم');
-console.log('   ✅ فونت و اعداد در فیلد تاریخ شمسی با فونت و اعداد فارسی نمایش داده می‌شود');
+console.log('   ✅ ویرایش سفارش با تاریخ شمسی به صورت کشویی و انتخاب از لیست');
+console.log('   ✅ فونت و اعداد در فیلد تاریخ شمسی با فونت و اعداد فارسی');
 </script>
 </body>
 </html>
