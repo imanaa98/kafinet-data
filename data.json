@@ -258,13 +258,6 @@
       "date": "1405/04/10 12:00",
       "total": 300000,
       "status": "تکمیل شده"
-    },
-    {
-      "id": 6,
-      "customer_id": 1,
-      "date": "1405/04/11 10:12:25",
-      "total": 2600000,
-      "status": "تکمیل شده"
     }
   ],
   "order_items": [
@@ -377,18 +370,6 @@
       "subtotal": 300000
     },
     {
-      "order_id": 6,
-      "product_id": 2,
-      "product_name": "پرینت سیاه‌ سفید تک رو a4",
-      "qty": 50,
-      "unit_price": 80000,
-      "discount_percent": 10,
-      "discount_amount": 20000,
-      "total_discount": 1400000,
-      "final_unit_price": 52000,
-      "subtotal": 2600000
-    },
-    {
       "order_id": 3,
       "product_id": 14,
       "product_name": "پیش ثبت نام مدرسه",
@@ -404,5 +385,5 @@
   "tariffs": [],
   "internal_news": [],
   "tips": [],
-  "last_update": "۱۴۰۵/۴/۱۱،‏ ۹:۳۴:۰۶"
+  "last_update": "۱۴۰۵/۴/۱۱،‏ ۹:۳۴:۲۱"
 }
