@@ -403,6 +403,16 @@
   ],
   "tariffs": [],
   "internal_news": [],
-  "tips": [],
-  "last_update": "۱۴۰۵/۴/۱۱،‏ ۱۸:۵۶:۳۴"
+  "tips": [
+    {
+      "id": 1,
+      "title": "تست",
+      "folder": "عمومی",
+      "body": "",
+      "url": "",
+      "images": [],
+      "date": "۱۴۰۵/۴/۱۱"
+    }
+  ],
+  "last_update": "۱۴۰۵/۴/۱۱،‏ ۱۸:۵۶:۵۱"
 }
