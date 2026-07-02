@@ -1890,11 +1890,17 @@ const SYNC_CONFIG = {
 };
 
 // ============================================
-// TOAST QUEUE SYSTEM
+// SYNC FUNCTIONS
 // ============================================
+let syncTimer = null;
+let isSyncing = false;
+let pendingChanges = false;
+let currentSHA = null;
 let toastQueue = [];
 let isToastShowing = false;
+const DEBUG = false; // ← برای حذف لاگ‌ها در محیط تولید
 
+// ====== TOAST QUEUE SYSTEM ======
 function showToast(msg, type = '') {
   toastQueue.push({ msg, type });
   if (!isToastShowing) {
@@ -1923,15 +1929,6 @@ function processToastQueue() {
 function toast(msg, type = '') {
   showToast(msg, type);
 }
-
-// ============================================
-// SYNC FUNCTIONS
-// ============================================
-let syncTimer = null;
-let isSyncing = false;
-let pendingChanges = false;
-let currentSHA = null;
-const DEBUG = false;
 
 function log(...args) {
   if (DEBUG) console.log(...args);
@@ -1974,7 +1971,7 @@ async function syncToCloud() {
       last_update: nowStr()
     };
     
-    // ذخیره snapshot قبل از ارسال
+    // ذخیره محلی قبل از ارسال (برای جلوگیری از از دست رفتن داده)
     localStorage.setItem('sync_snapshot', JSON.stringify(data));
     
     const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
@@ -2027,6 +2024,7 @@ async function syncToCloud() {
     if (result.content) currentSHA = result.content.sha;
     setSyncStatus('synced', '✅ همگام شد');
     pendingChanges = false;
+    // پاک کردن snapshot پس از موفقیت
     localStorage.removeItem('sync_snapshot');
     
   } catch (e) {
@@ -2036,12 +2034,10 @@ async function syncToCloud() {
       toast('توکن نامعتبر است! لطفاً دوباره وارد شوید.', 'danger');
     } else if (e.status === 409) {
       setSyncStatus('error', '⚠️ تعارض داده‌ها');
-      toast('تعارض در داده‌ها! لطفاً صفحه را رفرش کنید یا داده‌های محلی را با سرور تطبیق دهید.', 'danger');
+      toast('تعارض در داده‌ها! لطفاً صفحه را رفرش کنید.', 'danger');
     } else {
       setSyncStatus('error', '⚠️ خطا در همگام‌سازی');
     }
-    // پاک کردن snapshot در صورت خطا
-    localStorage.removeItem('sync_snapshot');
   } finally {
     isSyncing = false;
   }
@@ -2068,7 +2064,6 @@ async function syncFromCloud() {
       }
       if (response.status === 401 || response.status === 403) {
         setSyncStatus('error', '⚠️ توکن نامعتبر');
-        toast('توکن نامعتبر است!', 'danger');
         return;
       }
       throw new Error('Fetch failed');
@@ -2110,9 +2105,8 @@ async function syncFromCloud() {
     if (e.message.includes('401') || e.message.includes('403')) {
       setSyncStatus('error', '⚠️ توکن نامعتبر');
     } else {
-      setSyncStatus('error', '⚠️ خطا در دریافت داده');
+      setSyncStatus('error', '⚠️ خطا');
     }
-    toast('خطا در بروزرسانی از سرور', 'danger');
   } finally {
     isSyncing = false;
   }
@@ -2211,39 +2205,76 @@ const DB = {
   set(k, v) { localStorage.setItem(k, JSON.stringify(v)); },
 };
 
+function initDB() {
+  if (!DB.get('services')) DB.set('services', [
+    {id:1,name:'استفاده از سیستم',category:'سیستم',price:50000,stock:20},
+    {id:2,name:'پرینت سیاه‌سفید',category:'پرینت',price:5000,stock:999},
+    {id:3,name:'پرینت رنگی',category:'پرینت',price:15000,stock:999},
+    {id:4,name:'اسکن مدارک',category:'اسکن',price:10000,stock:999},
+    {id:5,name:'ثبت‌نام کنکور',category:'ثبت‌نام اینترنتی',price:150000,stock:999},
+    {id:6,name:'ثبت‌نام دانشگاه',category:'ثبت‌نام اینترنتی',price:100000,stock:999},
+    {id:7,name:'ثبت‌نام نظام مهندسی',category:'ثبت‌نام اینترنتی',price:120000,stock:999},
+    {id:8,name:'ثبت‌نام استخدامی',category:'ثبت‌نام اینترنتی',price:100000,stock:999},
+    {id:9,name:'رزرو نوبت سفارت',category:'ثبت‌نام اینترنتی',price:200000,stock:999},
+    {id:10,name:'ثبت‌نام سامانه‌های دولتی',category:'ثبت‌نام اینترنتی',price:80000,stock:999},
+    {id:11,name:'تایپ فارسی (هر صفحه)',category:'تایپ',price:30000,stock:999},
+    {id:12,name:'تایپ انگلیسی (هر صفحه)',category:'تایپ',price:25000,stock:999},
+    {id:13,name:'فتوکپی (هر برگ)',category:'فتوکپی',price:3000,stock:999},
+    {id:14,name:'بازی آنلاین (ساعتی)',category:'گیمینگ',price:80000,stock:10},
+    {id:15,name:'صحافی و شیرازه',category:'صحافی',price:40000,stock:999},
+    {id:16,name:'عکس پرسنلی',category:'عکاسی',price:50000,stock:999},
+    {id:17,name:'تبدیل فایل PDF',category:'خدمات فایل',price:20000,stock:999},
+    {id:18,name:'رایت CD/DVD',category:'خدمات فایل',price:30000,stock:999},
+  ]);
+
+  if (!DB.get('customers')) DB.set('customers', [
+    {id:1,first_name:'علی',last_name:'احمدی',phone:'09121234567',national:'1234567890',address:'تهران',debt:0,info:'مشتری دائمی',join_date:today()},
+    {id:2,first_name:'مریم',last_name:'رضایی',phone:'09351234567',national:'0987654321',address:'تهران',debt:50000,info:'نیاز به پیگیری',join_date:today()},
+    {id:3,first_name:'محمد',last_name:'کریمی',phone:'09123456789',national:'1122334455',address:'اصفهان',debt:0,info:'',join_date:today()},
+  ]);
+
+  if (!DB.get('tariffs')) DB.set('tariffs', [
+    {id:1,name:'استفاده از سیستم',description:'هر ساعت',price:50000,unit:'ساعت',active:'فعال'},
+    {id:2,name:'پرینت A4 سیاه‌سفید',description:'هر برگ',price:5000,unit:'برگ',active:'فعال'},
+    {id:3,name:'پرینت A4 رنگی',description:'هر برگ رنگی',price:15000,unit:'برگ',active:'فعال'},
+    {id:4,name:'اسکن مدارک',description:'هر صفحه',price:10000,unit:'صفحه',active:'فعال'},
+    {id:5,name:'فتوکپی',description:'هر برگ',price:3000,unit:'برگ',active:'فعال'},
+    {id:6,name:'ثبت‌نام اینترنتی ساده',description:'فرم‌های ساده',price:80000,unit:'عدد',active:'فعال'},
+    {id:7,name:'ثبت‌نام اینترنتی پیچیده',description:'کنکور، استخدامی و...',price:150000,unit:'عدد',active:'فعال'},
+    {id:8,name:'گیمینگ',description:'بازی آنلاین',price:80000,unit:'ساعت',active:'فعال'},
+  ]);
+
+  if (!DB.get('internal_news')) DB.set('internal_news', [
+    {id:1,title:'شروع ثبت‌نام کنکور سراسری ۱۴۰۴',content:'ثبت‌نام کنکور سراسری از امروز آغاز شد. مدارک لازم: کارت ملی، شناسنامه، مدرک تحصیلی. هزینه ۱۵۰ هزار تومان.',category:'ثبت نام',date:today(),priority:'فوری',pinned:true,active:true},
+    {id:2,title:'آزمون استخدامی دستگاه‌های اجرایی',content:'ثبت‌نام آزمون استخدامی تا پایان هفته ادامه دارد.',category:'ثبت نام',date:today(),priority:'بالا',pinned:true,active:true},
+    {id:3,title:'تخفیف ویژه پرینت و فتوکپی',content:'تا پایان این ماه پرینت سیاه‌سفید ۵۰٪ تخفیف.',category:'تخفیف',date:today(),priority:'متوسط',pinned:false,active:true},
+  ]);
+
+  if (!DB.get('tips')) DB.set('tips', [
+    {id:1,folder:'کنکور و آموزش',title:'ثبت‌نام کنکور سراسری',url:'https://sanjesh.org',
+     body:'مرحله ۱: وارد سایت sanjesh.org شوید\nمرحله ۲: روی گزینه «ثبت‌نام» کلیک کنید\nمرحله ۳: کد ملی و اطلاعات شناسنامه‌ای را وارد کنید\nمرحله ۴: رشته و شهر محل سکونت را انتخاب کنید\nمرحله ۵: مدرک تحصیلی و اطلاعات آموزشی را وارد نمایید\nمرحله ۶: عکس ۳×۴ را با فرمت JPG آپلود کنید\nمرحله ۷: هزینه ثبت‌نام را از طریق درگاه پرداخت کنید\nمرحله ۸: کد رهگیری را دریافت و نگهداری کنید',
+     images:[],date:today()},
+    {id:2,folder:'کنکور و آموزش',title:'ثبت‌نام دانشگاه آزاد',url:'https://azmoon.org',
+     body:'سایت: azmoon.org\n\nمرحله ۱: بخش پذیرش دانشجو را انتخاب کنید\nمرحله ۲: کد ملی و اطلاعات فردی را وارد کنید\nمرحله ۳: رشته‌های مورد نظر را اولویت‌بندی کنید\nمرحله ۴: مدارک لازم را اسکن و آپلود کنید\nمرحله ۵: هزینه را پرداخت کنید',
+     images:[],date:today()},
+    {id:3,folder:'استخدامی',title:'ثبت‌نام آزمون استخدامی دولتی',url:'https://استخدام.ir',
+     body:'سایت: استخدام.ir یا سایت سازمان سنجش\n\nمراحل ثبت‌نام:\n۱. ورود با کد ملی\n۲. انتخاب سازمان و رشته شغلی\n۳. تکمیل فرم مشخصات فردی و تحصیلی\n۴. بارگذاری مدارک\n۵. پرداخت هزینه آزمون\n۶. چاپ کارت شرکت در آزمون',
+     images:[],date:today()},
+  ]);
+
+  if (!DB.get('orders')) DB.set('orders', []);
+  if (!DB.get('order_items')) DB.set('order_items', []);
+}
+
 // ============================================
-// DATE UTILITIES - یکسان‌سازی شده
+// UTILS
 // ============================================
-function getPersianDate(date = new Date()) {
-  return date.toLocaleDateString('fa-IR', { 
-    year: 'numeric', 
-    month: '2-digit', 
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit'
-  });
-}
-
-function getPersianDateOnly(date = new Date()) {
-  return date.toLocaleDateString('fa-IR', { year: 'numeric', month: '2-digit', day: '2-digit' });
-}
-
-function today() { return getPersianDateOnly(); }
-function nowStr() { return getPersianDate(); }
-
-function normalizePersianDateStr(dateStr) {
-  // تبدیل اعداد انگلیسی به فارسی در تاریخ
-  if (!dateStr) return dateStr;
-  const persianDigits = '۰۱۲۳۴۵۶۷۸۹';
-  return dateStr.replace(/\d/g, d => persianDigits[parseInt(d)]);
-}
-
+function today() { return new Date().toLocaleDateString('fa-IR'); }
+function nowStr() { return new Date().toLocaleString('fa-IR'); }
 function fmtNum(n) { return Number(n||0).toLocaleString('fa-IR'); }
 function nextId(arr) { return arr.length ? Math.max(...arr.map(x=>x.id||0)) + 1 : 1; }
 function norm(s) { return String(s||'').replace(/ي/g,'ی').replace(/ك/g,'ک').toLowerCase(); }
 
-// ====== SECURITY ======
 const _escMap = { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' };
 function esc(str) {
   return String(str ?? '').replace(/[&<>"']/g, ch => _escMap[ch]);
@@ -2316,7 +2347,7 @@ function searchCustomers(query) {
       <span class="sub-info">
         ${c.phone ? '📱 ' + esc(c.phone) : ''}
         ${c.national ? ' | 🆔 ' + esc(c.national) : ''}
-        ${c.debt > 0 ? ' | 💳 بدهی: ' + fmtNum(c.debt) + ' ریال' : ''}
+        ${c.debt ? ' | 💳 بدهی: ' + fmtNum(c.debt) + ' ریال' : ''}
       </span>
     </div>`;
   }).join('');
@@ -2491,22 +2522,11 @@ function loadDashboard() {
   const orders = DB.get('orders')||[];
   const news = DB.get('internal_news')||[];
   const todayStr = today();
-  
-  // استخراج تاریخ بدون زمان
-  const todayDateOnly = todayStr.split(' ')[0] || todayStr;
-  
-  const todayOrders = orders.filter(o => {
-    if (!o.date) return false;
-    const orderDate = o.date.split(' ')[0] || o.date;
-    return orderDate === todayDateOnly;
-  });
+
+  const todayOrders = orders.filter(o=>o.date&&o.date.startsWith(todayStr.split(' ')[0]));
   const rev = todayOrders.reduce((s,o)=>s+(o.total||0),0);
   const debts = custs.reduce((s,c)=>s+(c.debt||0),0);
-  const newRegs = custs.filter(c => {
-    if (!c.join_date) return false;
-    const joinDate = c.join_date.split(' ')[0] || c.join_date;
-    return joinDate === todayDateOnly;
-  });
+  const newRegs = custs.filter(c=>c.join_date===todayStr);
 
   document.getElementById('s-services').textContent = svcs.length;
   document.getElementById('s-customers').textContent = custs.length;
@@ -2624,8 +2644,7 @@ function addService() {
   const c = document.getElementById('svc-cat').value.trim();
   const p = +document.getElementById('svc-price').value;
   const st = +document.getElementById('svc-stock').value||999;
-  if (!n) { toast('نام خدمت الزامی است', 'danger'); return; }
-  if (!p || p < 0) { toast('قیمت باید عددی مثبت باشد', 'danger'); return; }
+  if (!n||!p) { toast('نام و هزینه الزامی است', 'danger'); return; }
   const svcs = DB.get('services')||[];
   svcs.push({id:nextId(svcs),name:n,category:c,price:p,stock:st});
   DB.set('services',svcs); loadServices(); autoSync(); toast('خدمت افزوده شد','success');
@@ -2638,8 +2657,6 @@ function editService() {
   const c = document.getElementById('svc-cat').value.trim();
   const p = +document.getElementById('svc-price').value;
   const st = +document.getElementById('svc-stock').value||999;
-  if (!n) { toast('نام خدمت الزامی است', 'danger'); return; }
-  if (!p || p < 0) { toast('قیمت باید عددی مثبت باشد', 'danger'); return; }
   svcs.forEach(s=>{ if(s.id===selService.id) Object.assign(s,{name:n,category:c,price:p,stock:st}); });
   DB.set('services',svcs); loadServices(); autoSync(); toast('ویرایش انجام شد','success');
 }
@@ -2700,8 +2717,7 @@ function renderTariffs(data) {
 function addTariff() {
   const n=document.getElementById('tar-name').value.trim();
   const p=+document.getElementById('tar-price').value;
-  if (!n) { toast('نام تعرفه الزامی','danger'); return; }
-  if (!p || p < 0) { toast('قیمت باید عددی مثبت باشد','danger'); return; }
+  if (!n||!p) { toast('نام و قیمت الزامی','danger'); return; }
   const data=DB.get('tariffs')||[];
   data.push({id:nextId(data),name:n,description:document.getElementById('tar-desc').value,price:p,unit:document.getElementById('tar-unit').value,active:'فعال'});
   DB.set('tariffs',data); loadTariffs(); autoSync(); toast('تعرفه افزوده شد','success');
@@ -2710,11 +2726,7 @@ function addTariff() {
 function editTariff() {
   if (!selTariff) { toast('انتخاب نشده','danger'); return; }
   const data=DB.get('tariffs')||[];
-  const n=document.getElementById('tar-name').value.trim();
-  const p=+document.getElementById('tar-price').value;
-  if (!n) { toast('نام تعرفه الزامی','danger'); return; }
-  if (!p || p < 0) { toast('قیمت باید عددی مثبت باشد','danger'); return; }
-  data.forEach(t=>{ if(t.id===selTariff.id) Object.assign(t,{name:n,description:document.getElementById('tar-desc').value,price:p,unit:document.getElementById('tar-unit').value}); });
+  data.forEach(t=>{ if(t.id===selTariff.id) Object.assign(t,{name:document.getElementById('tar-name').value.trim(),description:document.getElementById('tar-desc').value,price:+document.getElementById('tar-price').value,unit:document.getElementById('tar-unit').value}); });
   DB.set('tariffs',data); loadTariffs(); autoSync(); toast('ویرایش انجام شد','success');
 }
 
@@ -2755,7 +2767,7 @@ function renderCustomers(data) {
     tr.innerHTML=`<td>${Number(c.id)}</td><td>${esc(customerCode)}</td><td>${esc(c.first_name)} ${esc(c.last_name)}</td>
       <td>${esc(c.phone||'-')}</td>
       <td><span class="badge badge-accent">${Number(count)}</span></td>
-      <td>${c.debt > 0 ? '<span class="badge badge-danger">'+fmtNum(c.debt)+' ریال</span>' : '<span class="badge badge-success">بدون بدهی</span>'}</td>
+      <td>${c.debt?'<span class="badge badge-danger">'+fmtNum(c.debt)+' ریال</span>':'<span class="badge badge-success">بدون بدهی</span>'}</td>
       <td>${esc(c.join_date||'-')}</td>`;
     tr.onclick=()=>{ selCust=c; document.querySelectorAll('#cust-table tr').forEach(r=>r.classList.remove('selected')); tr.classList.add('selected'); fillCustForm(c); };
     tbody.appendChild(tr);
@@ -2830,7 +2842,6 @@ let selProd = null;
 let editingOrderId = null;
 let viewedOrderId = null;
 let editItems = [];
-let editItemIdCounter = 0;
 
 function loadOrderPage() {
   loadOrders();
@@ -2965,11 +2976,10 @@ function submitOrder() {
       const searchText = searchInput.value.trim();
       if (searchText) {
         const custs = DB.get('customers')||[];
-        // جستجوی دقیق‌تر با کد ملی یا تلفن یا نام کامل
         const found = custs.find(c => 
+          (c.first_name + ' ' + c.last_name) === searchText ||
           c.phone === searchText ||
-          c.national === searchText ||
-          (c.first_name + ' ' + c.last_name) === searchText
+          c.national === searchText
         );
         if (found) {
           custId = found.id;
@@ -3002,7 +3012,7 @@ function submitOrder() {
 }
 
 // ============================================
-// PERSIAN DATETIME PICKER WITH DYNAMIC YEARS
+// PERSIAN DATETIME PICKER
 // ============================================
 function getPersianDateParts(dateStr) {
   if (!dateStr) return null;
@@ -3041,19 +3051,13 @@ function initPersianDatePickers() {
   
   if (!yearSelect) return;
   
-  // سال‌های داینامیک: ۵ سال قبل تا ۵ سال بعد
-  const currentYear = new Date().getFullYear() - 621; // تبدیل میلادی به شمسی تقریبی
-  const startYear = currentYear - 5;
-  const endYear = currentYear + 5;
-  
   yearSelect.innerHTML = '';
-  for (let y = startYear; y <= endYear; y++) {
+  for (let y = 1390; y <= 1410; y++) {
     const opt = document.createElement('option');
     opt.value = y;
     opt.textContent = toPersianNum(y);
     yearSelect.appendChild(opt);
   }
-  yearSelect.value = currentYear;
   
   monthSelect.innerHTML = '';
   const monthNames = ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'];
@@ -3141,7 +3145,7 @@ function getPersianDateTimeFromPicker() {
 }
 
 // ============================================
-// ORDER EDIT - با شناسه یکتا برای آیتم‌ها
+// ORDER EDIT
 // ============================================
 function editOrderFromList(id) {
   const orders = DB.get('orders')||[];
@@ -3182,13 +3186,7 @@ function openOrderEditModal(order) {
   document.getElementById('order-edit-status').value = order.status||'تکمیل شده';
   
   const items = DB.get('order_items')||[];
-  const orderItems = items.filter(i=>i.order_id===order.id);
-  // اختصاص شناسه یکتا به هر آیتم
-  editItems = orderItems.map(i => ({
-    ...i,
-    _uid: ++editItemIdCounter,
-    _selected: false
-  }));
+  editItems = items.filter(i=>i.order_id===order.id).map(i=>({...i, _selected:false}));
   renderEditItems();
   updateEditTotal();
   document.getElementById('order-edit-modal').classList.add('open');
@@ -3204,36 +3202,24 @@ function renderEditItems() {
   editItems.forEach((item, idx)=>{
     const tr = document.createElement('tr');
     tr.className = item._selected ? 'selected' : '';
-    tr.dataset.uid = item._uid;
+    tr.dataset.idx = idx;
     tr.onclick = function(e) {
       if (e.target.closest('input') || e.target.closest('button')) return;
       editItems.forEach(i=>i._selected=false);
-      item._selected = true;
+      editItems[idx]._selected = true;
       renderEditItems();
     };
     tr.innerHTML = `
-      <td><input style="width:100%;padding:4px;border:1px solid var(--border);border-radius:4px;background:var(--surface2);color:var(--text);font-family:inherit;font-size:12px;" value="${esc(item.product_name)}" onchange="updateEditItemProp(${idx}, 'product_name', this.value)"></td>
-      <td><input style="width:60px;padding:4px;border:1px solid var(--border);border-radius:4px;background:var(--surface2);color:var(--text);font-family:inherit;font-size:12px;text-align:center;" type="number" value="${item.qty}" min="1" onchange="updateEditItemProp(${idx}, 'qty', +this.value)"></td>
-      <td><input style="width:80px;padding:4px;border:1px solid var(--border);border-radius:4px;background:var(--surface2);color:var(--text);font-family:inherit;font-size:12px;text-align:center;" type="number" value="${item.unit_price}" min="0" onchange="updateEditItemProp(${idx}, 'unit_price', +this.value)"></td>
-      <td><input style="width:60px;padding:4px;border:1px solid var(--border);border-radius:4px;background:var(--surface2);color:var(--text);font-family:inherit;font-size:12px;text-align:center;" type="number" value="${item.discount_percent||0}" min="0" max="100" onchange="updateEditItemProp(${idx}, 'discount_percent', +this.value)"></td>
-      <td><input style="width:80px;padding:4px;border:1px solid var(--border);border-radius:4px;background:var(--surface2);color:var(--text);font-family:inherit;font-size:12px;text-align:center;" type="number" value="${item.discount_amount||0}" min="0" onchange="updateEditItemProp(${idx}, 'discount_amount', +this.value)"></td>
+      <td><input style="width:100%;padding:4px;border:1px solid var(--border);border-radius:4px;background:var(--surface2);color:var(--text);font-family:inherit;font-size:12px;" value="${esc(item.product_name)}" onchange="editItems[${idx}].product_name=this.value"></td>
+      <td><input style="width:60px;padding:4px;border:1px solid var(--border);border-radius:4px;background:var(--surface2);color:var(--text);font-family:inherit;font-size:12px;text-align:center;" type="number" value="${item.qty}" min="1" onchange="editItems[${idx}].qty=+this.value;updateEditTotal();"></td>
+      <td><input style="width:80px;padding:4px;border:1px solid var(--border);border-radius:4px;background:var(--surface2);color:var(--text);font-family:inherit;font-size:12px;text-align:center;" type="number" value="${item.unit_price}" min="0" onchange="editItems[${idx}].unit_price=+this.value;updateEditTotal();"></td>
+      <td><input style="width:60px;padding:4px;border:1px solid var(--border);border-radius:4px;background:var(--surface2);color:var(--text);font-family:inherit;font-size:12px;text-align:center;" type="number" value="${item.discount_percent||0}" min="0" max="100" onchange="editItems[${idx}].discount_percent=+this.value;updateEditTotal();"></td>
+      <td><input style="width:80px;padding:4px;border:1px solid var(--border);border-radius:4px;background:var(--surface2);color:var(--text);font-family:inherit;font-size:12px;text-align:center;" type="number" value="${item.discount_amount||0}" min="0" onchange="editItems[${idx}].discount_amount=+this.value;updateEditTotal();"></td>
       <td id="edit-item-subtotal-${idx}">${fmtNum(item.subtotal)}</td>
       <td><button class="btn btn-danger btn-sm" onclick="removeEditItem(${idx})">✕</button></td>
     `;
     tbody.appendChild(tr);
   });
-}
-
-function updateEditItemProp(idx, prop, value) {
-  if (editItems[idx]) {
-    editItems[idx][prop] = value;
-    // به‌روزرسانی subtotal
-    const item = editItems[idx];
-    let afterPercent = Math.round(item.unit_price * (1 - (item.discount_percent||0) / 100));
-    let finalPrice = Math.max(0, afterPercent - (item.discount_amount||0));
-    item.subtotal = finalPrice * (item.qty||1);
-    updateEditTotal();
-  }
 }
 
 function updateEditTotal() {
@@ -3250,15 +3236,14 @@ function updateEditTotal() {
 
 function addEditItem() {
   editItems.push({
-    _uid: ++editItemIdCounter,
-    _selected: false,
     product_id: 0,
     product_name: 'خدمت جدید',
     qty: 1,
     unit_price: 0,
     discount_percent: 0,
     discount_amount: 0,
-    subtotal: 0
+    subtotal: 0,
+    _selected: false
   });
   renderEditItems();
   updateEditTotal();
@@ -3306,9 +3291,9 @@ function saveOrderEdit() {
   let allItems = DB.get('order_items')||[];
   allItems = allItems.filter(i=>i.order_id!==editingOrderId);
   editItems.forEach(i=>{
-    const { _uid, _selected, ...cleanItem } = i;
-    cleanItem.order_id = editingOrderId;
-    allItems.push(cleanItem);
+    delete i._selected;
+    i.order_id = editingOrderId;
+    allItems.push(i);
   });
   
   DB.set('orders', orders);
@@ -3398,7 +3383,7 @@ function filterOrders(q) {
 }
 
 // ============================================
-// INVOICE PRINT - با iframe برای جلوگیری از از دست رفتن داده
+// INVOICE PRINT
 // ============================================
 function printInvoice() {
   if (!viewedOrderId) { toast('سفارشی انتخاب نشده','danger'); return; }
@@ -3501,17 +3486,20 @@ function printInvoice() {
   </div>
   `;
   
-  // استفاده از iframe برای چاپ بدون از دست رفتن داده
-  const iframe = document.createElement('iframe');
-  iframe.style.position = 'fixed';
-  iframe.style.top = '-9999px';
-  iframe.style.left = '-9999px';
-  iframe.style.width = '800px';
-  iframe.style.height = '600px';
-  document.body.appendChild(iframe);
+  const container = document.getElementById('invoice-print-container');
+  container.innerHTML = html;
+  container.style.display = 'block';
   
-  const doc = iframe.contentDocument || iframe.contentWindow.document;
-  doc.write(`
+  const printWindow = window.open('', '_blank', 'width=800,height=600,scrollbars=yes');
+  if (!printWindow) {
+    const printContent = document.getElementById('invoice-print-container').innerHTML;
+    document.body.innerHTML = printContent;
+    window.print();
+    location.reload();
+    return;
+  }
+  
+  printWindow.document.write(`
     <!DOCTYPE html>
     <html dir="rtl" lang="fa">
     <head>
@@ -3555,13 +3543,19 @@ function printInvoice() {
     <body>
       ${html}
       <script>
-        setTimeout(function() { window.print(); }, 500);
-        window.onafterprint = function() { window.parent.document.body.removeChild(window.frameElement); };
+        window.onload = function() { 
+          setTimeout(function() {
+            window.print(); 
+            setTimeout(function() { window.close(); }, 1500);
+          }, 500);
+        }
       <\/script>
     </body>
     </html>
   `);
-  doc.close();
+  printWindow.document.close();
+  
+  container.style.display = 'none';
 }
 
 // ============================================
@@ -3646,10 +3640,7 @@ function showNote(id) {
   document.getElementById('note-viewer-breadcrumb').textContent = (note.folder||'عمومی') + ' › ' + note.title;
 
   const viewer = document.getElementById('note-viewer');
-  const imgsHtml = (note.images||[]).map((img,i)=>{
-    // dataUrl را مستقیماً استفاده می‌کنیم چون قبلاً safe است
-    return `<img class="note-img-thumb" src="${img}" onclick="openLightboxFromNote(${Number(i)})" alt="">`;
-  }).join('');
+  const imgsHtml = (note.images||[]).map((img,i)=>`<img class="note-img-thumb" src="${esc(img)}" onclick="openLightboxFromNote(${Number(i)})" alt="">`).join('');
   const safeLink = safeUrl(note.url);
 
   viewer.innerHTML = `
@@ -3668,7 +3659,7 @@ function showNote(id) {
 function openLightboxFromNote(imgIndex) {
   if (!currentNote || !currentNote.images) return;
   const img = currentNote.images[imgIndex];
-  if (img) openLightbox(img);
+  if (img) openLightbox(esc(img));
 }
 
 function searchTips(q) { loadTips(q); }
@@ -3726,26 +3717,11 @@ function saveNote() {
 }
 
 function handleImgUpload(files) {
-  if (!files || files.length === 0) return;
-  try {
-    Array.from(files).forEach(file => {
-      // بررسی حجم فایل (حداکثر 5MB)
-      if (file.size > 5 * 1024 * 1024) {
-        toast('حجم فایل بیش از ۵ مگابایت است', 'danger');
-        return;
-      }
-      const reader = new FileReader();
-      reader.onload = e => {
-        pendingImgs.push({ name: file.name, dataUrl: e.target.result });
-        renderImgPreview();
-      };
-      reader.onerror = () => toast('خطا در خواندن فایل', 'danger');
-      reader.readAsDataURL(file);
-    });
-  } catch (e) {
-    toast('خطا در بارگذاری فایل', 'danger');
-    log('Upload error:', e);
-  }
+  Array.from(files).forEach(file=>{
+    const reader = new FileReader();
+    reader.onload = e=>{ pendingImgs.push({name:file.name,dataUrl:e.target.result}); renderImgPreview(); };
+    reader.readAsDataURL(file);
+  });
 }
 
 function handleDrop(e) {
@@ -3761,7 +3737,7 @@ function renderImgPreview() {
     const wrap = document.createElement('div');
     wrap.className='img-preview-item';
     wrap.innerHTML = `
-      <img src="${img.dataUrl}" alt="${esc(img.name)}">
+      <img src="${esc(img.dataUrl)}" alt="${esc(img.name)}">
       <button class="img-preview-remove" onclick="removeImg(${Number(i)})">✕</button>
       <div class="img-preview-filename">${esc(img.name)}</div>
     `;
@@ -3990,10 +3966,7 @@ function reportTopServices() {
   setRepHead(['رتبه','خدمت','درآمد (ریال)']);
   const items=DB.get('order_items')||[];
   const sales={};
-  items.forEach(i=>{ 
-    const name = i.product_name || 'نامشخص';
-    sales[name] = (sales[name]||0) + (i.subtotal||0); 
-  });
+  items.forEach(i=>{ sales[i.product_name]=(sales[i.product_name]||0)+(i.subtotal||0); });
   const rows=Object.entries(sales).sort((a,b)=>b[1]-a[1]).slice(0,20).map(([n,v],i)=>[i+1,n,fmtNum(v)+' ریال']);
   renderRep(rows);
 }
@@ -4077,16 +4050,11 @@ function handleImport(event) {
       let count = 0;
       
       tables.forEach(key => {
-        if (data[key] && Array.isArray(data[key])) {
+        if (data[key]) {
           DB.set(key, data[key]);
           count++;
         }
       });
-      
-      if (count === 0) {
-        toast('فایل معتبر نیست یا داده‌ای ندارد', 'danger');
-        return;
-      }
       
       toast(`${count} جدول با موفقیت وارد شد ✅`, 'success');
       const activePage = document.querySelector('.page.active');
@@ -4121,7 +4089,7 @@ function toggleTheme() {
 // DATE
 // ============================================
 function updateDate() {
-  const d = nowStr();
+  const d = new Date().toLocaleString('fa-IR');
   const el = document.getElementById('topbar-date');
   if (el) el.textContent = '📅 ' + d;
 }
@@ -4129,67 +4097,6 @@ function updateDate() {
 // ============================================
 // INIT
 // ============================================
-function initDB() {
-  if (!DB.get('services')) DB.set('services', [
-    {id:1,name:'استفاده از سیستم',category:'سیستم',price:50000,stock:20},
-    {id:2,name:'پرینت سیاه‌سفید',category:'پرینت',price:5000,stock:999},
-    {id:3,name:'پرینت رنگی',category:'پرینت',price:15000,stock:999},
-    {id:4,name:'اسکن مدارک',category:'اسکن',price:10000,stock:999},
-    {id:5,name:'ثبت‌نام کنکور',category:'ثبت‌نام اینترنتی',price:150000,stock:999},
-    {id:6,name:'ثبت‌نام دانشگاه',category:'ثبت‌نام اینترنتی',price:100000,stock:999},
-    {id:7,name:'ثبت‌نام نظام مهندسی',category:'ثبت‌نام اینترنتی',price:120000,stock:999},
-    {id:8,name:'ثبت‌نام استخدامی',category:'ثبت‌نام اینترنتی',price:100000,stock:999},
-    {id:9,name:'رزرو نوبت سفارت',category:'ثبت‌نام اینترنتی',price:200000,stock:999},
-    {id:10,name:'ثبت‌نام سامانه‌های دولتی',category:'ثبت‌نام اینترنتی',price:80000,stock:999},
-    {id:11,name:'تایپ فارسی (هر صفحه)',category:'تایپ',price:30000,stock:999},
-    {id:12,name:'تایپ انگلیسی (هر صفحه)',category:'تایپ',price:25000,stock:999},
-    {id:13,name:'فتوکپی (هر برگ)',category:'فتوکپی',price:3000,stock:999},
-    {id:14,name:'بازی آنلاین (ساعتی)',category:'گیمینگ',price:80000,stock:10},
-    {id:15,name:'صحافی و شیرازه',category:'صحافی',price:40000,stock:999},
-    {id:16,name:'عکس پرسنلی',category:'عکاسی',price:50000,stock:999},
-    {id:17,name:'تبدیل فایل PDF',category:'خدمات فایل',price:20000,stock:999},
-    {id:18,name:'رایت CD/DVD',category:'خدمات فایل',price:30000,stock:999},
-  ]);
-
-  if (!DB.get('customers')) DB.set('customers', [
-    {id:1,first_name:'علی',last_name:'احمدی',phone:'09121234567',national:'1234567890',address:'تهران',debt:0,info:'مشتری دائمی',join_date:today()},
-    {id:2,first_name:'مریم',last_name:'رضایی',phone:'09351234567',national:'0987654321',address:'تهران',debt:50000,info:'نیاز به پیگیری',join_date:today()},
-    {id:3,first_name:'محمد',last_name:'کریمی',phone:'09123456789',national:'1122334455',address:'اصفهان',debt:0,info:'',join_date:today()},
-  ]);
-
-  if (!DB.get('tariffs')) DB.set('tariffs', [
-    {id:1,name:'استفاده از سیستم',description:'هر ساعت',price:50000,unit:'ساعت',active:'فعال'},
-    {id:2,name:'پرینت A4 سیاه‌سفید',description:'هر برگ',price:5000,unit:'برگ',active:'فعال'},
-    {id:3,name:'پرینت A4 رنگی',description:'هر برگ رنگی',price:15000,unit:'برگ',active:'فعال'},
-    {id:4,name:'اسکن مدارک',description:'هر صفحه',price:10000,unit:'صفحه',active:'فعال'},
-    {id:5,name:'فتوکپی',description:'هر برگ',price:3000,unit:'برگ',active:'فعال'},
-    {id:6,name:'ثبت‌نام اینترنتی ساده',description:'فرم‌های ساده',price:80000,unit:'عدد',active:'فعال'},
-    {id:7,name:'ثبت‌نام اینترنتی پیچیده',description:'کنکور، استخدامی و...',price:150000,unit:'عدد',active:'فعال'},
-    {id:8,name:'گیمینگ',description:'بازی آنلاین',price:80000,unit:'ساعت',active:'فعال'},
-  ]);
-
-  if (!DB.get('internal_news')) DB.set('internal_news', [
-    {id:1,title:'شروع ثبت‌نام کنکور سراسری ۱۴۰۴',content:'ثبت‌نام کنکور سراسری از امروز آغاز شد. مدارک لازم: کارت ملی، شناسنامه، مدرک تحصیلی. هزینه ۱۵۰ هزار تومان.',category:'ثبت نام',date:today(),priority:'فوری',pinned:true,active:true},
-    {id:2,title:'آزمون استخدامی دستگاه‌های اجرایی',content:'ثبت‌نام آزمون استخدامی تا پایان هفته ادامه دارد.',category:'ثبت نام',date:today(),priority:'بالا',pinned:true,active:true},
-    {id:3,title:'تخفیف ویژه پرینت و فتوکپی',content:'تا پایان این ماه پرینت سیاه‌سفید ۵۰٪ تخفیف.',category:'تخفیف',date:today(),priority:'متوسط',pinned:false,active:true},
-  ]);
-
-  if (!DB.get('tips')) DB.set('tips', [
-    {id:1,folder:'کنکور و آموزش',title:'ثبت‌نام کنکور سراسری',url:'https://sanjesh.org',
-     body:'مرحله ۱: وارد سایت sanjesh.org شوید\nمرحله ۲: روی گزینه «ثبت‌نام» کلیک کنید\nمرحله ۳: کد ملی و اطلاعات شناسنامه‌ای را وارد کنید\nمرحله ۴: رشته و شهر محل سکونت را انتخاب کنید\nمرحله ۵: مدرک تحصیلی و اطلاعات آموزشی را وارد نمایید\nمرحله ۶: عکس ۳×۴ را با فرمت JPG آپلود کنید\nمرحله ۷: هزینه ثبت‌نام را از طریق درگاه پرداخت کنید\nمرحله ۸: کد رهگیری را دریافت و نگهداری کنید',
-     images:[],date:today()},
-    {id:2,folder:'کنکور و آموزش',title:'ثبت‌نام دانشگاه آزاد',url:'https://azmoon.org',
-     body:'سایت: azmoon.org\n\nمرحله ۱: بخش پذیرش دانشجو را انتخاب کنید\nمرحله ۲: کد ملی و اطلاعات فردی را وارد کنید\nمرحله ۳: رشته‌های مورد نظر را اولویت‌بندی کنید\nمرحله ۴: مدارک لازم را اسکن و آپلود کنید\nمرحله ۵: هزینه را پرداخت کنید',
-     images:[],date:today()},
-    {id:3,folder:'استخدامی',title:'ثبت‌نام آزمون استخدامی دولتی',url:'https://استخدام.ir',
-     body:'سایت: استخدام.ir یا سایت سازمان سنجش\n\nمراحل ثبت‌نام:\n۱. ورود با کد ملی\n۲. انتخاب سازمان و رشته شغلی\n۳. تکمیل فرم مشخصات فردی و تحصیلی\n۴. بارگذاری مدارک\n۵. پرداخت هزینه آزمون\n۶. چاپ کارت شرکت در آزمون',
-     images:[],date:today()},
-  ]);
-
-  if (!DB.get('orders')) DB.set('orders', []);
-  if (!DB.get('order_items')) DB.set('order_items', []);
-}
-
 const savedToken = sessionStorage.getItem('github_token');
 if (savedToken && savedToken !== '') {
   document.getElementById('login-page').classList.add('hidden');
@@ -4211,23 +4118,20 @@ if (savedToken && savedToken !== '') {
   updateLoginStatus('offline', '⛔ منتظر ورود توکن');
 }
 
-log('✅ نسخه نهایی با تمام اصلاحات:');
-log('   ✅ مدیریت Conflict با snapshot');
-log('   ✅ رفع مشکل esc روی dataUrl');
-log('   ✅ اعتبارسنجی قیمت منفی');
-log('   ✅ چاپ با iframe بدون از دست رفتن داده');
-log('   ✅ مدیریت خطا در آپلود فایل');
-log('   ✅ استفاده از شناسه یکتا در ویرایش سفارش');
-log('   ✅ یکسان‌سازی تاریخ‌ها');
-log('   ✅ تشخیص دقیق‌تر مشتری');
-log('   ✅ سال‌های داینامیک در picker');
-log('   ✅ پاک کردن snapshot در catch');
-log('   ✅ try-catch در syncFromCloud');
-log('   ✅ رفع undefined در reportTopServices');
-log('   ✅ رفع مشکل split در تاریخ dashboard');
-log('   ✅ استفاده از c.debt > 0');
-log('   ✅ مدیریت بهتر handleImport');
-log('   ✅ بهبود کد تمیزی با const');
+log('✅ تمام اصلاحات نهایی انجام شد:');
+log('   ✅ آیکون‌های PWA با SVG ساده');
+log('   ✅ چارت برای دیتای خالی ایمن شد');
+log('   ✅ سود از فاکتور حذف شد');
+log('   ✅ Toast با سیستم صف (Queue)');
+log('   ✅ جستجوی مشتری با norm()');
+log('   ✅ حذف تصویر با filter');
+log('   ✅ Conflict Handling بهبود یافته');
+log('   ✅ مهر حذف شد');
+log('   ✅ ساعت به فاکتور اضافه شد');
+log('   ✅ نام فایل در آپلود تصویر نمایش داده می‌شود');
+log('   ✅ وضعیت آفلاین با رنگ قرمز مشخص شد');
+log('   ✅ لاگ‌ها با DEBUG کنترل می‌شوند');
+log('   ✅ ذخیره snapshot قبل از ارسال به سرور');
 </script>
 </body>
 </html>
