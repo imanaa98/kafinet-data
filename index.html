@@ -1331,8 +1331,14 @@
     
     <div class="field">
       <label>🔐 توکن گیت‌هاب</label>
-      <input type="password" id="login-token" placeholder="توکن خود را وارد کنید..." onkeydown="if(event.key==='Enter') login()">
-      <div class="hint">توکن را از <a href="https://github.com/settings/tokens" target="_blank">github.com/settings/tokens</a> دریافت کنید</div>
+      <input type="password" id="login-token" placeholder="توکن خود را وارد کنید..." onkeydown="if(event.key==='Enter') login()" autocomplete="off">
+      <div class="hint">توکن را از <a href="https://github.com/settings/tokens?type=beta" target="_blank">github.com/settings/tokens</a> دریافت کنید</div>
+      <div class="hint" style="color:var(--danger);line-height:1.7;margin-top:6px">
+        ⚠️ حتماً یک توکن <b>Fine-grained</b> بسازید که فقط به ریپازیتوری
+        <code>kafinet-data</code> و فقط با دسترسی <b>Contents: Read and write</b> محدود باشد،
+        نه یک Classic token با دسترسی کامل به همه‌ی ریپوها. این توکن روی همین مرورگر ذخیره می‌شود؛
+        روی دستگاه‌های عمومی/مشترک از آن استفاده نکنید و در پایان کار حتماً «خروج» بزنید.
+      </div>
     </div>
     
     <button class="btn" onclick="login()">ورود به سیستم</button>
@@ -1955,7 +1961,11 @@ async function syncToCloud() {
         const fileData = await getResponse.json();
         sha = fileData.sha;
       }
-    } catch (e) {}
+    } catch (e) {
+      // اگر فایل قبلاً وجود نداشته باشد (404) یا خطای شبکه رخ دهد، sha همچنان null می‌ماند
+      // و درخواست PUT بعدی به‌عنوان ایجاد فایل جدید ارسال می‌شود. خطا را برای دیباگ لاگ می‌کنیم.
+      console.warn('عدم دریافت sha فایل قبل از سینک (احتمالاً فایل جدید است):', e);
+    }
     
     const body = {
       message: `همگام‌سازی خودکار - ${nowStr()}`,
@@ -1974,7 +1984,11 @@ async function syncToCloud() {
       body: JSON.stringify(body)
     });
     
-    if (!updateResponse.ok) throw new Error('Sync failed');
+    if (!updateResponse.ok) {
+      const err = new Error('Sync failed');
+      err.status = updateResponse.status;
+      throw err;
+    }
     
     const result = await updateResponse.json();
     currentSHA = result.content.sha;
@@ -1983,8 +1997,12 @@ async function syncToCloud() {
     
   } catch (e) {
     console.error('Sync error:', e);
-    if (e.message.includes('401') || e.message.includes('403')) {
-      setSyncStatus('error', '⚠️ توکن نامعتبر');
+    if (e.status === 401 || e.status === 403) {
+      setSyncStatus('error', '⚠️ توکن نامعتبر یا دسترسی ناکافی');
+    } else if (e.status === 409) {
+      // تعارض: نسخه‌ی روی گیت‌هاب از زمان آخرین دریافت ما تغییر کرده (مثلاً دستگاه دیگری هم‌زمان ذخیره کرده)
+      setSyncStatus('error', '⚠️ تعارض داده؛ ابتدا دریافت از سرور را اجرا کنید');
+      toast('داده‌ها روی سرور تغییر کرده؛ لطفاً صفحه را رفرش کنید تا آخرین نسخه دریافت شود', 'danger');
     } else {
       setSyncStatus('error', '⚠️ خطا در همگام‌سازی');
     }
@@ -2230,6 +2248,16 @@ function fmtNum(n) { return Number(n||0).toLocaleString('fa-IR'); }
 function nextId(arr) { return arr.length ? Math.max(...arr.map(x=>x.id||0)) + 1 : 1; }
 function norm(s) { return (s||'').replace(/ي/g,'ی').replace(/ك/g,'ک').toLowerCase(); }
 
+// ============================================
+// SECURITY: HTML ESCAPING (XSS PREVENTION)
+// ============================================
+// هر متنی که از کاربر گرفته شده (نام، تلفن، یادداشت و...) قبل از قرار گرفتن
+// داخل innerHTML باید از این تابع رد شود تا کد HTML/JS داخل آن اجرا نشود.
+const _escMap = { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' };
+function esc(str) {
+  return String(str ?? '').replace(/[&<>"']/g, ch => _escMap[ch]);
+}
+
 function toast(msg, type='') {
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -2285,28 +2313,30 @@ function searchCustomers(query) {
   dropdown.classList.add('show');
   dropdown.innerHTML = matches.map(c => {
     const fullName = c.first_name + ' ' + c.last_name;
-    let displayName = fullName;
+    let displayName = esc(fullName);
     if (norm(fullName).includes(nq)) {
       displayName = highlightText(fullName, q);
     }
-    return `<div class="item" onclick="selectCustomer(${c.id})">
+    return `<div class="item" onclick="selectCustomer(${Number(c.id)})">
       ${displayName}
       <span class="sub-info">
-        ${c.phone ? '📱 ' + c.phone : ''}
-        ${c.national ? ' | 🆔 ' + c.national : ''}
+        ${c.phone ? '📱 ' + esc(c.phone) : ''}
+        ${c.national ? ' | 🆔 ' + esc(c.national) : ''}
         ${c.debt ? ' | 💳 بدهی: ' + fmtNum(c.debt) + ' ریال' : ''}
       </span>
     </div>`;
   }).join('');
 }
 
+// متن را escape می‌کند و فقط قسمت منطبق‌شده با جستجو را داخل <span class="highlight"> می‌گذارد.
+// escape قبل از برش متن انجام می‌شود تا هیچ HTML خامی از ورودی کاربر عبور نکند.
 function highlightText(text, query) {
   const idx = norm(text).indexOf(norm(query));
-  if (idx === -1) return text;
+  if (idx === -1) return esc(text);
   const before = text.substring(0, idx);
   const matched = text.substring(idx, idx + query.length);
   const after = text.substring(idx + query.length);
-  return before + '<span class="highlight">' + matched + '</span>' + after;
+  return esc(before) + '<span class="highlight">' + esc(matched) + '</span>' + esc(after);
 }
 
 function selectCustomer(id) {
@@ -2505,13 +2535,13 @@ function loadDashboard() {
     const priMap = {فوری:'🔴 فوری',بالا:'🟠 بالا',متوسط:'🟡 متوسط',پایین:'⚪ پایین'};
     dashNews.innerHTML += `<div class="${cls}">
       <div class="row-center gap-2 mb-3">
-        <span class="badge badge-accent">${n.category||''}</span>
-        <span class="badge ${n.priority==='فوری'?'badge-danger':'badge-warning'}">${priMap[n.priority]||n.priority}</span>
+        <span class="badge badge-accent">${esc(n.category||'')}</span>
+        <span class="badge ${n.priority==='فوری'?'badge-danger':'badge-warning'}">${esc(priMap[n.priority]||n.priority||'')}</span>
         ${n.pinned?'<span class="badge badge-purple">📌 پین</span>':''}
       </div>
-      <div class="news-card-title">${n.title}</div>
-      <div class="news-card-body">${(n.content||'').slice(0,120)}${(n.content||'').length>120?'...':''}</div>
-      <div class="news-card-meta">📅 ${n.date}</div>
+      <div class="news-card-title">${esc(n.title)}</div>
+      <div class="news-card-body">${esc((n.content||'').slice(0,120))}${(n.content||'').length>120?'...':''}</div>
+      <div class="news-card-meta">📅 ${esc(n.date||'')}</div>
     </div>`;
   });
 
@@ -2527,14 +2557,14 @@ function loadDashboard() {
     document.getElementById('clear-all-orders-btn').style.display = 'inline-flex';
     recentOrders.forEach(o=>{
       tbody.innerHTML += `<tr>
-        <td>${o.id}</td><td>${o.date||'-'}</td>
-        <td>${custMap[o.customer_id]||o.customer_id||'-'}</td>
+        <td>${Number(o.id)}</td><td>${esc(o.date||'-')}</td>
+        <td>${esc(custMap[o.customer_id]||o.customer_id||'-')}</td>
         <td>${fmtNum(o.total)} ریال</td>
-        <td><span class="badge ${o.status==='لغو شده'?'badge-danger':o.status==='در انتظار'?'badge-warning':o.status==='مرجوعی'?'badge-muted':'badge-success'}">${o.status||'تکمیل شده'}</span></td>
+        <td><span class="badge ${o.status==='لغو شده'?'badge-danger':o.status==='در انتظار'?'badge-warning':o.status==='مرجوعی'?'badge-muted':'badge-success'}">${esc(o.status||'تکمیل شده')}</span></td>
         <td>
           <div class="order-actions" onclick="event.stopPropagation()">
-            <button class="btn btn-secondary btn-sm" onclick="showOrderDetail(${o.id})">👁️</button>
-            <button class="btn btn-danger btn-sm" onclick="deleteOrderFromDash(${o.id})">🗑️</button>
+            <button class="btn btn-secondary btn-sm" onclick="showOrderDetail(${Number(o.id)})">👁️</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteOrderFromDash(${Number(o.id)})">🗑️</button>
           </div>
         </td>
       </tr>`;
@@ -2577,11 +2607,11 @@ function renderServices(data) {
     tr.className = 'draggable-row';
     tr.dataset.id = s.id;
     tr.innerHTML = `
-      <td><span class="drag-handle">⠿</span> ${s.id}</td>
-      <td>${s.name}</td>
-      <td><span class="badge badge-accent">${s.category||'-'}</span></td>
+      <td><span class="drag-handle">⠿</span> ${Number(s.id)}</td>
+      <td>${esc(s.name)}</td>
+      <td><span class="badge badge-accent">${esc(s.category||'-')}</span></td>
       <td>${fmtNum(s.price)} ریال</td>
-      <td>${s.stock||0}</td>
+      <td>${Number(s.stock||0)}</td>
     `;
     tr.onclick = (e) => {
       if (e.target.closest('.drag-handle')) return;
@@ -2655,12 +2685,12 @@ function renderTariffs(data) {
     tr.className = 'draggable-row';
     tr.dataset.id = t.id;
     tr.innerHTML = `
-      <td><span class="drag-handle">⠿</span> ${t.id}</td>
-      <td>${t.name}</td>
-      <td>${t.description||'-'}</td>
+      <td><span class="drag-handle">⠿</span> ${Number(t.id)}</td>
+      <td>${esc(t.name)}</td>
+      <td>${esc(t.description||'-')}</td>
       <td>${fmtNum(t.price)} ریال</td>
-      <td>${t.unit||'-'}</td>
-      <td><span class="badge ${t.active==='فعال'?'badge-success':'badge-muted'}">${t.active||'فعال'}</span></td>
+      <td>${esc(t.unit||'-')}</td>
+      <td><span class="badge ${t.active==='فعال'?'badge-success':'badge-muted'}">${esc(t.active||'فعال')}</span></td>
     `;
     tr.onclick = (e) => {
       if (e.target.closest('.drag-handle')) return;
@@ -2726,11 +2756,11 @@ function renderCustomers(data) {
     const tr=document.createElement('tr');
     const customerCode = `#${String(index+1).padStart(3, '0')}`;
     const count = orderCount[c.id]||0;
-    tr.innerHTML=`<td>${c.id}</td><td>${customerCode}</td><td>${c.first_name} ${c.last_name}</td>
-      <td>${c.phone||'-'}</td>
-      <td><span class="badge badge-accent">${count}</span></td>
+    tr.innerHTML=`<td>${Number(c.id)}</td><td>${esc(customerCode)}</td><td>${esc(c.first_name)} ${esc(c.last_name)}</td>
+      <td>${esc(c.phone||'-')}</td>
+      <td><span class="badge badge-accent">${Number(count)}</span></td>
       <td>${c.debt?'<span class="badge badge-danger">'+fmtNum(c.debt)+' ریال</span>':'<span class="badge badge-success">بدون بدهی</span>'}</td>
-      <td>${c.join_date||'-'}</td>`;
+      <td>${esc(c.join_date||'-')}</td>`;
     tr.onclick=()=>{ selCust=c; document.querySelectorAll('#cust-table tr').forEach(r=>r.classList.remove('selected')); tr.classList.add('selected'); fillCustForm(c); };
     tbody.appendChild(tr);
   });
@@ -2824,16 +2854,16 @@ function renderOrders(data) {
   [...data].reverse().forEach(o=>{
     const statusClass = o.status==='لغو شده'?'badge-danger':o.status==='در انتظار'?'badge-warning':o.status==='مرجوعی'?'badge-muted':'badge-success';
     tbody.innerHTML += `<tr>
-      <td>${o.id}</td>
-      <td>${o.date||'-'}</td>
-      <td>${custMap[o.customer_id]||'-'}</td>
+      <td>${Number(o.id)}</td>
+      <td>${esc(o.date||'-')}</td>
+      <td>${esc(custMap[o.customer_id]||'-')}</td>
       <td>${fmtNum(o.total)} ریال</td>
-      <td><span class="badge ${statusClass}">${o.status||'تکمیل شده'}</span></td>
+      <td><span class="badge ${statusClass}">${esc(o.status||'تکمیل شده')}</span></td>
       <td>
         <div class="order-actions" onclick="event.stopPropagation()">
-          <button class="btn btn-secondary btn-sm" onclick="showOrderDetail(${o.id})">👁️</button>
-          <button class="btn btn-secondary btn-sm" onclick="editOrderFromList(${o.id})">✏️</button>
-          <button class="btn btn-danger btn-sm" onclick="deleteOrder(${o.id})">🗑️</button>
+          <button class="btn btn-secondary btn-sm" onclick="showOrderDetail(${Number(o.id)})">👁️</button>
+          <button class="btn btn-secondary btn-sm" onclick="editOrderFromList(${Number(o.id)})">✏️</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteOrder(${Number(o.id)})">🗑️</button>
         </div>
       </td>
     </tr>`;
@@ -2914,14 +2944,14 @@ function refreshCart() {
   }
   cart.forEach((item,i)=>{
     tbody.innerHTML += `<tr>
-      <td>${item.product_name}</td>
-      <td>${item.qty}</td>
+      <td>${esc(item.product_name)}</td>
+      <td>${Number(item.qty)}</td>
       <td>${fmtNum(item.unit_price)}</td>
-      <td>${item.discount_percent}%</td>
+      <td>${Number(item.discount_percent)}%</td>
       <td>${fmtNum(item.discount_amount)}</td>
       <td>${fmtNum(item.total_discount)}</td>
       <td>${fmtNum(item.subtotal)}</td>
-      <td><button class="btn btn-danger btn-sm" onclick="removeCartItem(${i})">✕</button></td>
+      <td><button class="btn btn-danger btn-sm" onclick="removeCartItem(${Number(i)})">✕</button></td>
     </tr>`;
   });
   const total = cart.reduce((s,c)=>s+c.subtotal,0);
@@ -3189,7 +3219,7 @@ function renderEditItems() {
       renderEditItems();
     };
     tr.innerHTML = `
-      <td><input style="width:100%;padding:4px;border:1px solid var(--border);border-radius:4px;background:var(--surface2);color:var(--text);font-family:inherit;font-size:12px;" value="${item.product_name}" onchange="editItems[${idx}].product_name=this.value"></td>
+      <td><input style="width:100%;padding:4px;border:1px solid var(--border);border-radius:4px;background:var(--surface2);color:var(--text);font-family:inherit;font-size:12px;" value="${esc(item.product_name)}" onchange="editItems[${idx}].product_name=this.value"></td>
       <td><input style="width:60px;padding:4px;border:1px solid var(--border);border-radius:4px;background:var(--surface2);color:var(--text);font-family:inherit;font-size:12px;text-align:center;" type="number" value="${item.qty}" min="1" onchange="editItems[${idx}].qty=+this.value;updateEditTotal();"></td>
       <td><input style="width:80px;padding:4px;border:1px solid var(--border);border-radius:4px;background:var(--surface2);color:var(--text);font-family:inherit;font-size:12px;text-align:center;" type="number" value="${item.unit_price}" min="0" onchange="editItems[${idx}].unit_price=+this.value;updateEditTotal();"></td>
       <td><input style="width:60px;padding:4px;border:1px solid var(--border);border-radius:4px;background:var(--surface2);color:var(--text);font-family:inherit;font-size:12px;text-align:center;" type="number" value="${item.discount_percent||0}" min="0" max="100" onchange="editItems[${idx}].discount_percent=+this.value;updateEditTotal();"></td>
@@ -3323,10 +3353,10 @@ function showOrderDetail(id) {
       const finalPrice = Math.max(0, Math.round(item.unit_price * (1 - (item.discount_percent||0) / 100)) - (item.discount_amount||0));
       const totalDiscount = (item.unit_price - finalPrice) * item.qty;
       tbody.innerHTML += `<tr>
-        <td>${item.product_name}</td>
-        <td>${item.qty}</td>
+        <td>${esc(item.product_name)}</td>
+        <td>${Number(item.qty)}</td>
         <td>${fmtNum(item.unit_price)}</td>
-        <td>${item.discount_percent||0}%</td>
+        <td>${Number(item.discount_percent||0)}%</td>
         <td>${fmtNum(item.discount_amount||0)}</td>
         <td>${fmtNum(totalDiscount)}</td>
         <td>${fmtNum(item.subtotal)}</td>
@@ -3425,15 +3455,15 @@ function printInvoice() {
     </div>
     
     <div class="invoice-info" style="display:flex;justify-content:space-between;font-size:11px;color:#3D4461;margin-bottom:10px;padding:6px 0;border-bottom:1px dashed #D6DCE9;">
-      <div><strong>شماره فاکتور:</strong> #${order.id}</div>
-      <div><strong>تاریخ:</strong> ${order.date||'-'}</div>
-      <div><strong>وضعیت:</strong> ${order.status||'تکمیل شده'}</div>
+      <div><strong>شماره فاکتور:</strong> #${Number(order.id)}</div>
+      <div><strong>تاریخ:</strong> ${esc(order.date||'-')}</div>
+      <div><strong>وضعیت:</strong> ${esc(order.status||'تکمیل شده')}</div>
     </div>
     
     <div style="margin-bottom:10px;padding:6px 10px;background:#f8f9fa;border-radius:6px;font-size:11px;">
-      <div><strong>مشتری:</strong> ${custName}</div>
-      <div><strong>تلفن:</strong> ${custPhone}</div>
-      ${custNational ? `<div><strong>کد ملی:</strong> ${custNational}</div>` : ''}
+      <div><strong>مشتری:</strong> ${esc(custName)}</div>
+      <div><strong>تلفن:</strong> ${esc(custPhone)}</div>
+      ${custNational ? `<div><strong>کد ملی:</strong> ${esc(custNational)}</div>` : ''}
     </div>
     
     <table class="invoice-table" style="width:100%;border-collapse:collapse;font-size:10px;margin:10px 0;">
@@ -3455,10 +3485,10 @@ function printInvoice() {
     html += `
       <tr>
         <td style="padding:4px 6px;border:1px solid #D6DCE9;text-align:center;color:#1A1F36;font-size:10px;">${idx+1}</td>
-        <td style="padding:4px 6px;border:1px solid #D6DCE9;text-align:center;color:#1A1F36;font-size:10px;">${item.product_name}</td>
-        <td style="padding:4px 6px;border:1px solid #D6DCE9;text-align:center;color:#1A1F36;font-size:10px;">${item.qty}</td>
+        <td style="padding:4px 6px;border:1px solid #D6DCE9;text-align:center;color:#1A1F36;font-size:10px;">${esc(item.product_name)}</td>
+        <td style="padding:4px 6px;border:1px solid #D6DCE9;text-align:center;color:#1A1F36;font-size:10px;">${Number(item.qty)}</td>
         <td style="padding:4px 6px;border:1px solid #D6DCE9;text-align:center;color:#1A1F36;font-size:10px;">${fmtNum(item.unit_price)}</td>
-        <td style="padding:4px 6px;border:1px solid #D6DCE9;text-align:center;color:#1A1F36;font-size:10px;">${item.discount_percent||0}%</td>
+        <td style="padding:4px 6px;border:1px solid #D6DCE9;text-align:center;color:#1A1F36;font-size:10px;">${Number(item.discount_percent||0)}%</td>
         <td style="padding:4px 6px;border:1px solid #D6DCE9;text-align:center;color:#1A1F36;font-size:10px;">${fmtNum(item.discount_amount||0)}</td>
         <td style="padding:4px 6px;border:1px solid #D6DCE9;text-align:center;color:#1A1F36;font-size:10px;">${fmtNum(item.subtotal)}</td>
       </tr>
@@ -3582,7 +3612,8 @@ function loadTips(searchQ) {
   const tree = document.getElementById('folder-tree');
   tree.innerHTML = '';
 
-  const folders = {};
+  // Object.create(null) به‌جای {} تا نام پوشه‌ای مثل "__proto__" باعث prototype pollution نشود
+  const folders = Object.create(null);
   tips.forEach(t=>{
     const f = t.folder||'عمومی';
     if (!folders[f]) folders[f]=[];
@@ -3614,13 +3645,13 @@ function loadTips(searchQ) {
     item.innerHTML = `
       <div class="folder-header" onclick="toggleFolder(this)">
         <span class="folder-icon">${folderEmojis[folderName]||'📁'}</span>
-        <span class="folder-name">${folderName}</span>
+        <span class="folder-name">${esc(folderName)}</span>
         <span class="folder-count">${notes.length}</span>
         <span class="folder-arrow">›</span>
       </div>
       <div class="folder-children">
-        ${notes.map(n=>`<div class="note-item" data-id="${n.id}" onclick="showNote(${n.id})">
-          <span class="note-dot"></span>${n.title}
+        ${notes.map(n=>`<div class="note-item" data-id="${Number(n.id)}" onclick="showNote(${Number(n.id)})">
+          <span class="note-dot"></span>${esc(n.title)}
         </div>`).join('')}
       </div>`;
     tree.appendChild(item);
@@ -3652,23 +3683,36 @@ function showNote(id) {
   document.getElementById('note-viewer-breadcrumb').textContent = (note.folder||'عمومی') + ' › ' + note.title;
 
   const viewer = document.getElementById('note-viewer');
-  const imgsHtml = (note.images||[]).map(img=>`<img class="note-img-thumb" src="${img}" onclick="openLightbox('${img}')" alt="">`).join('');
+  // src تصاویر از data URL داخلی می‌آید (base64)، اما برای احتیاط escape هم می‌شود.
+  const imgsHtml = (note.images||[]).map((img,i)=>`<img class="note-img-thumb" src="${esc(img)}" onclick="openLightboxFromNote(${Number(i)})" alt="">`).join('');
+  const safeLink = safeUrl(note.url);
 
   viewer.innerHTML = `
-    <div class="note-viewer-title">${note.title}</div>
+    <div class="note-viewer-title">${esc(note.title)}</div>
     <div class="note-viewer-meta">
-      <span>📁 ${note.folder||'عمومی'}</span>
-      <span>📅 ${note.date||''}</span>
-      ${note.url?`<a href="${note.url}" target="_blank" style="color:var(--accent);text-decoration:none">🔗 ${note.url}</a>`:''}
+      <span>📁 ${esc(note.folder||'عمومی')}</span>
+      <span>📅 ${esc(note.date||'')}</span>
+      ${safeLink?`<a href="${safeLink}" target="_blank" rel="noopener noreferrer" style="color:var(--accent);text-decoration:none">🔗 ${safeLink}</a>`:''}
     </div>
-    ${note.url?`<div class="tip-box">🔗 برای دسترسی مستقیم: <a href="${note.url}" target="_blank" style="color:var(--accent)">${note.url}</a></div>`:''}
-    <div class="note-viewer-body">${escapeHtml(note.body||'')}</div>
+    ${safeLink?`<div class="tip-box">🔗 برای دسترسی مستقیم: <a href="${safeLink}" target="_blank" rel="noopener noreferrer" style="color:var(--accent)">${safeLink}</a></div>`:''}
+    <div class="note-viewer-body">${esc(note.body||'')}</div>
     ${imgsHtml?`<div class="divider"></div><div style="font-size:12px;font-weight:600;margin-bottom:6px;color:var(--text)">📷 تصاویر</div><div class="note-viewer-imgs">${imgsHtml}</div>`:''}
   `;
 }
 
-function escapeHtml(s) {
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+// چون src تصویر (data URL) می‌تواند طولانی باشد، به‌جای تزریق مستقیم در onclick، بر اساس ایندکس تصویر را باز می‌کنیم.
+function openLightboxFromNote(imgIndex) {
+  if (!currentNote || !currentNote.images) return;
+  const img = currentNote.images[imgIndex];
+  if (img) openLightbox(img);
+}
+
+// توجه: از تابع مشترک esc() (تعریف‌شده در بخش UTILS) برای escape استفاده می‌کنیم.
+// همچنین لینک‌های کاربر را محدود به http/https می‌کنیم تا از javascript: URI جلوگیری شود.
+function safeUrl(u) {
+  const s = String(u||'').trim();
+  if (/^(https?:)\/\//i.test(s)) return esc(s);
+  return '';
 }
 
 function searchTips(q) { loadTips(q); }
@@ -3745,8 +3789,8 @@ function renderImgPreview() {
   pendingImgs.forEach((img,i)=>{
     const wrap = document.createElement('div');
     wrap.className='img-preview-item';
-    wrap.innerHTML=`<img src="${img.dataUrl}" alt="${img.name}">
-      <button class="img-preview-remove" onclick="removeImg(${i})">✕</button>`;
+    wrap.innerHTML=`<img src="${esc(img.dataUrl)}" alt="${esc(img.name)}">
+      <button class="img-preview-remove" onclick="removeImg(${Number(i)})">✕</button>`;
     grid.appendChild(wrap);
   });
 }
@@ -3777,10 +3821,10 @@ function renderNews(data) {
   data.forEach(n=>{
     const tr=document.createElement('tr');
     const priClr = {فوری:'badge-danger',بالا:'badge-warning',متوسط:'badge-accent',پایین:'badge-muted'};
-    tr.innerHTML=`<td>${n.id}</td><td>${n.title}</td>
-      <td><span class="badge badge-accent">${n.category||'-'}</span></td>
-      <td><span class="badge ${priClr[n.priority]||'badge-muted'}">${n.priority||'-'}</span></td>
-      <td>${n.pinned?'📌':'—'}</td><td>${n.date||'-'}</td>`;
+    tr.innerHTML=`<td>${Number(n.id)}</td><td>${esc(n.title)}</td>
+      <td><span class="badge badge-accent">${esc(n.category||'-')}</span></td>
+      <td><span class="badge ${priClr[n.priority]||'badge-muted'}">${esc(n.priority||'-')}</span></td>
+      <td>${n.pinned?'📌':'—'}</td><td>${esc(n.date||'-')}</td>`;
     tr.onclick=()=>{ selNews=n; document.querySelectorAll('#news-table tr').forEach(r=>r.classList.remove('selected')); tr.classList.add('selected'); document.getElementById('news-title').value=n.title; document.getElementById('news-cat').value=n.category||'عمومی'; document.getElementById('news-pri').value=n.priority||'متوسط'; document.getElementById('news-body').value=n.content||''; };
     tbody.appendChild(tr);
   });
@@ -3841,7 +3885,7 @@ function renderRep(data) {
   if (!data.length) { tbody.innerHTML='<tr class="empty-row"><td colspan="'+repCols.length+'">داده‌ای وجود ندارد</td></tr>'; return; }
   data.forEach(row=>{
     const tr=document.createElement('tr');
-    tr.innerHTML=row.map(v=>`<td>${v}</td>`).join('');
+    tr.innerHTML=row.map(v=>`<td>${esc(v)}</td>`).join('');
     tbody.appendChild(tr);
   });
 }
@@ -4003,7 +4047,7 @@ function filterReport(q) {
   const filtered=repAllData.filter(row=>row.some(v=>norm(String(v)).includes(nq)));
   const tbody=document.getElementById('rep-table');
   tbody.innerHTML='';
-  filtered.forEach(row=>{ const tr=document.createElement('tr'); tr.innerHTML=row.map(v=>`<td>${v}</td>`).join(''); tbody.appendChild(tr); });
+  filtered.forEach(row=>{ const tr=document.createElement('tr'); tr.innerHTML=row.map(v=>`<td>${esc(v)}</td>`).join(''); tbody.appendChild(tr); });
 }
 
 // ============================================
