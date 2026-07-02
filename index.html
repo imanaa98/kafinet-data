@@ -3,10 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<!-- ====== PWA / HOME SCREEN ====== -->
 <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogItmF2YbYt9in2YQg2YXYp9mG2K8iLAogICJzaG9ydF9uYW1lIjogItmF2YbYt9in2YQiLAogICJkZXNjcmlwdGlvbiI6ICLZhNmF2YbYr9in2YTYqCDYp9mE2YHYp9mG2K8g2YXYp9mG2K8iLAogICJzdGFydF91cmwiOiAiLiIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiIzFBNTZDNCIsCiAgInRoZW1lX2NvbG9yIjogIiMxQTU2QzQiLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJsb2dvLnBuZyIsCiAgICAgICJzaXplcyI6ICIxOTJ4MTkyIiwKICAgICAgInR5cGUiOiAiaW1hZ2UvcG5nIiwKICAgICAgInB1cnBvc2UiOiAiYW55IgogICAgfSwKICAgIHsKICAgICAgInNyYyI6ICJsb2dvLnBuZyIsCiAgICAgICJzaXplcyI6ICI1MTJ4NTEyIiwKICAgICAgInR5cGUiOiAiaW1hZ2UvcG5nIiwKICAgICAgInB1cnBvc2UiOiAiYW55IgogICAgfQogIF0KfQ==">
+
 <link rel="icon" href="logo.png" type="image/png">
 <link rel="apple-touch-icon" href="logo.png">
+
 <title>کافینت چنار</title>
+
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap');
 
@@ -1174,46 +1179,7 @@
     font-weight: 700 !important;
   }
   
-  /* Persian DatePicker for edit order - style to show Persian digits */
-  .persian-date-input {
-    font-family: 'Vazirmatn', Tahoma, sans-serif !important;
-    direction: rtl !important;
-    text-align: center !important;
-    font-size: 14px !important;
-    padding: 8px 12px !important;
-    border: 1px solid var(--border) !important;
-    border-radius: var(--radius-sm) !important;
-    background: var(--surface2) !important;
-    color: var(--text) !important;
-    width: 100% !important;
-    min-height: 40px !important;
-    outline: none !important;
-    transition: border-color 0.15s !important;
-  }
-  .persian-date-input:focus {
-    border-color: var(--accent) !important;
-    background: var(--surface) !important;
-  }
-  /* Force Persian digits in input */
-  .persian-date-input::placeholder {
-    font-family: 'Vazirmatn', Tahoma, sans-serif !important;
-    direction: rtl !important;
-  }
-  /* Override browser default date picker */
-  .persian-date-input::-webkit-datetime-edit {
-    font-family: 'Vazirmatn', Tahoma, sans-serif !important;
-    direction: rtl !important;
-    color: var(--text) !important;
-  }
-  .persian-date-input::-webkit-calendar-picker-indicator {
-    filter: invert(0.5);
-    cursor: pointer;
-  }
-  .persian-date-input::-webkit-inner-spin-button {
-    display: none;
-  }
-
-  /* Persian DateTime Picker Dropdown */
+  /* Persian DateTime Picker - Improved with seconds */
   .persian-datetime-wrapper {
     position: relative;
     width: 100%;
@@ -1222,16 +1188,17 @@
     font-family: 'Vazirmatn', Tahoma, sans-serif !important;
     direction: rtl !important;
     text-align: center !important;
-    font-size: 13px !important;
-    padding: 6px 8px !important;
+    font-size: 12px !important;
+    padding: 4px 2px !important;
     border: 1px solid var(--border) !important;
     border-radius: var(--radius-sm) !important;
     background: var(--surface2) !important;
     color: var(--text) !important;
-    width: 100% !important;
-    min-height: 38px !important;
+    min-height: 32px !important;
     outline: none !important;
     cursor: pointer !important;
+    min-width: 44px !important;
+    flex: 1 !important;
   }
   .persian-datetime-wrapper select:focus {
     border-color: var(--accent) !important;
@@ -1243,24 +1210,100 @@
   }
   .persian-datetime-row {
     display: flex;
-    gap: 6px;
+    gap: 3px;
     flex-wrap: wrap;
     align-items: center;
+    justify-content: center;
   }
   .persian-datetime-row select {
     flex: 1;
-    min-width: 60px;
+    min-width: 40px;
   }
   .persian-datetime-row .sep {
     color: var(--muted);
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
-    padding: 0 2px;
+    padding: 0 1px;
+    font-family: 'Vazirmatn', Tahoma, sans-serif !important;
   }
   .persian-datetime-row .label-sm {
-    font-size: 11px;
+    font-size: 10px;
     color: var(--muted);
     font-weight: 500;
+  }
+  
+  /* Dark mode fix for Chrome desktop */
+  [data-theme="dark"] .persian-datetime-wrapper select {
+    background: var(--surface2) !important;
+    color: var(--text) !important;
+    border-color: var(--border) !important;
+  }
+  [data-theme="dark"] .persian-datetime-wrapper select option {
+    background: var(--surface) !important;
+    color: var(--text) !important;
+  }
+  
+  /* Chrome desktop logout and background fix */
+  [data-theme="dark"] .logout-btn {
+    color: var(--text2) !important;
+    border-color: var(--border) !important;
+  }
+  [data-theme="dark"] .logout-btn:hover {
+    background: var(--danger) !important;
+    color: #fff !important;
+    border-color: var(--danger) !important;
+  }
+  
+  /* Force background color for all elements in dark mode */
+  [data-theme="dark"] {
+    background: var(--bg) !important;
+  }
+  [data-theme="dark"] body {
+    background: var(--bg) !important;
+  }
+  [data-theme="dark"] #app {
+    background: var(--bg) !important;
+  }
+  [data-theme="dark"] #content {
+    background: var(--bg) !important;
+  }
+  [data-theme="dark"] .page-body {
+    background: var(--bg) !important;
+  }
+  [data-theme="dark"] .card {
+    background: var(--surface) !important;
+  }
+  [data-theme="dark"] .stat-card {
+    background: var(--surface) !important;
+  }
+  [data-theme="dark"] .modal {
+    background: var(--surface) !important;
+  }
+  [data-theme="dark"] .modal-overlay {
+    background: rgba(0,0,0,0.7) !important;
+  }
+  
+  /* Force text colors in dark mode */
+  [data-theme="dark"] .text-muted {
+    color: var(--muted) !important;
+  }
+  [data-theme="dark"] .text-accent {
+    color: var(--accent) !important;
+  }
+  [data-theme="dark"] .font-bold {
+    color: var(--text) !important;
+  }
+  [data-theme="dark"] .section-title {
+    color: var(--text) !important;
+  }
+  [data-theme="dark"] .stat-label {
+    color: var(--muted) !important;
+  }
+  [data-theme="dark"] .topbar-title {
+    color: var(--text) !important;
+  }
+  [data-theme="dark"] .topbar-date {
+    color: var(--muted) !important;
   }
 </style>
 </head>
@@ -1270,7 +1313,7 @@
 <div id="login-page">
   <div class="login-box">
     <div class="logo-icon">
-      <img src="logo.png" alt="کافینت چنار" onerror="this.parentElement.textContent='KFC';this.parentElement.style.background='#1A56C4';this.parentElement.style.color='white';this.parentElement.style.fontSize='28px';this.parentElement.style.fontWeight='800';">
+      <img src="logo.png" alt="کافینت چنار" onerror="this.parentElement.textContent='کافینت چنار';this.parentElement.style.background='#1A56C4';this.parentElement.style.color='white';this.parentElement.style.fontSize='20px';this.parentElement.style.fontWeight='800';">
     </div>
     <h1>کافینت چنار</h1>
     <div class="sub">مرکز خدمات اینترنتی و ثبت‌ نام اینترنتی</div>
@@ -1298,7 +1341,7 @@
   <div id="sidebar">
     <div class="logo-area">
       <div class="logo-icon">
-        <img src="logo.png" alt="کافینت چنار" onerror="this.parentElement.textContent='KFC';this.parentElement.style.background='#1A56C4';this.parentElement.style.color='white';this.parentElement.style.fontSize='22px';this.parentElement.style.fontWeight='800';">
+        <img src="logo.png" alt="کافینت چنار" onerror="this.parentElement.textContent='کافینت چنار';this.parentElement.style.background='#1A56C4';this.parentElement.style.color='white';this.parentElement.style.fontSize='18px';this.parentElement.style.fontWeight='800';">
       </div>
       <div class="logo-title">کافینت چنار</div>
       <div class="logo-sub">مرکز خدمات اینترنتی</div>
@@ -1727,16 +1770,16 @@
 
 <!-- ══ ORDER EDIT MODAL ══ -->
 <div class="modal-overlay" id="order-edit-modal">
-  <div class="modal" style="max-width:700px">
+  <div class="modal" style="max-width:750px">
     <div class="modal-header">
       <div class="modal-title">✏️ ویرایش سفارش</div>
       <button class="modal-close" onclick="closeOrderEditModal()">✕</button>
     </div>
     <div id="order-edit-content">
-      <div class="row-center mb-3">
-        <div class="field" style="flex:1"><label>شماره سفارش</label><div id="edit-order-id" style="font-weight:700;font-size:16px">-</div></div>
-        <div class="field" style="flex:1"><label>مشتری</label><select id="order-edit-cust"></select></div>
-        <div class="field" style="flex:1"><label>تاریخ و ساعت (شمسی)</label>
+      <div class="row-center mb-3" style="gap:8px;flex-wrap:wrap">
+        <div class="field" style="flex:1;min-width:100px"><label>شماره سفارش</label><div id="edit-order-id" style="font-weight:700;font-size:16px">-</div></div>
+        <div class="field" style="flex:1;min-width:120px"><label>مشتری</label><select id="order-edit-cust"></select></div>
+        <div class="field" style="flex:2;min-width:200px"><label>تاریخ و ساعت (شمسی)</label>
           <div class="persian-datetime-wrapper">
             <div class="persian-datetime-row" id="persian-datetime-picker">
               <select id="edit-date-year" class="persian-date-select"></select>
@@ -1744,14 +1787,16 @@
               <select id="edit-date-month" class="persian-date-select"></select>
               <span class="sep">/</span>
               <select id="edit-date-day" class="persian-date-select"></select>
-              <span class="sep" style="margin-right:4px;">—</span>
+              <span class="sep" style="margin-right:2px;">—</span>
               <select id="edit-date-hour" class="persian-date-select"></select>
               <span class="sep">:</span>
               <select id="edit-date-minute" class="persian-date-select"></select>
+              <span class="sep">:</span>
+              <select id="edit-date-second" class="persian-date-select"></select>
             </div>
           </div>
         </div>
-        <div class="field" style="flex:1"><label>وضعیت</label><select id="order-edit-status"><option>تکمیل شده</option><option>در انتظار</option><option>لغو شده</option><option>مرجوعی</option></select></div>
+        <div class="field" style="flex:1;min-width:100px"><label>وضعیت</label><select id="order-edit-status"><option>تکمیل شده</option><option>در انتظار</option><option>لغو شده</option><option>مرجوعی</option></select></div>
       </div>
       <div class="divider"></div>
       <div style="font-weight:600;margin-bottom:8px">📋 ویرایش اقلام</div>
@@ -1768,7 +1813,7 @@
         <button class="btn btn-danger btn-sm" onclick="removeEditItem()">🗑️ حذف آیتم انتخاب شده</button>
       </div>
       <div class="divider"></div>
-      <div class="row-center" style="justify-content:space-between">
+      <div class="row-center" style="justify-content:space-between;flex-wrap:wrap;gap:8px">
         <div><span class="text-muted">جمع کل:</span> <span id="edit-total" class="font-bold text-accent" style="font-size:18px">۰ ریال</span></div>
         <div class="row-center gap-2">
           <button class="btn btn-secondary" onclick="closeOrderEditModal()">انصراف</button>
@@ -2924,7 +2969,7 @@ function submitOrder() {
 }
 
 // ============================================
-// PERSIAN DATETIME PICKER HELPERS
+// PERSIAN DATETIME PICKER HELPERS WITH SECONDS
 // ============================================
 function getPersianDateParts(dateStr) {
   // dateStr format: 1403/01/15 14:30:25 or 1403/01/15 14:30
@@ -2939,7 +2984,8 @@ function getPersianDateParts(dateStr) {
     month: parseInt(dateParts[1]),
     day: parseInt(dateParts[2]),
     hour: parseInt(timeParts[0]),
-    minute: parseInt(timeParts[1])
+    minute: parseInt(timeParts[1]),
+    second: timeParts.length > 2 ? parseInt(timeParts[2]) : 0
   };
 }
 
@@ -2959,6 +3005,7 @@ function initPersianDatePickers() {
   const daySelect = document.getElementById('edit-date-day');
   const hourSelect = document.getElementById('edit-date-hour');
   const minuteSelect = document.getElementById('edit-date-minute');
+  const secondSelect = document.getElementById('edit-date-second');
   
   if (!yearSelect) return;
   
@@ -3007,6 +3054,15 @@ function initPersianDatePickers() {
     opt.textContent = padPersian(m);
     minuteSelect.appendChild(opt);
   }
+  
+  // Populate seconds (0-59)
+  secondSelect.innerHTML = '';
+  for (let s = 0; s <= 59; s++) {
+    const opt = document.createElement('option');
+    opt.value = s;
+    opt.textContent = padPersian(s);
+    secondSelect.appendChild(opt);
+  }
 }
 
 function setPersianDateTime(dateStr) {
@@ -3020,24 +3076,27 @@ function setPersianDateTime(dateStr) {
     const pDay = now.getDate();
     const pHour = now.getHours();
     const pMinute = now.getMinutes();
-    setPickerValues(pYear, pMonth, pDay, pHour, pMinute);
+    const pSecond = now.getSeconds();
+    setPickerValues(pYear, pMonth, pDay, pHour, pMinute, pSecond);
     return;
   }
-  setPickerValues(parts.year, parts.month, parts.day, parts.hour, parts.minute);
+  setPickerValues(parts.year, parts.month, parts.day, parts.hour, parts.minute, parts.second || 0);
 }
 
-function setPickerValues(year, month, day, hour, minute) {
+function setPickerValues(year, month, day, hour, minute, second) {
   const yearSelect = document.getElementById('edit-date-year');
   const monthSelect = document.getElementById('edit-date-month');
   const daySelect = document.getElementById('edit-date-day');
   const hourSelect = document.getElementById('edit-date-hour');
   const minuteSelect = document.getElementById('edit-date-minute');
+  const secondSelect = document.getElementById('edit-date-second');
   
   if (yearSelect) yearSelect.value = year;
   if (monthSelect) monthSelect.value = month;
   if (daySelect) daySelect.value = day;
   if (hourSelect) hourSelect.value = hour;
   if (minuteSelect) minuteSelect.value = minute;
+  if (secondSelect) secondSelect.value = second || 0;
 }
 
 function getPersianDateTimeFromPicker() {
@@ -3046,8 +3105,9 @@ function getPersianDateTimeFromPicker() {
   const day = parseInt(document.getElementById('edit-date-day').value);
   const hour = parseInt(document.getElementById('edit-date-hour').value);
   const minute = parseInt(document.getElementById('edit-date-minute').value);
+  const second = parseInt(document.getElementById('edit-date-second').value) || 0;
   
-  return `${year}/${String(month).padStart(2, '0')}/${String(day).padStart(2, '0')} ${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
+  return `${year}/${String(month).padStart(2, '0')}/${String(day).padStart(2, '0')} ${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}:${String(second).padStart(2, '0')}`;
 }
 
 // ============================================
@@ -3186,7 +3246,7 @@ function saveOrderEdit() {
   
   order.customer_id = +document.getElementById('order-edit-cust').value;
   
-  // دریافت تاریخ از picker
+  // دریافت تاریخ از picker با ثانیه
   const dateValue = getPersianDateTimeFromPicker();
   if (dateValue) {
     order.date = dateValue;
@@ -3342,7 +3402,7 @@ function printInvoice() {
     <div class="invoice-header">
       <div class="invoice-logo">
         <div class="invoice-logo-icon">
-          <img src="logo.png" alt="کافینت چنار" onerror="this.parentElement.textContent='KFC';this.parentElement.style.background='#1A56C4';this.parentElement.style.color='white';this.parentElement.style.fontSize='24px';this.parentElement.style.fontWeight='800';">
+          <img src="logo.png" alt="کافینت چنار" onerror="this.parentElement.textContent='کافینت چنار';this.parentElement.style.background='#1A56C4';this.parentElement.style.color='white';this.parentElement.style.fontSize='18px';this.parentElement.style.fontWeight='800';">
         </div>
         <div>
           <div class="invoice-shop-name">کافینت چنار</div>
@@ -4024,13 +4084,15 @@ if (savedToken && savedToken !== '') {
   updateLoginStatus('offline', '⛔ منتظر ورود توکن');
 }
 
-console.log('✅ فاکتور با موارد درخواستی به‌روز شد:');
+console.log('✅ تمام اصلاحات انجام شد:');
 console.log('   ✅ تلفن: 086-43220702');
 console.log('   ✅ آدرس: محلات - میدان چنار - پلاک 71');
-console.log('   ✅ سود با رنگ سبز و عنوان "سود شما"');
-console.log('   ✅ تاریخ و ساعت فاکتور به صورت فارسی نمایش داده می‌شود');
-console.log('   ✅ ویرایش سفارش با تاریخ شمسی به صورت کشویی و انتخاب از لیست');
+console.log('   ✅ سود با رنگ سبز و عنوان "سود شما" در فاکتور');
+console.log('   ✅ تاریخ و ساعت فاکتور به صورت فارسی');
+console.log('   ✅ ویرایش سفارش با تاریخ شمسی به صورت کشویی + ثانیه');
 console.log('   ✅ فونت و اعداد در فیلد تاریخ شمسی با فونت و اعداد فارسی');
+console.log('   ✅ رفع مشکل نمایش پس‌زمینه و خروج در کروم دسکتاپ');
+console.log('   ✅ نام برنامه روی هوم اسکرین "کافینت چنار"');
 </script>
 </body>
 </html>
