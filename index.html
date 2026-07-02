@@ -5,35 +5,1317 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <!-- ====== PWA / HOME SCREEN ====== -->
-<link rel="manifest" href="data:application/json,{
-  &quot;name&quot;: &quot;کافینت چنار&quot;,
-  &quot;short_name&quot;: &quot;کافینت&quot;,
-  &quot;description&quot;: &quot;مرکز خدمات اینترنتی و ثبت نام&quot;,
-  &quot;start_url&quot;: &quot;.&quot;,
-  &quot;display&quot;: &quot;standalone&quot;,
-  &quot;background_color&quot;: &quot;#1A56C4&quot;,
-  &quot;theme_color&quot;: &quot;#1A56C4&quot;,
-  &quot;icons&quot;: [
-    {
-      &quot;src&quot;: &quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='80' fill='%231A56C4'/%3E%3Ctext x='256' y='320' font-size='280' text-anchor='middle' fill='white' font-family='sans-serif'%3E%DA%A9%3C/text%3E%3C/svg%3E&quot;,
-      &quot;sizes&quot;: &quot;192x192&quot;,
-      &quot;type&quot;: &quot;image/svg+xml&quot;
-    },
-    {
-      &quot;src&quot;: &quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='80' fill='%231A56C4'/%3E%3Ctext x='256' y='320' font-size='280' text-anchor='middle' fill='white' font-family='sans-serif'%3E%DA%A9%3C/text%3E%3C/svg%3E&quot;,
-      &quot;sizes&quot;: &quot;512x512&quot;,
-      &quot;type&quot;: &quot;image/svg+xml&quot;
-    }
-  ]
-}">
+<link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogItmF2YbYt9in2YQg2YXYp9mG2K8iLAogICJzaG9ydF9uYW1lIjogItmF2YbYt9in2YQiLAogICJkZXNjcmlwdGlvbiI6ICLZhNmF2YbYr9in2YTYqCDYp9mE2YHYp9mG2K8g2YXYp9mG2K8iLAogICJzdGFydF91cmwiOiAiLiIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiIzFBNTZDNCIsCiAgInRoZW1lX2NvbG9yIjogIiMxQTU2QzQiLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJsb2dvLnBuZyIsCiAgICAgICJzaXplcyI6ICIxOTJ4MTkyIiwKICAgICAgInR5cGUiOiAiaW1hZ2UvcG5nIiwKICAgICAgInB1cnBvc2UiOiAiYW55IgogICAgfSwKICAgIHsKICAgICAgInNyYyI6ICJsb2dvLnBuZyIsCiAgICAgICJzaXplcyI6ICI1MTJ4NTEyIiwKICAgICAgInR5cGUiOiAiaW1hZ2UvcG5nIiwKICAgICAgInB1cnBvc2UiOiAiYW55IgogICAgfQogIF0KfQ==">
 
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%231A56C4'/%3E%3Ctext x='32' y='44' font-size='40' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='bold'%3E%DA%A9%3C/text%3E%3C/svg%3E" type="image/svg+xml">
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='30' fill='%231A56C4'/%3E%3Ctext x='90' y='120' font-size='110' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='bold'%3E%DA%A9%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="logo.png" type="image/png">
+<link rel="apple-touch-icon" href="logo.png">
 
 <title>کافینت چنار</title>
 
 <style>
-  /* ... تمام استایل‌های قبلی به همان شکل ... */
+  @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap');
+
+  :root {
+    --bg: #F0F2F7;
+    --sidebar: #FFFFFF;
+    --surface: #FFFFFF;
+    --surface2: #F4F6FB;
+    --surface3: #E8ECF5;
+    --border: #D6DCE9;
+    --accent: #1A56C4;
+    --accent-h: #1347A8;
+    --accent2: #C0392B;
+    --success: #1A7F4B;
+    --danger: #C0392B;
+    --info: #1565C0;
+    --warning: #E65100;
+    --purple: #6B21A8;
+    --text: #1A1F36;
+    --text2: #3D4461;
+    --muted: #7B849E;
+    --btn-text: #FFFFFF;
+    --card-reg: #E8F5E9;
+    --card-news: #E3F2FD;
+    --card-promo: #FFF8E1;
+    --card-pin: #F3E5F5;
+    --shadow: rgba(26,31,54,0.08);
+    --shadow-md: rgba(26,31,54,0.14);
+    --radius: 12px;
+    --radius-sm: 8px;
+    --sidebar-w: 240px;
+  }
+
+  [data-theme="dark"] {
+    --bg: #0D0D12;
+    --sidebar: #141419;
+    --surface: #1A1A22;
+    --surface2: #22222C;
+    --surface3: #2C2C38;
+    --border: #32323E;
+    --accent: #00C9A7;
+    --accent-h: #00E6C2;
+    --accent2: #FF6B35;
+    --success: #2ECC71;
+    --danger: #E74C3C;
+    --info: #3498DB;
+    --warning: #F39C12;
+    --purple: #9B59B6;
+    --text: #EEEEF2;
+    --text2: #AAAABC;
+    --muted: #66667A;
+    --btn-text: #0D0D12;
+    --card-reg: #0D2818;
+    --card-news: #0D1828;
+    --card-promo: #28180D;
+    --card-pin: #1A0D28;
+    --shadow: rgba(0,0,0,0.3);
+    --shadow-md: rgba(0,0,0,0.5);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  html, body {
+    height: 100%;
+    font-family: 'Vazirmatn', Tahoma, Arial, sans-serif;
+    font-size: 14px;
+    background: var(--bg);
+    color: var(--text);
+    direction: rtl;
+    overflow: hidden;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* ── Login Page ── */
+  #login-page {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    transition: all 0.5s ease;
+  }
+  #login-page.hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(1.05);
+  }
+  .login-box {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 40px 36px;
+    width: 420px;
+    max-width: 92vw;
+    box-shadow: 0 8px 40px var(--shadow-md);
+    border: 1px solid var(--border);
+    text-align: center;
+  }
+  .login-box .logo-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(26,86,196,0.3);
+  }
+  .login-box .logo-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .login-box h1 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: var(--text);
+  }
+  .login-box .sub {
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 20px;
+  }
+  .login-box .field {
+    text-align: right;
+    margin-bottom: 14px;
+  }
+  .login-box .field label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text2);
+    margin-bottom: 4px;
+  }
+  .login-box .field input {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--surface2);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .login-box .field input:focus {
+    border-color: var(--accent);
+    background: var(--surface);
+  }
+  .login-box .field .hint {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+  .login-box .field .hint a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .login-box .btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 15px;
+    border-radius: var(--radius-sm);
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 600;
+    background: var(--accent);
+    color: var(--btn-text);
+    transition: background 0.15s;
+  }
+  .login-box .btn:hover {
+    background: var(--accent-h);
+  }
+  .login-box .error {
+    color: var(--danger);
+    font-size: 13px;
+    margin-top: 8px;
+    min-height: 24px;
+  }
+  .login-box .sync-status-login {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 12px;
+    padding: 8px;
+    border-radius: var(--radius-sm);
+    background: var(--surface2);
+  }
+  .login-box .sync-status-login .dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-left: 6px;
+  }
+  .login-box .sync-status-login .dot.online { background: var(--success); }
+  .login-box .sync-status-login .dot.offline { background: var(--danger); }
+  .login-box .sync-status-login .dot.checking { background: var(--warning); }
+
+  /* ── Main App ── */
+  #app { display: none; height: 100vh; overflow: hidden; }
+  #app.show { display: flex; }
+
+  #sidebar {
+    width: var(--sidebar-w);
+    min-width: var(--sidebar-w);
+    background: var(--sidebar);
+    border-left: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 10;
+    transition: width 0.3s;
+  }
+
+  .logo-area {
+    padding: 20px 16px 12px;
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .logo-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(26,86,196,0.3);
+  }
+  .logo-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .logo-title { font-size: 16px; font-weight: 700; color: var(--text); }
+  .logo-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  nav { flex: 1; overflow-y: auto; padding: 10px 8px; }
+  nav::-webkit-scrollbar { width: 4px; }
+  nav::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+  .nav-section-title {
+    font-size: 10px; font-weight: 600;
+    color: var(--muted); text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 10px 12px 4px;
+  }
+
+  .nav-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    color: var(--text2);
+    font-size: 13.5px;
+    font-weight: 500;
+    transition: all 0.15s;
+    position: relative;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .nav-item:hover { background: var(--surface2); color: var(--text); }
+  .nav-item.active {
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .nav-item.active::before {
+    content: '';
+    position: absolute;
+    right: 0; top: 6px; bottom: 6px;
+    width: 3px; border-radius: 2px 0 0 2px;
+    background: var(--accent);
+  }
+  .nav-icon { font-size: 17px; width: 22px; text-align: center; flex-shrink: 0; }
+
+  .sidebar-bottom {
+    padding: 10px 12px 14px;
+    border-top: 1px solid var(--border);
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  #content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--bg);
+  }
+
+  #topbar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 16px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    min-height: 56px;
+  }
+  .topbar-title { font-size: 16px; font-weight: 700; color: var(--text); flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .topbar-sub { font-size: 11px; color: var(--muted); margin-top: 2px; display: none; }
+  .topbar-date { font-size: 11px; color: var(--muted); text-align: left; white-space: nowrap; }
+
+  .page { display: none; flex: 1; flex-direction: column; overflow: hidden; }
+  .page.active { display: flex; }
+  
+  .page-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .page-body::-webkit-scrollbar { width: 4px; }
+  .page-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    box-shadow: 0 1px 4px var(--shadow);
+  }
+
+  .stat-cards { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    min-width: 120px; flex: 1;
+    box-shadow: 0 1px 4px var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; left: 0;
+    height: 3px;
+    background: var(--c, var(--accent));
+  }
+  .stat-val {
+    font-size: 20px; font-weight: 800;
+    color: var(--c, var(--accent));
+    margin-bottom: 2px;
+  }
+  .stat-label { font-size: 11px; color: var(--muted); }
+
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    padding: 8px 14px;
+    border-radius: var(--radius-sm);
+    border: none; cursor: pointer;
+    font-family: inherit; font-size: 13px; font-weight: 600;
+    transition: all 0.15s;
+    white-space: nowrap;
+    -webkit-tap-highlight-color: transparent;
+    min-height: 40px;
+  }
+  .btn-primary { background: var(--accent); color: var(--btn-text); }
+  .btn-primary:hover { background: var(--accent-h); }
+  .btn-danger { background: var(--danger); color: #fff; }
+  .btn-danger:hover { background: #a93226; }
+  .btn-secondary { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+  .btn-secondary:hover { background: var(--surface3); }
+  .btn-success { background: var(--success); color: #fff; }
+  .btn-success:hover { background: #155d38; }
+  .btn-sm { padding: 4px 10px; font-size: 12px; min-height: 32px; }
+  .btn-outline { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+  .btn-outline:hover { background: var(--accent); color: var(--btn-text); }
+  .btn-warning { background: var(--warning); color: #fff; }
+  .btn-warning:hover { background: #bf4b00; }
+
+  .form-grid { display: grid; gap: 10px; }
+  .form-grid-2 { grid-template-columns: 1fr 1fr; }
+  .form-grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .form-grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+  .field { display: flex; flex-direction: column; gap: 3px; }
+  .field label { font-size: 11px; color: var(--muted); font-weight: 500; }
+  .field input, .field select, .field textarea {
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--surface2);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.15s;
+    width: 100%;
+    min-height: 40px;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    border-color: var(--accent);
+    background: var(--surface);
+  }
+  .field textarea { resize: vertical; min-height: 80px; }
+
+  .search-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  .search-wrap .search-icon {
+    position: absolute; right: 10px;
+    color: var(--muted); pointer-events: none; font-size: 14px;
+  }
+  .search-wrap input {
+    width: 100%;
+    padding: 8px 36px 8px 36px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    background: var(--surface2);
+    color: var(--text);
+    font-family: inherit; font-size: 13px;
+    outline: none;
+    transition: all 0.15s;
+    min-height: 38px;
+  }
+  .search-wrap input:focus {
+    border-color: var(--accent);
+    background: var(--surface);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 15%, transparent);
+  }
+  .search-wrap .search-clear {
+    position: absolute; left: 10px;
+    color: var(--muted); cursor: pointer; font-size: 13px;
+    padding: 4px;
+  }
+
+  .table-wrap {
+    overflow: auto;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    -webkit-overflow-scrolling: touch;
+  }
+  table {
+    width: 100%; border-collapse: collapse;
+    font-size: 12px;
+    min-width: 500px;
+  }
+  thead th {
+    background: var(--surface2);
+    color: var(--accent);
+    font-weight: 700;
+    padding: 10px 12px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+    font-size: 11px;
+  }
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.1s;
+  }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: var(--surface2); }
+  tbody tr.selected { background: color-mix(in srgb, var(--accent) 10%, transparent); }
+  tbody td { padding: 8px 10px; text-align: center; color: var(--text); font-size: 12px; }
+  .empty-row td { color: var(--muted); text-align: center; padding: 24px; }
+
+  .badge {
+    display: inline-flex; align-items: center;
+    padding: 2px 8px; border-radius: 20px;
+    font-size: 10px; font-weight: 600;
+    white-space: nowrap;
+  }
+  .badge-accent { background: color-mix(in srgb, var(--accent) 15%, transparent); color: var(--accent); }
+  .badge-success { background: color-mix(in srgb, var(--success) 15%, transparent); color: var(--success); }
+  .badge-danger { background: color-mix(in srgb, var(--danger) 15%, transparent); color: var(--danger); }
+  .badge-warning { background: color-mix(in srgb, var(--warning) 15%, transparent); color: var(--warning); }
+  .badge-purple { background: color-mix(in srgb, var(--purple) 15%, transparent); color: var(--purple); }
+  .badge-muted { background: var(--surface3); color: var(--muted); }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .section-title { font-size: 14px; font-weight: 700; color: var(--text); }
+
+  .news-cards { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+  .news-card {
+    background: var(--card-news);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px 14px;
+    min-width: 200px; flex: 1; max-width: 320px;
+  }
+  .news-card.pinned { background: var(--card-pin); }
+  .news-card-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .news-card-body { font-size: 11px; color: var(--text2); margin-bottom: 6px; line-height: 1.6; }
+  .news-card-meta { font-size: 10px; color: var(--muted); }
+
+  .toggle-btn {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 8px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--text);
+    transition: all 0.15s;
+    min-height: 40px;
+    width: 100%;
+  }
+  .toggle-btn:hover { border-color: var(--accent); }
+  .toggle-btn.on { background: var(--accent); color: var(--btn-text); border-color: var(--accent); }
+
+  .tips-sidebar {
+    width: 240px; min-width: 160px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex; flex-direction: column;
+    overflow: hidden;
+  }
+  .tips-main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+  .folder-tree { overflow-y: auto; flex: 1; padding: 6px; }
+  .folder-tree::-webkit-scrollbar { width: 3px; }
+  .folder-tree::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  .folder-item { border-radius: var(--radius-sm); overflow: hidden; margin-bottom: 3px; }
+  .folder-header {
+    display: flex; align-items: center; gap: 6px;
+    padding: 8px 10px;
+    cursor: pointer;
+    background: var(--surface2);
+    border-radius: var(--radius-sm);
+    transition: background 0.15s;
+    user-select: none;
+  }
+  .folder-header:hover { background: var(--surface3); }
+  .folder-header.open { background: color-mix(in srgb, var(--accent) 10%, transparent); color: var(--accent); }
+  .folder-icon { font-size: 14px; flex-shrink: 0; }
+  .folder-name { flex: 1; font-size: 12px; font-weight: 600; }
+  .folder-count { font-size: 10px; color: var(--muted); background: var(--surface3); padding: 1px 6px; border-radius: 10px; }
+  .folder-arrow { font-size: 11px; transition: transform 0.2s; }
+  .folder-header.open .folder-arrow { transform: rotate(90deg); }
+
+  .folder-children {
+    display: none;
+    padding: 3px 6px 3px 12px;
+    border-right: 2px solid var(--border);
+    margin-right: 10px;
+    margin-top: 2px;
+  }
+  .folder-children.open { display: block; }
+
+  .note-item {
+    display: flex; align-items: center; gap: 6px;
+    padding: 6px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    color: var(--text2);
+    transition: background 0.1s;
+    margin-bottom: 2px;
+  }
+  .note-item:hover { background: var(--surface2); }
+  .note-item.active { background: color-mix(in srgb, var(--accent) 12%, transparent); color: var(--accent); font-weight: 600; }
+  .note-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+
+  .note-viewer {
+    flex: 1; overflow-y: auto;
+    padding: 16px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .note-viewer::-webkit-scrollbar { width: 4px; }
+  .note-viewer::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  .note-viewer-title {
+    font-size: 17px; font-weight: 800; color: var(--text);
+    margin-bottom: 4px;
+  }
+  .note-viewer-meta {
+    font-size: 11px; color: var(--muted);
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+    display: flex; gap: 10px; flex-wrap: wrap;
+  }
+  .note-viewer-body {
+    font-size: 13px; line-height: 1.9;
+    color: var(--text2);
+    white-space: pre-wrap;
+  }
+  .note-viewer-imgs { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+  .note-img-thumb {
+    width: 100px; height: 75px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: transform 0.15s;
+  }
+  .note-img-thumb:hover { transform: scale(1.04); }
+
+  .lightbox {
+    display: none; position: fixed; inset: 0; z-index: 9999;
+    background: rgba(0,0,0,0.88);
+    align-items: center; justify-content: center;
+    cursor: zoom-out;
+  }
+  .lightbox.open { display: flex; }
+  .lightbox img {
+    max-width: 90vw; max-height: 90vh;
+    border-radius: 10px;
+    object-fit: contain;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+  }
+  .lightbox-close {
+    position: absolute; top: 16px; left: 16px;
+    background: rgba(255,255,255,0.15); border: none;
+    color: #fff; font-size: 20px; width: 36px; height: 36px;
+    border-radius: 50%; cursor: pointer; display: flex;
+    align-items: center; justify-content: center;
+  }
+
+  .upload-area {
+    border: 2px dashed var(--border);
+    border-radius: var(--radius);
+    padding: 14px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.15s;
+    color: var(--muted);
+    font-size: 12px;
+  }
+  .upload-area:hover, .upload-area.drag-over {
+    border-color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 5%, transparent);
+    color: var(--accent);
+  }
+  .upload-area .upload-icon { font-size: 24px; margin-bottom: 4px; }
+
+  .img-preview-grid {
+    display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px;
+  }
+  .img-preview-item {
+    position: relative; width: 70px; height: 60px;
+  }
+  .img-preview-item img {
+    width: 100%; height: 100%;
+    object-fit: cover; border-radius: 6px;
+    border: 1px solid var(--border);
+  }
+  .img-preview-remove {
+    position: absolute; top: -5px; left: -5px;
+    width: 16px; height: 16px;
+    background: var(--danger); color: #fff;
+    border-radius: 50%; border: none; cursor: pointer;
+    font-size: 9px; display: flex; align-items: center; justify-content: center;
+  }
+
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; z-index: 1000;
+    background: rgba(0,0,0,0.5);
+    align-items: center; justify-content: center;
+    padding: 16px;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 20px;
+    width: 640px;
+    max-width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 8px 32px var(--shadow-md);
+  }
+  .modal-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .modal-title { font-size: 15px; font-weight: 700; }
+  .modal-close { background: none; border: none; color: var(--muted); font-size: 18px; cursor: pointer; padding: 4px 8px; }
+  .modal-close:hover { color: var(--danger); }
+  .modal-footer { display: flex; gap: 8px; justify-content: flex-end; margin-top: 16px; flex-wrap: wrap; }
+
+  #toast {
+    position: fixed; bottom: 20px; left: 20px; z-index: 2000;
+    background: var(--text); color: #fff;
+    padding: 10px 18px; border-radius: var(--radius-sm);
+    font-size: 13px; font-weight: 500;
+    transform: translateY(80px); opacity: 0;
+    transition: all 0.3s;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+    max-width: 90%;
+  }
+  #toast.show { transform: translateY(0); opacity: 1; }
+  #toast.success { background: var(--success); }
+  #toast.danger { background: var(--danger); }
+
+  .row-center { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .gap-2 { gap: 6px; }
+  .mb-3 { margin-bottom: 10px; }
+  .mb-4 { margin-bottom: 14px; }
+  .mt-3 { margin-top: 10px; }
+  .flex-1 { flex: 1; }
+  .text-muted { color: var(--muted); font-size: 11px; }
+  .text-accent { color: var(--accent); }
+  .font-bold { font-weight: 700; }
+  .divider { height: 1px; background: var(--border); margin: 12px 0; }
+  .tip-box {
+    background: color-mix(in srgb, var(--info) 8%, transparent);
+    border-right: 3px solid var(--info);
+    border-radius: 0 6px 6px 0;
+    padding: 8px 12px;
+    font-size: 12px; color: var(--text2);
+    margin-bottom: 10px;
+    line-height: 1.7;
+  }
+
+  #cart-table { max-height: 200px; overflow-y: auto; }
+
+  .chart-container {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 16px;
+    position: relative;
+    height: 250px;
+  }
+  .chart-container canvas {
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  #sync-status {
+    font-size: 10px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: var(--surface2);
+    color: var(--muted);
+    border: 1px solid var(--border);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+  }
+  #sync-status.synced { background: var(--success); color: #fff; border-color: var(--success); }
+  #sync-status.syncing { background: var(--warning); color: #fff; border-color: var(--warning); }
+  #sync-status.error { background: var(--danger); color: #fff; border-color: var(--danger); }
+  #sync-status.offline { background: var(--muted); color: #fff; border-color: var(--muted); }
+  
+  .order-actions { display: flex; gap: 3px; justify-content: center; flex-wrap: wrap; }
+  .order-actions button { padding: 2px 8px; font-size: 10px; min-height: 28px; }
+
+  .report-tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .report-tab {
+    padding: 5px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 12px;
+    color: var(--text2);
+    transition: all 0.15s;
+    min-height: 34px;
+  }
+  .report-tab:hover { border-color: var(--accent); }
+  .report-tab.active {
+    background: var(--accent);
+    color: var(--btn-text);
+    border-color: var(--accent);
+  }
+
+  .logout-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text2);
+    padding: 8px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 13px;
+    transition: all 0.15s;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: 40px;
+  }
+  .logout-btn:hover {
+    background: var(--danger);
+    color: #fff;
+    border-color: var(--danger);
+  }
+
+  /* ====== INVOICE STYLES ====== */
+  .invoice-print {
+    background: white !important;
+    padding: 30px 25px !important;
+    color: #1A1F36 !important;
+    font-family: 'Vazirmatn', Tahoma, sans-serif !important;
+    direction: rtl !important;
+  }
+  .invoice-print .invoice-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #1A56C4;
+    padding-bottom: 16px;
+    margin-bottom: 16px;
+  }
+  .invoice-print .invoice-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .invoice-print .invoice-logo-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border: 2px solid #1A56C4;
+  }
+  .invoice-print .invoice-logo-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .invoice-print .invoice-shop-name {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1A56C4;
+  }
+  .invoice-print .invoice-shop-sub {
+    font-size: 12px;
+    color: #7B849E;
+  }
+  .invoice-print .invoice-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1A56C4;
+    text-align: left;
+  }
+  .invoice-print .invoice-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #3D4461;
+    margin-bottom: 12px;
+    padding: 8px 0;
+    border-bottom: 1px dashed #D6DCE9;
+  }
+  .invoice-print .invoice-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    margin: 12px 0;
+  }
+  .invoice-print .invoice-table th {
+    background: #F4F6FB;
+    color: #1A56C4;
+    padding: 8px 10px;
+    border: 1px solid #D6DCE9;
+    text-align: center;
+    font-size: 11px;
+  }
+  .invoice-print .invoice-table td {
+    padding: 6px 10px;
+    border: 1px solid #D6DCE9;
+    text-align: center;
+    color: #1A1F36;
+  }
+  .invoice-print .invoice-total {
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    padding-top: 12px;
+    border-top: 2px solid #1A56C4;
+    margin-top: 12px;
+  }
+  .invoice-print .invoice-footer {
+    text-align: center;
+    font-size: 11px;
+    color: #7B849E;
+    margin-top: 16px;
+    border-top: 1px solid #D6DCE9;
+    padding-top: 10px;
+  }
+  .invoice-print .invoice-signature {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 12px;
+    font-size: 12px;
+    color: #3D4461;
+  }
+
+  /* ====== STAMP / SEAL STYLES ====== */
+  .stamp-container {
+    position: absolute;
+    bottom: 80px;
+    left: 30px;
+    z-index: 10;
+  }
+  .stamp-container img {
+    width: 110px;
+    height: 110px;
+    opacity: 0.75;
+    transform: rotate(-15deg);
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.15));
+  }
+
+  @media print {
+    #app, #sidebar, #topbar, .modal-overlay, #toast, #login-page {
+      display: none !important;
+    }
+    .invoice-print {
+      display: block !important;
+      padding: 20px !important;
+      margin: 0 !important;
+      background: white !important;
+      color: black !important;
+    }
+    .invoice-print .invoice-table th {
+      background: #e9ecef !important;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    .invoice-print .invoice-logo-icon {
+      border: 2px solid #1A56C4 !important;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    .stamp-container img {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+  }
+
+  /* ====== CUSTOMER SEARCH DROPDOWN ====== */
+  .customer-search-wrap {
+    position: relative;
+  }
+  .customer-search-wrap input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--surface2);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.15s;
+    min-height: 40px;
+  }
+  .customer-search-wrap input:focus {
+    border-color: var(--accent);
+    background: var(--surface);
+  }
+  .customer-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 100;
+    box-shadow: 0 4px 16px var(--shadow-md);
+    margin-top: 2px;
+  }
+  .customer-dropdown.show {
+    display: block;
+  }
+  .customer-dropdown .item {
+    padding: 8px 12px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--text);
+    transition: background 0.1s;
+  }
+  .customer-dropdown .item:last-child {
+    border-bottom: none;
+  }
+  .customer-dropdown .item:hover {
+    background: var(--surface2);
+  }
+  .customer-dropdown .item .highlight {
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .customer-dropdown .item .sub-info {
+    font-size: 10px;
+    color: var(--muted);
+    display: block;
+    margin-top: 2px;
+  }
+  .selected-customer-info {
+    padding: 8px 12px;
+    background: var(--surface2);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    font-size: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 4px;
+  }
+  .selected-customer-info .info-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--text2);
+  }
+  .selected-customer-info .info-item strong {
+    color: var(--text);
+  }
+  .selected-customer-info .clear-cust {
+    cursor: pointer;
+    color: var(--danger);
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: 1px solid var(--danger);
+    background: transparent;
+    font-size: 11px;
+  }
+  .selected-customer-info .clear-cust:hover {
+    background: var(--danger);
+    color: #fff;
+  }
+
+  /* ====== RESPONSIVE ====== */
+  @media (max-width: 768px) {
+    #sidebar { width: 56px; min-width: 56px; }
+    .logo-area { padding: 12px 8px; }
+    .logo-icon { width: 36px; height: 36px; margin-bottom: 4px; }
+    .logo-title { display: none; }
+    .logo-sub { display: none; }
+    .nav-section-title { display: none; }
+    .nav-item { justify-content: center; padding: 10px 6px; }
+    .nav-item span { display: none; }
+    .nav-icon { font-size: 20px; width: auto; }
+    .sidebar-bottom .toggle-btn { font-size: 11px; padding: 6px 8px; }
+    .sidebar-bottom .logout-btn { font-size: 11px; padding: 6px 8px; }
+    .sidebar-bottom .toggle-btn span { display: none; }
+    .sidebar-bottom .logout-btn span { display: none; }
+    .page-body { padding: 10px; }
+    .form-grid-4 { grid-template-columns: 1fr 1fr; }
+    .form-grid-3 { grid-template-columns: 1fr 1fr; }
+    .tips-sidebar { width: 160px; min-width: 120px; }
+    .stat-cards { gap: 6px; }
+    .stat-card { padding: 10px 12px; min-width: 80px; }
+    .stat-val { font-size: 16px; }
+    #topbar { padding: 0 10px; height: 48px; min-height: 48px; gap: 6px; }
+    .topbar-title { font-size: 14px; }
+    .topbar-date { font-size: 10px; }
+    #sync-status { font-size: 9px; padding: 2px 8px; }
+    .card { padding: 12px; }
+    .news-card { min-width: 140px; }
+    .modal { padding: 16px; }
+    .chart-container { height: 180px; }
+    table { font-size: 11px; min-width: 400px; }
+    thead th { padding: 6px 8px; font-size: 10px; }
+    tbody td { padding: 6px 8px; font-size: 11px; }
+    .note-viewer-title { font-size: 15px; }
+    .login-box { padding: 24px 16px; }
+    .login-box .logo-icon { width: 64px; height: 64px; }
+    .stamp-container img { width: 80px; height: 80px; }
+  }
+
+  @media (max-width: 480px) {
+    #sidebar { width: 48px; min-width: 48px; }
+    .nav-item { padding: 8px 4px; }
+    .nav-icon { font-size: 17px; }
+    .form-grid-4 { grid-template-columns: 1fr; }
+    .form-grid-3 { grid-template-columns: 1fr; }
+    .form-grid-2 { grid-template-columns: 1fr; }
+    .tips-sidebar { width: 130px; min-width: 100px; }
+    .tips-sidebar .search-wrap input { font-size: 11px; padding: 4px 28px 4px 28px; }
+    .folder-header { padding: 6px 8px; font-size: 11px; }
+    .note-item { font-size: 11px; padding: 4px 6px; }
+    .stat-card { min-width: 60px; padding: 8px 10px; }
+    .stat-val { font-size: 14px; }
+    .btn { font-size: 12px; padding: 6px 10px; min-height: 34px; }
+    .report-tab { font-size: 11px; padding: 4px 10px; min-height: 30px; }
+    .modal { padding: 12px; }
+    .login-box { padding: 20px 12px; }
+    .login-box .logo-icon { width: 56px; height: 56px; }
+    .login-box h1 { font-size: 18px; }
+    .stamp-container img { width: 60px; height: 60px; }
+  }
+
+  #page-tips .page-body { padding: 0; }
+  #tips-layout { display: flex; flex: 1; overflow: hidden; height: 100%; }
+
+  /* Drag & Drop Styles */
+  .draggable-row {
+    cursor: grab;
+    transition: all 0.2s;
+  }
+  .draggable-row:active {
+    cursor: grabbing;
+  }
+  .draggable-row.dragging {
+    opacity: 0.5;
+    background: var(--surface3);
+  }
+  .drag-over-row {
+    border-bottom: 2px solid var(--accent) !important;
+  }
+  .drag-handle {
+    cursor: grab;
+    color: var(--muted);
+    font-size: 16px;
+    user-select: none;
+    padding: 4px 6px;
+  }
+  .drag-handle:active {
+    cursor: grabbing;
+  }
+  .drag-handle:hover {
+    color: var(--accent);
+  }
+  
+  /* رنگ سبز برای سود در فاکتور */
+  .invoice-print .profit-green {
+    color: #1A7F4B !important;
+    font-weight: 700 !important;
+  }
+  
+  /* Persian DateTime Picker - Improved with seconds */
+  .persian-datetime-wrapper {
+    position: relative;
+    width: 100%;
+  }
+  .persian-datetime-wrapper select {
+    font-family: 'Vazirmatn', Tahoma, sans-serif !important;
+    direction: rtl !important;
+    text-align: center !important;
+    font-size: 12px !important;
+    padding: 4px 2px !important;
+    border: 1px solid var(--border) !important;
+    border-radius: var(--radius-sm) !important;
+    background: var(--surface2) !important;
+    color: var(--text) !important;
+    min-height: 32px !important;
+    outline: none !important;
+    cursor: pointer !important;
+    min-width: 44px !important;
+    flex: 1 !important;
+  }
+  .persian-datetime-wrapper select:focus {
+    border-color: var(--accent) !important;
+    background: var(--surface) !important;
+  }
+  .persian-datetime-wrapper select option {
+    font-family: 'Vazirmatn', Tahoma, sans-serif !important;
+    direction: rtl !important;
+  }
+  .persian-datetime-row {
+    display: flex;
+    gap: 3px;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+  }
+  .persian-datetime-row select {
+    flex: 1;
+    min-width: 40px;
+  }
+  .persian-datetime-row .sep {
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 0 1px;
+    font-family: 'Vazirmatn', Tahoma, sans-serif !important;
+  }
+  .persian-datetime-row .label-sm {
+    font-size: 10px;
+    color: var(--muted);
+    font-weight: 500;
+  }
+  
+  /* Dark mode fix for Chrome desktop */
+  [data-theme="dark"] .persian-datetime-wrapper select {
+    background: var(--surface2) !important;
+    color: var(--text) !important;
+    border-color: var(--border) !important;
+  }
+  [data-theme="dark"] .persian-datetime-wrapper select option {
+    background: var(--surface) !important;
+    color: var(--text) !important;
+  }
+  
+  /* Chrome desktop logout and background fix */
+  [data-theme="dark"] .logout-btn {
+    color: var(--text2) !important;
+    border-color: var(--border) !important;
+  }
+  [data-theme="dark"] .logout-btn:hover {
+    background: var(--danger) !important;
+    color: #fff !important;
+    border-color: var(--danger) !important;
+  }
+  
+  /* Force background color for all elements in dark mode */
+  [data-theme="dark"] {
+    background: var(--bg) !important;
+  }
+  [data-theme="dark"] body {
+    background: var(--bg) !important;
+  }
+  [data-theme="dark"] #app {
+    background: var(--bg) !important;
+  }
+  [data-theme="dark"] #content {
+    background: var(--bg) !important;
+  }
+  [data-theme="dark"] .page-body {
+    background: var(--bg) !important;
+  }
+  [data-theme="dark"] .card {
+    background: var(--surface) !important;
+  }
+  [data-theme="dark"] .stat-card {
+    background: var(--surface) !important;
+  }
+  [data-theme="dark"] .modal {
+    background: var(--surface) !important;
+  }
+  [data-theme="dark"] .modal-overlay {
+    background: rgba(0,0,0,0.7) !important;
+  }
+  
+  /* Force text colors in dark mode */
+  [data-theme="dark"] .text-muted {
+    color: var(--muted) !important;
+  }
+  [data-theme="dark"] .text-accent {
+    color: var(--accent) !important;
+  }
+  [data-theme="dark"] .font-bold {
+    color: var(--text) !important;
+  }
+  [data-theme="dark"] .section-title {
+    color: var(--text) !important;
+  }
+  [data-theme="dark"] .stat-label {
+    color: var(--muted) !important;
+  }
+  [data-theme="dark"] .topbar-title {
+    color: var(--text) !important;
+  }
+  [data-theme="dark"] .topbar-date {
+    color: var(--muted) !important;
+  }
+  
+  /* Fix invoice print on mobile */
+  @media print {
+    .invoice-print .stamp-container {
+      display: block !important;
+    }
+    .invoice-print .stamp-container img {
+      max-width: 90px !important;
+      max-height: 90px !important;
+    }
+  }
 </style>
 </head>
 <body>
@@ -42,11 +1324,10 @@
 <div id="login-page">
   <div class="login-box">
     <div class="logo-icon">
-      <!-- لوگوی متنی ساده -->
-      <div style="width:100%;height:100%;background:#1A56C4;border-radius:16px;display:flex;align-items:center;justify-content:center;color:white;font-size:32px;font-weight:800;">ک</div>
+      <img src="logo.png" alt="کافینت چنار" onerror="this.parentElement.textContent='کافینت چنار';this.parentElement.style.background='#1A56C4';this.parentElement.style.color='white';this.parentElement.style.fontSize='20px';this.parentElement.style.fontWeight='800';">
     </div>
     <h1>کافینت چنار</h1>
-    <div class="sub">مرکز خدمات اینترنتی و ثبت‌نام اینترنتی</div>
+    <div class="sub">مرکز خدمات اینترنتی و ثبت‌ نام اینترنتی</div>
     
     <div class="field">
       <label>🔐 توکن گیت‌هاب</label>
@@ -54,7 +1335,9 @@
       <div class="hint">توکن را از <a href="https://github.com/settings/tokens?type=beta" target="_blank">github.com/settings/tokens</a> دریافت کنید</div>
       <div class="hint" style="color:var(--danger);line-height:1.7;margin-top:6px">
         ⚠️ حتماً یک توکن <b>Fine-grained</b> بسازید که فقط به ریپازیتوری
-        <code>kafinet-data</code> و فقط با دسترسی <b>Contents: Read and write</b> محدود باشد
+        <code>kafinet-data</code> و فقط با دسترسی <b>Contents: Read and write</b> محدود باشد،
+        نه یک Classic token با دسترسی کامل به همه‌ی ریپوها. این توکن روی همین مرورگر ذخیره می‌شود؛
+        روی دستگاه‌های عمومی/مشترک از آن استفاده نکنید و در پایان کار حتماً «خروج» بزنید.
       </div>
     </div>
     
@@ -75,7 +1358,7 @@
   <div id="sidebar">
     <div class="logo-area">
       <div class="logo-icon">
-        <div style="width:100%;height:100%;background:#1A56C4;border-radius:14px;display:flex;align-items:center;justify-content:center;color:white;font-size:28px;font-weight:800;">ک</div>
+        <img src="logo.png" alt="کافینت چنار" onerror="this.parentElement.textContent='کافینت چنار';this.parentElement.style.background='#1A56C4';this.parentElement.style.color='white';this.parentElement.style.fontSize='18px';this.parentElement.style.fontWeight='800';">
       </div>
       <div class="logo-title">کافینت چنار</div>
       <div class="logo-sub">مرکز خدمات اینترنتی</div>
@@ -217,6 +1500,7 @@
     <div class="page" id="page-orders">
       <div class="page-body">
         <div class="card mb-4">
+          <!-- ====== CUSTOMER SEARCH ====== -->
           <div class="form-grid form-grid-2 mb-3">
             <div class="field">
               <label>🔍 جستجوی مشتری</label>
@@ -239,7 +1523,7 @@
               </div>
             </div>
           </div>
-          <div class="form-grid form-grid-3 mb-3">
+          <div class="form-grid form-grid-4 mb-3">
             <div class="field"><label>تعداد</label><input id="order-qty" type="number" value="1" min="1"></div>
             <div class="field"><label>تخفیف (%)</label><input id="order-discount" type="number" value="0" min="0" max="100"></div>
             <div class="field"><label>تخفیف هر واحد (ریال)</label><input id="order-discount-amount" type="number" value="0" min="0" placeholder="مبلغ ریالی"></div>
@@ -259,8 +1543,8 @@
           <div id="cart-table">
             <div class="table-wrap" style="border:none">
               <table>
-                <thead><tr><th>خدمت</th><th>تعداد</th><th>قیمت واحد</th><th>تخفیف %</th><th>تخفیف هر واحد</th><th>جمع</th><th></th></tr></thead>
-                <tbody id="cart-tbody"><tr class="empty-row"><td colspan="7">سبد خالی است</td></tr></tbody>
+                <thead><tr><th>خدمت</th><th>تعداد</th><th>قیمت واحد</th><th>تخفیف %</th><th>تخفیف هر واحد</th><th>سود (تخفیف کل)</th><th>جمع</th><th></th></tr></thead>
+                <tbody id="cart-tbody"><tr class="empty-row"><td colspan="8">سبد خالی است</td></tr></tbody>
               </table>
             </div>
           </div>
@@ -575,13 +1859,14 @@
       <div style="font-weight:600;margin-bottom:8px">📋 اقلام سفارش</div>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>خدمت</th><th>تعداد</th><th>قیمت واحد</th><th>تخفیف %</th><th>تخفیف هر واحد</th><th>جمع</th></tr></thead>
+          <thead><tr><th>خدمت</th><th>تعداد</th><th>قیمت واحد</th><th>تخفیف %</th><th>تخفیف هر واحد</th><th>سود (تخفیف کل)</th><th>جمع</th></tr></thead>
           <tbody id="detail-items"></tbody>
         </table>
       </div>
       <div class="row-center" style="justify-content:space-between;margin-top:12px">
         <div>
           <span class="text-muted">جمع کل:</span> <span id="detail-total" class="font-bold text-accent" style="font-size:18px">۰ ریال</span>
+          <span style="margin-right:12px;font-size:11px;color:var(--muted)">(سود: <span id="detail-profit" style="color:var(--success);font-weight:600">۰ ریال</span>)</span>
         </div>
         <div class="row-center gap-2">
           <button class="btn btn-warning btn-sm" onclick="editOrderFromDetail()">✏️ ویرایش</button>
@@ -627,39 +1912,6 @@ let syncTimer = null;
 let isSyncing = false;
 let pendingChanges = false;
 let currentSHA = null;
-let toastQueue = [];
-let isToastShowing = false;
-
-// ====== TOAST QUEUE SYSTEM ======
-function showToast(msg, type = '') {
-  toastQueue.push({ msg, type });
-  if (!isToastShowing) {
-    processToastQueue();
-  }
-}
-
-function processToastQueue() {
-  if (toastQueue.length === 0) {
-    isToastShowing = false;
-    return;
-  }
-  
-  isToastShowing = true;
-  const item = toastQueue.shift();
-  const t = document.getElementById('toast');
-  t.textContent = item.msg;
-  t.className = 'show ' + item.type;
-  
-  setTimeout(() => {
-    t.className = '';
-    setTimeout(processToastQueue, 300);
-  }, 2500);
-}
-
-// برای سازگاری با کد قدیمی
-function toast(msg, type = '') {
-  showToast(msg, type);
-}
 
 function getRepoUrl() {
   return `https://api.github.com/repos/${SYNC_CONFIG.USERNAME}/${SYNC_CONFIG.REPO_NAME}/contents/${SYNC_CONFIG.FILE_PATH}`;
@@ -708,14 +1960,11 @@ async function syncToCloud() {
       if (getResponse.ok) {
         const fileData = await getResponse.json();
         sha = fileData.sha;
-      } else if (getResponse.status === 404) {
-        // فایل وجود ندارد، جدید ایجاد می‌شود
-        sha = null;
-      } else {
-        throw new Error(`GitHub API error: ${getResponse.status}`);
       }
     } catch (e) {
-      console.warn('Error fetching file:', e);
+      // اگر فایل قبلاً وجود نداشته باشد (404) یا خطای شبکه رخ دهد، sha همچنان null می‌ماند
+      // و درخواست PUT بعدی به‌عنوان ایجاد فایل جدید ارسال می‌شود. خطا را برای دیباگ لاگ می‌کنیم.
+      console.warn('عدم دریافت sha فایل قبل از سینک (احتمالاً فایل جدید است):', e);
     }
     
     const body = {
@@ -742,7 +1991,7 @@ async function syncToCloud() {
     }
     
     const result = await updateResponse.json();
-    if (result.content) currentSHA = result.content.sha;
+    currentSHA = result.content.sha;
     setSyncStatus('synced', '✅ همگام شد');
     pendingChanges = false;
     
@@ -750,10 +1999,10 @@ async function syncToCloud() {
     console.error('Sync error:', e);
     if (e.status === 401 || e.status === 403) {
       setSyncStatus('error', '⚠️ توکن نامعتبر یا دسترسی ناکافی');
-      toast('توکن نامعتبر است! لطفاً دوباره وارد شوید.', 'danger');
     } else if (e.status === 409) {
-      setSyncStatus('error', '⚠️ تعارض داده‌ها');
-      toast('تعارض در داده‌ها! لطفاً صفحه را رفرش کنید.', 'danger');
+      // تعارض: نسخه‌ی روی گیت‌هاب از زمان آخرین دریافت ما تغییر کرده (مثلاً دستگاه دیگری هم‌زمان ذخیره کرده)
+      setSyncStatus('error', '⚠️ تعارض داده؛ ابتدا دریافت از سرور را اجرا کنید');
+      toast('داده‌ها روی سرور تغییر کرده؛ لطفاً صفحه را رفرش کنید تا آخرین نسخه دریافت شود', 'danger');
     } else {
       setSyncStatus('error', '⚠️ خطا در همگام‌سازی');
     }
@@ -905,7 +2154,6 @@ function logout() {
     document.getElementById('login-token').value = '';
     document.getElementById('login-token').focus();
     updateLoginStatus('offline', '⛔ قطع');
-    toast('خروج انجام شد', 'success');
   }
 }
 
@@ -925,6 +2173,7 @@ const DB = {
 };
 
 function initDB() {
+  // ====== سرویس‌های پیش‌فرض ======
   if (!DB.get('services')) DB.set('services', [
     {id:1,name:'استفاده از سیستم',category:'سیستم',price:50000,stock:20},
     {id:2,name:'پرینت سیاه‌سفید',category:'پرینت',price:5000,stock:999},
@@ -946,12 +2195,14 @@ function initDB() {
     {id:18,name:'رایت CD/DVD',category:'خدمات فایل',price:30000,stock:999},
   ]);
 
+  // ====== مشتریان پیش‌فرض ======
   if (!DB.get('customers')) DB.set('customers', [
     {id:1,first_name:'علی',last_name:'احمدی',phone:'09121234567',national:'1234567890',address:'تهران',debt:0,info:'مشتری دائمی',join_date:today()},
     {id:2,first_name:'مریم',last_name:'رضایی',phone:'09351234567',national:'0987654321',address:'تهران',debt:50000,info:'نیاز به پیگیری',join_date:today()},
     {id:3,first_name:'محمد',last_name:'کریمی',phone:'09123456789',national:'1122334455',address:'اصفهان',debt:0,info:'',join_date:today()},
   ]);
 
+  // ====== تعرفه‌های پیش‌فرض ======
   if (!DB.get('tariffs')) DB.set('tariffs', [
     {id:1,name:'استفاده از سیستم',description:'هر ساعت',price:50000,unit:'ساعت',active:'فعال'},
     {id:2,name:'پرینت A4 سیاه‌سفید',description:'هر برگ',price:5000,unit:'برگ',active:'فعال'},
@@ -963,12 +2214,14 @@ function initDB() {
     {id:8,name:'گیمینگ',description:'بازی آنلاین',price:80000,unit:'ساعت',active:'فعال'},
   ]);
 
+  // ====== اطلاعیه‌های پیش‌فرض ======
   if (!DB.get('internal_news')) DB.set('internal_news', [
     {id:1,title:'شروع ثبت‌نام کنکور سراسری ۱۴۰۴',content:'ثبت‌نام کنکور سراسری از امروز آغاز شد. مدارک لازم: کارت ملی، شناسنامه، مدرک تحصیلی. هزینه ۱۵۰ هزار تومان.',category:'ثبت نام',date:today(),priority:'فوری',pinned:true,active:true},
     {id:2,title:'آزمون استخدامی دستگاه‌های اجرایی',content:'ثبت‌نام آزمون استخدامی تا پایان هفته ادامه دارد.',category:'ثبت نام',date:today(),priority:'بالا',pinned:true,active:true},
     {id:3,title:'تخفیف ویژه پرینت و فتوکپی',content:'تا پایان این ماه پرینت سیاه‌سفید ۵۰٪ تخفیف.',category:'تخفیف',date:today(),priority:'متوسط',pinned:false,active:true},
   ]);
 
+  // ====== راهنماهای پیش‌فرض ======
   if (!DB.get('tips')) DB.set('tips', [
     {id:1,folder:'کنکور و آموزش',title:'ثبت‌نام کنکور سراسری',url:'https://sanjesh.org',
      body:'مرحله ۱: وارد سایت sanjesh.org شوید\nمرحله ۲: روی گزینه «ثبت‌نام» کلیک کنید\nمرحله ۳: کد ملی و اطلاعات شناسنامه‌ای را وارد کنید\nمرحله ۴: رشته و شهر محل سکونت را انتخاب کنید\nمرحله ۵: مدرک تحصیلی و اطلاعات آموزشی را وارد نمایید\nمرحله ۶: عکس ۳×۴ را با فرمت JPG آپلود کنید\nمرحله ۷: هزینه ثبت‌نام را از طریق درگاه پرداخت کنید\nمرحله ۸: کد رهگیری را دریافت و نگهداری کنید',
@@ -981,6 +2234,7 @@ function initDB() {
      images:[],date:today()},
   ]);
 
+  // ====== سفارش‌ها - خالی ======
   if (!DB.get('orders')) DB.set('orders', []);
   if (!DB.get('order_items')) DB.set('order_items', []);
 }
@@ -992,18 +2246,23 @@ function today() { return new Date().toLocaleDateString('fa-IR'); }
 function nowStr() { return new Date().toLocaleString('fa-IR'); }
 function fmtNum(n) { return Number(n||0).toLocaleString('fa-IR'); }
 function nextId(arr) { return arr.length ? Math.max(...arr.map(x=>x.id||0)) + 1 : 1; }
-function norm(s) { return String(s||'').replace(/ي/g,'ی').replace(/ك/g,'ک').toLowerCase(); }
+function norm(s) { return (s||'').replace(/ي/g,'ی').replace(/ك/g,'ک').toLowerCase(); }
 
-// ====== SECURITY: HTML ESCAPING ======
+// ============================================
+// SECURITY: HTML ESCAPING (XSS PREVENTION)
+// ============================================
+// هر متنی که از کاربر گرفته شده (نام، تلفن، یادداشت و...) قبل از قرار گرفتن
+// داخل innerHTML باید از این تابع رد شود تا کد HTML/JS داخل آن اجرا نشود.
 const _escMap = { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' };
 function esc(str) {
   return String(str ?? '').replace(/[&<>"']/g, ch => _escMap[ch]);
 }
 
-function safeUrl(u) {
-  const s = String(u||'').trim();
-  if (/^(https?:)\/\//i.test(s)) return esc(s);
-  return '';
+function toast(msg, type='') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'show ' + type;
+  setTimeout(() => t.className = '', 2800);
 }
 
 function clearSearch(id, fn) {
@@ -1036,13 +2295,13 @@ function searchCustomers(query) {
   
   const matches = custs.filter(c => {
     const fullName = norm(c.first_name + ' ' + c.last_name);
-    const phone = norm(c.phone || '');
-    const national = norm(c.national || '');
+    const phone = c.phone || '';
+    const national = c.national || '';
     return fullName.includes(nq) || 
-           phone.includes(nq) || 
-           national.includes(nq) ||
-           norm(c.first_name || '').includes(nq) ||
-           norm(c.last_name || '').includes(nq);
+           phone.includes(q) || 
+           national.includes(q) ||
+           (c.first_name && norm(c.first_name).includes(nq)) ||
+           (c.last_name && norm(c.last_name).includes(nq));
   }).slice(0, 10);
   
   if (!matches.length) {
@@ -1055,12 +2314,8 @@ function searchCustomers(query) {
   dropdown.innerHTML = matches.map(c => {
     const fullName = c.first_name + ' ' + c.last_name;
     let displayName = esc(fullName);
-    const idx = norm(fullName).indexOf(nq);
-    if (idx !== -1) {
-      const before = esc(fullName.substring(0, idx));
-      const matched = esc(fullName.substring(idx, idx + q.length));
-      const after = esc(fullName.substring(idx + q.length));
-      displayName = before + '<span class="highlight">' + matched + '</span>' + after;
+    if (norm(fullName).includes(nq)) {
+      displayName = highlightText(fullName, q);
     }
     return `<div class="item" onclick="selectCustomer(${Number(c.id)})">
       ${displayName}
@@ -1071,6 +2326,17 @@ function searchCustomers(query) {
       </span>
     </div>`;
   }).join('');
+}
+
+// متن را escape می‌کند و فقط قسمت منطبق‌شده با جستجو را داخل <span class="highlight"> می‌گذارد.
+// escape قبل از برش متن انجام می‌شود تا هیچ HTML خامی از ورودی کاربر عبور نکند.
+function highlightText(text, query) {
+  const idx = norm(text).indexOf(norm(query));
+  if (idx === -1) return esc(text);
+  const before = text.substring(0, idx);
+  const matched = text.substring(idx, idx + query.length);
+  const after = text.substring(idx + query.length);
+  return esc(before) + '<span class="highlight">' + esc(matched) + '</span>' + esc(after);
 }
 
 function selectCustomer(id) {
@@ -1098,6 +2364,7 @@ function clearSelectedCustomer() {
   document.getElementById('customer-dropdown').classList.remove('show');
 }
 
+// حذف همه سفارش‌ها
 function clearAllOrders() {
   if (!confirm('آیا از حذف همه سفارش‌ها مطمئن هستید؟')) return;
   DB.set('orders', []);
@@ -1119,7 +2386,12 @@ document.addEventListener('click', function(e) {
 // ============================================
 // DRAG & DROP
 // ============================================
-let dragState = { sourceTable: null, sourceIndex: null, sourceId: null };
+let dragState = {
+  sourceTable: null,
+  sourceIndex: null,
+  sourceId: null,
+  sourceData: null
+};
 
 function initDragDrop(tableId, itemsKey, renderFn) {
   const table = document.getElementById(tableId);
@@ -1190,7 +2462,7 @@ function initDragDrop(tableId, itemsKey, renderFn) {
     
     dragRow = null;
     dragOverRow = null;
-    dragState = { sourceTable: null, sourceIndex: null, sourceId: null };
+    dragState = { sourceTable: null, sourceIndex: null, sourceId: null, sourceData: null };
   });
 }
 
@@ -1629,15 +2901,17 @@ function addToCart() {
   if (discountAmount < 0) { toast('تخفیف هر واحد نباید منفی باشد','danger'); return; }
   
   const unitPrice = selProd.price;
-  // اعمال تخفیف درصدی اول، سپس تخفیف ریالی
   let afterPercentDiscount = Math.round(unitPrice * (1 - discountPercent / 100));
   let finalUnitPrice = Math.max(0, afterPercentDiscount - discountAmount);
+  // سود = تخفیف کل برای این محصول = (قیمت اصلی - قیمت نهایی) × تعداد
+  const totalDiscount = (unitPrice - finalUnitPrice) * qty;
   const sub = finalUnitPrice * qty;
   
   const existing = cart.find(c=>c.product_id===selProd.id && c.discount_percent===discountPercent && c.discount_amount===discountAmount);
   if (existing) { 
     existing.qty += qty; 
     existing.subtotal += sub;
+    existing.total_discount += totalDiscount;
   } else {
     cart.push({
       product_id:selProd.id,
@@ -1646,6 +2920,7 @@ function addToCart() {
       unit_price:unitPrice,
       discount_percent:discountPercent,
       discount_amount:discountAmount,
+      total_discount:totalDiscount,
       final_unit_price:finalUnitPrice,
       subtotal:sub
     });
@@ -1663,7 +2938,7 @@ function refreshCart() {
   const tbody = document.getElementById('cart-tbody');
   tbody.innerHTML = '';
   if (!cart.length) { 
-    tbody.innerHTML='<tr class="empty-row"><td colspan="7">سبد خالی است</td></tr>'; 
+    tbody.innerHTML='<tr class="empty-row"><td colspan="8">سبد خالی است</td></tr>'; 
     document.getElementById('cart-total').textContent='جمع کل: ۰ ریال'; 
     return; 
   }
@@ -1674,6 +2949,7 @@ function refreshCart() {
       <td>${fmtNum(item.unit_price)}</td>
       <td>${Number(item.discount_percent)}%</td>
       <td>${fmtNum(item.discount_amount)}</td>
+      <td>${fmtNum(item.total_discount)}</td>
       <td>${fmtNum(item.subtotal)}</td>
       <td><button class="btn btn-danger btn-sm" onclick="removeCartItem(${Number(i)})">✕</button></td>
     </tr>`;
@@ -1688,6 +2964,7 @@ function clearCart() { cart=[]; refreshCart(); }
 function submitOrder() {
   if (!cart.length) { toast('سبد خالی است','danger'); return; }
   
+  // گرفتن مشتری از selectedCustomer
   let custId = null;
   if (selectedCustomer) {
     custId = selectedCustomer.id;
@@ -1733,9 +3010,10 @@ function submitOrder() {
 }
 
 // ============================================
-// PERSIAN DATETIME PICKER
+// PERSIAN DATETIME PICKER HELPERS WITH SECONDS
 // ============================================
 function getPersianDateParts(dateStr) {
+  // dateStr format: 1403/01/15 14:30:25 or 1403/01/15 14:30
   if (!dateStr) return null;
   const parts = dateStr.split(' ');
   if (parts.length < 2) return null;
@@ -1772,6 +3050,7 @@ function initPersianDatePickers() {
   
   if (!yearSelect) return;
   
+  // Populate years (1390-1410)
   yearSelect.innerHTML = '';
   for (let y = 1390; y <= 1410; y++) {
     const opt = document.createElement('option');
@@ -1780,6 +3059,7 @@ function initPersianDatePickers() {
     yearSelect.appendChild(opt);
   }
   
+  // Populate months (1-12)
   monthSelect.innerHTML = '';
   const monthNames = ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'];
   for (let m = 1; m <= 12; m++) {
@@ -1789,6 +3069,7 @@ function initPersianDatePickers() {
     monthSelect.appendChild(opt);
   }
   
+  // Populate days (1-31)
   daySelect.innerHTML = '';
   for (let d = 1; d <= 31; d++) {
     const opt = document.createElement('option');
@@ -1797,6 +3078,7 @@ function initPersianDatePickers() {
     daySelect.appendChild(opt);
   }
   
+  // Populate hours (0-23)
   hourSelect.innerHTML = '';
   for (let h = 0; h <= 23; h++) {
     const opt = document.createElement('option');
@@ -1805,6 +3087,7 @@ function initPersianDatePickers() {
     hourSelect.appendChild(opt);
   }
   
+  // Populate minutes (0-59)
   minuteSelect.innerHTML = '';
   for (let m = 0; m <= 59; m++) {
     const opt = document.createElement('option');
@@ -1813,6 +3096,7 @@ function initPersianDatePickers() {
     minuteSelect.appendChild(opt);
   }
   
+  // Populate seconds (0-59)
   secondSelect.innerHTML = '';
   for (let s = 0; s <= 59; s++) {
     const opt = document.createElement('option');
@@ -1825,7 +3109,9 @@ function initPersianDatePickers() {
 function setPersianDateTime(dateStr) {
   const parts = getPersianDateParts(dateStr);
   if (!parts) {
+    // Set to current time
     const now = new Date();
+    // Convert Gregorian to Persian (rough approximation)
     const pYear = now.getFullYear() - 621;
     const pMonth = now.getMonth() + 1;
     const pDay = now.getDate();
@@ -1896,8 +3182,11 @@ function openOrderEditModal(order) {
   });
   
   document.getElementById('edit-order-id').textContent = '#'+order.id;
+  
+  // Initialize pickers if not done yet
   initPersianDatePickers();
   
+  // Set date from order
   if (order.date) {
     setPersianDateTime(order.date);
   } else {
@@ -1924,8 +3213,7 @@ function renderEditItems() {
     const tr = document.createElement('tr');
     tr.className = item._selected ? 'selected' : '';
     tr.dataset.idx = idx;
-    tr.onclick = function(e) {
-      if (e.target.closest('input') || e.target.closest('button')) return;
+    tr.onclick = function() {
       editItems.forEach(i=>i._selected=false);
       editItems[idx]._selected = true;
       renderEditItems();
@@ -1999,6 +3287,7 @@ function saveOrderEdit() {
   
   order.customer_id = +document.getElementById('order-edit-cust').value;
   
+  // دریافت تاریخ از picker با ثانیه
   const dateValue = getPersianDateTimeFromPicker();
   if (dateValue) {
     order.date = dateValue;
@@ -2057,15 +3346,19 @@ function showOrderDetail(id) {
   const tbody = document.getElementById('detail-items');
   tbody.innerHTML = '';
   if (!orderItems.length) {
-    tbody.innerHTML = '<tr class="empty-row"><td colspan="6">هیچ آیتمی وجود ندارد</td></tr>';
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="7">هیچ آیتمی وجود ندارد</td></tr>';
   } else {
     orderItems.forEach(item=>{
+      // سود = تخفیف کل = (قیمت اصلی - قیمت نهایی) × تعداد
+      const finalPrice = Math.max(0, Math.round(item.unit_price * (1 - (item.discount_percent||0) / 100)) - (item.discount_amount||0));
+      const totalDiscount = (item.unit_price - finalPrice) * item.qty;
       tbody.innerHTML += `<tr>
         <td>${esc(item.product_name)}</td>
         <td>${Number(item.qty)}</td>
         <td>${fmtNum(item.unit_price)}</td>
         <td>${Number(item.discount_percent||0)}%</td>
         <td>${fmtNum(item.discount_amount||0)}</td>
+        <td>${fmtNum(totalDiscount)}</td>
         <td>${fmtNum(item.subtotal)}</td>
       </tr>`;
     });
@@ -2073,6 +3366,13 @@ function showOrderDetail(id) {
   
   const total = orderItems.reduce((s,i)=>s+(i.subtotal||0),0);
   document.getElementById('detail-total').textContent = fmtNum(total)+' ریال';
+  
+  // سود کل = مجموع تخفیف کل هر آیتم
+  const totalProfit = orderItems.reduce((s,item) => {
+    const finalPrice = Math.max(0, Math.round(item.unit_price * (1 - (item.discount_percent||0) / 100)) - (item.discount_amount||0));
+    return s + ((item.unit_price - finalPrice) * item.qty);
+  }, 0);
+  document.getElementById('detail-profit').textContent = fmtNum(totalProfit)+' ریال';
   
   document.getElementById('order-detail-modal').classList.add('open');
 }
@@ -2104,7 +3404,7 @@ function filterOrders(q) {
 }
 
 // ============================================
-// INVOICE PRINT
+// INVOICE PRINT WITH STAMP - FIXED FOR MOBILE
 // ============================================
 function printInvoice() {
   if (!viewedOrderId) { toast('سفارشی انتخاب نشده','danger'); return; }
@@ -2123,13 +3423,27 @@ function printInvoice() {
   const orderItems = items.filter(i=>i.order_id===viewedOrderId);
   const total = orderItems.reduce((s,i)=>s+(i.subtotal||0),0);
   
+  // محاسبه سود کل
+  const totalProfit = orderItems.reduce((s,item) => {
+    const finalPrice = Math.max(0, Math.round(item.unit_price * (1 - (item.discount_percent||0) / 100)) - (item.discount_amount||0));
+    return s + ((item.unit_price - finalPrice) * item.qty);
+  }, 0);
+  
+  // تاریخ شمسی برای مهر
   const persianDate = new Date().toLocaleDateString('fa-IR');
   
   let html = `
   <div class="invoice-print" style="max-width:800px;margin:0 auto;background:white;padding:25px 20px;font-family:'Vazirmatn',Tahoma,sans-serif;direction:rtl;position:relative;">
+    <!-- مهر تصویری -->
+    <div class="stamp-container" style="position:absolute;bottom:60px;left:20px;z-index:10;">
+      <img src="stamp.png" alt="مهر" style="width:90px;height:90px;opacity:0.75;transform:rotate(-15deg);filter:drop-shadow(0 2px 8px rgba(0,0,0,0.15));" onerror="this.style.display='none';">
+    </div>
+    
     <div class="invoice-header" style="display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #1A56C4;padding-bottom:14px;margin-bottom:14px;">
       <div class="invoice-logo" style="display:flex;align-items:center;gap:10px;">
-        <div class="invoice-logo-icon" style="width:50px;height:50px;border-radius:12px;display:flex;align-items:center;justify-content:center;overflow:hidden;border:2px solid #1A56C4;background:#1A56C4;color:white;font-size:22px;font-weight:800;">ک</div>
+        <div class="invoice-logo-icon" style="width:50px;height:50px;border-radius:12px;display:flex;align-items:center;justify-content:center;overflow:hidden;border:2px solid #1A56C4;">
+          <img src="logo.png" alt="کافینت چنار" style="width:100%;height:100%;object-fit:contain;" onerror="this.parentElement.textContent='کافینت';this.parentElement.style.background='#1A56C4';this.parentElement.style.color='white';this.parentElement.style.fontSize='12px';this.parentElement.style.fontWeight='800';">
+        </div>
         <div>
           <div class="invoice-shop-name" style="font-size:18px;font-weight:700;color:#1A56C4;">کافینت چنار</div>
           <div class="invoice-shop-sub" style="font-size:11px;color:#7B849E;">مرکز خدمات اینترنتی و ثبت‌نام</div>
@@ -2188,12 +3502,13 @@ function printInvoice() {
     <div class="invoice-total" style="display:flex;justify-content:flex-end;gap:16px;font-size:13px;font-weight:600;padding-top:10px;border-top:2px solid #1A56C4;margin-top:10px;">
       <span>جمع کل:</span>
       <span>${fmtNum(total)} ریال</span>
+      <span style="color:#1A7F4B;font-weight:700;font-size:12px;">(سود شما: ${fmtNum(totalProfit)} ریال)</span>
     </div>
     
     <div class="invoice-signature" style="display:flex;justify-content:space-between;margin-top:10px;font-size:11px;color:#3D4461;">
       <div>امضا: .........................</div>
       <div style="display:flex;align-items:center;gap:6px;">
-        <span>تاریخ:</span>
+        <span>مهر و تاریخ:</span>
         <span style="font-size:11px;color:#8B0000;font-weight:600;">${persianDate}</span>
       </div>
     </div>
@@ -2209,8 +3524,10 @@ function printInvoice() {
   container.innerHTML = html;
   container.style.display = 'block';
   
+  // Better mobile printing
   const printWindow = window.open('', '_blank', 'width=800,height=600,scrollbars=yes');
   if (!printWindow) {
+    // If popup blocked, use print directly on current window
     const printContent = document.getElementById('invoice-print-container').innerHTML;
     document.body.innerHTML = printContent;
     window.print();
@@ -2232,7 +3549,8 @@ function printInvoice() {
         .invoice-print { max-width:900px; margin:0 auto; background:white; padding:20px; border-radius:8px; box-shadow:0 2px 10px rgba(0,0,0,0.1); position:relative; }
         .invoice-header { display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #1A56C4; padding-bottom:12px; margin-bottom:12px; }
         .invoice-logo { display:flex; align-items:center; gap:10px; }
-        .invoice-logo-icon { width:50px; height:50px; border-radius:12px; display:flex; align-items:center; justify-content:center; overflow:hidden; border:2px solid #1A56C4; background:#1A56C4; color:white; font-size:22px; font-weight:800; }
+        .invoice-logo-icon { width:50px; height:50px; border-radius:12px; display:flex; align-items:center; justify-content:center; overflow:hidden; border:2px solid #1A56C4; }
+        .invoice-logo-icon img { width:100%; height:100%; object-fit:contain; }
         .invoice-shop-name { font-size:18px; font-weight:700; color:#1A56C4; }
         .invoice-shop-sub { font-size:11px; color:#7B849E; }
         .invoice-title { font-size:16px; font-weight:700; color:#1A56C4; text-align:left; }
@@ -2241,11 +3559,15 @@ function printInvoice() {
         .invoice-table th { background:#F4F6FB; color:#1A56C4; padding:5px 6px; border:1px solid #D6DCE9; text-align:center; font-size:9px; }
         .invoice-table td { padding:4px 6px; border:1px solid #D6DCE9; text-align:center; color:#1A1F36; font-size:10px; }
         .invoice-total { display:flex; justify-content:flex-end; gap:16px; font-size:13px; font-weight:600; padding-top:10px; border-top:2px solid #1A56C4; margin-top:10px; }
+        .invoice-total .profit-green { color:#1A7F4B; font-weight:700; }
         .invoice-signature { display:flex; justify-content:space-between; margin-top:10px; font-size:11px; color:#3D4461; }
         .invoice-footer { text-align:center; font-size:10px; color:#7B849E; margin-top:12px; border-top:1px solid #D6DCE9; padding-top:8px; }
+        .stamp-container { position:absolute; bottom:50px; left:20px; z-index:10; }
+        .stamp-container img { width:80px; height:80px; opacity:0.75; transform:rotate(-15deg); filter:drop-shadow(0 2px 8px rgba(0,0,0,0.15)); }
         @media print {
           body { background:white; padding:0; }
           .invoice-print { box-shadow:none; border-radius:0; padding:15px; }
+          .stamp-container img { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
           .invoice-table th { background:#e9ecef !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
           .invoice-logo-icon { border:2px solid #1A56C4 !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
         }
@@ -2256,6 +3578,7 @@ function printInvoice() {
           .invoice-table { font-size:9px; }
           .invoice-table th, .invoice-table td { padding:3px 4px; font-size:8px; }
           .invoice-total { font-size:11px; gap:10px; flex-wrap:wrap; }
+          .stamp-container img { width:60px; height:60px; }
         }
       </style>
     </head>
@@ -2289,6 +3612,7 @@ function loadTips(searchQ) {
   const tree = document.getElementById('folder-tree');
   tree.innerHTML = '';
 
+  // Object.create(null) به‌جای {} تا نام پوشه‌ای مثل "__proto__" باعث prototype pollution نشود
   const folders = Object.create(null);
   tips.forEach(t=>{
     const f = t.folder||'عمومی';
@@ -2359,6 +3683,7 @@ function showNote(id) {
   document.getElementById('note-viewer-breadcrumb').textContent = (note.folder||'عمومی') + ' › ' + note.title;
 
   const viewer = document.getElementById('note-viewer');
+  // src تصاویر از data URL داخلی می‌آید (base64)، اما برای احتیاط escape هم می‌شود.
   const imgsHtml = (note.images||[]).map((img,i)=>`<img class="note-img-thumb" src="${esc(img)}" onclick="openLightboxFromNote(${Number(i)})" alt="">`).join('');
   const safeLink = safeUrl(note.url);
 
@@ -2375,10 +3700,19 @@ function showNote(id) {
   `;
 }
 
+// چون src تصویر (data URL) می‌تواند طولانی باشد، به‌جای تزریق مستقیم در onclick، بر اساس ایندکس تصویر را باز می‌کنیم.
 function openLightboxFromNote(imgIndex) {
   if (!currentNote || !currentNote.images) return;
   const img = currentNote.images[imgIndex];
-  if (img) openLightbox(esc(img));
+  if (img) openLightbox(img);
+}
+
+// توجه: از تابع مشترک esc() (تعریف‌شده در بخش UTILS) برای escape استفاده می‌کنیم.
+// همچنین لینک‌های کاربر را محدود به http/https می‌کنیم تا از javascript: URI جلوگیری شود.
+function safeUrl(u) {
+  const s = String(u||'').trim();
+  if (/^(https?:)\/\//i.test(s)) return esc(s);
+  return '';
 }
 
 function searchTips(q) { loadTips(q); }
@@ -2461,10 +3795,7 @@ function renderImgPreview() {
   });
 }
 
-function removeImg(i) { 
-  pendingImgs = pendingImgs.filter((_, idx) => idx !== i);
-  renderImgPreview(); 
-}
+function removeImg(i) { pendingImgs.splice(i,1); renderImgPreview(); }
 
 function openLightbox(src) {
   document.getElementById('lightbox-img').src=src;
@@ -2616,13 +3947,6 @@ function showReport(type) {
     labels = sortedDates;
     values = sortedDates.map(d => daily[d]||0);
     title = 'همه فروش‌ها';
-  }
-  
-  // ====== FIX: بررسی دیتای خالی برای چارت ======
-  if (!labels.length || !values.length) {
-    labels = ['بدون داده'];
-    values = [0];
-    title = 'هیچ داده‌ای برای نمایش وجود ندارد';
   }
   
   updateChart(labels, values, title);
@@ -2836,14 +4160,15 @@ if (savedToken && savedToken !== '') {
 }
 
 console.log('✅ تمام اصلاحات انجام شد:');
-console.log('   ✅ آیکون‌های PWA با SVG ساده');
-console.log('   ✅ چارت برای دیتای خالی ایمن شد');
-console.log('   ✅ محاسبه سود حذف شد (در فاکتور نمایش داده نمی‌شود)');
-console.log('   ✅ Toast با سیستم صف (Queue)');
-console.log('   ✅ جستجوی مشتری با norm()');
-console.log('   ✅ حذف تصویر با filter');
-console.log('   ✅ Conflict Handling بهبود یافته');
-console.log('   ✅ مهر حذف شد');
+console.log('   ✅ تلفن: 086-43220702');
+console.log('   ✅ آدرس: محلات - میدان چنار - پلاک 71');
+console.log('   ✅ سود با رنگ سبز و عنوان "سود شما" در فاکتور');
+console.log('   ✅ تاریخ و ساعت فاکتور به صورت فارسی');
+console.log('   ✅ ویرایش سفارش با تاریخ شمسی به صورت کشویی + ثانیه');
+console.log('   ✅ فونت و اعداد در فیلد تاریخ شمسی با فونت و اعداد فارسی');
+console.log('   ✅ رفع مشکل نمایش پس‌زمینه و خروج در کروم دسکتاپ');
+console.log('   ✅ نام برنامه روی هوم اسکرین "کافینت چنار"');
+console.log('   ✅ رفع مشکل چاپ فاکتور روی گوشی');
 </script>
 </body>
 </html>
