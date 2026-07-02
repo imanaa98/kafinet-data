@@ -5,10 +5,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <!-- ====== PWA / HOME SCREEN ====== -->
-<link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogItmF2YbYt9in2YQg2YXYp9mG2K8iLAogICJzaG9ydF9uYW1lIjogItmF2YbYt9in2YQiLAogICJkZXNjcmlwdGlvbiI6ICLZhNmF2YbYr9in2YTYqCDYp9mE2YHYp9mG2K8g2YXYp9mG2K8iLAogICJzdGFydF91cmwiOiAiLiIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiIzFBNTZDNCIsCiAgInRoZW1lX2NvbG9yIjogIiMxQTU2QzQiLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJsb2dvLnBuZyIsCiAgICAgICJzaXplcyI6ICIxOTJ4MTkyIiwKICAgICAgInR5cGUiOiAiaW1hZ2UvcG5nIiwKICAgICAgInB1cnBvc2UiOiAiYW55IgogICAgfSwKICAgIHsKICAgICAgInNyYyI6ICJsb2dvLnBuZyIsCiAgICAgICJzaXplcyI6ICI1MTJ4NTEyIiwKICAgICAgInR5cGUiOiAiaW1hZ2UvcG5nIiwKICAgICAgInB1cnBvc2UiOiAiYW55IgogICAgfQogIF0KfQ==">
+<link rel="manifest" href="data:application/json,{
+  &quot;name&quot;: &quot;کافینت چنار&quot;,
+  &quot;short_name&quot;: &quot;کافینت&quot;,
+  &quot;description&quot;: &quot;مرکز خدمات اینترنتی و ثبت نام&quot;,
+  &quot;start_url&quot;: &quot;.&quot;,
+  &quot;display&quot;: &quot;standalone&quot;,
+  &quot;background_color&quot;: &quot;#1A56C4&quot;,
+  &quot;theme_color&quot;: &quot;#1A56C4&quot;,
+  &quot;icons&quot;: [
+    {&quot;src&quot;: &quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='80' fill='%231A56C4'/%3E%3Ctext x='256' y='320' font-size='280' text-anchor='middle' fill='white' font-family='sans-serif'%3E%DA%A9%3C/text%3E%3C/svg%3E&quot;,&quot;sizes&quot;:&quot;192x192&quot;,&quot;type&quot;:&quot;image/svg+xml&quot;},
+    {&quot;src&quot;: &quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='80' fill='%231A56C4'/%3E%3Ctext x='256' y='320' font-size='280' text-anchor='middle' fill='white' font-family='sans-serif'%3E%DA%A9%3C/text%3E%3C/svg%3E&quot;,&quot;sizes&quot;:&quot;512x512&quot;,&quot;type&quot;:&quot;image/svg+xml&quot;}
+  ]
+}">
 
-<link rel="icon" href="logo.png" type="image/png">
-<link rel="apple-touch-icon" href="logo.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%231A56C4'/%3E%3Ctext x='32' y='44' font-size='40' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='bold'%3E%DA%A9%3C/text%3E%3C/svg%3E" type="image/svg+xml">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='30' fill='%231A56C4'/%3E%3Ctext x='90' y='120' font-size='110' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='bold'%3E%DA%A9%3C/text%3E%3C/svg%3E">
 
 <title>کافینت چنار</title>
 
@@ -122,11 +134,10 @@
     margin-bottom: 16px;
     overflow: hidden;
     box-shadow: 0 4px 16px rgba(26,86,196,0.3);
-  }
-  .login-box .logo-icon img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
+    background: #1A56C4;
+    color: white;
+    font-size: 36px;
+    font-weight: 800;
   }
   .login-box h1 {
     font-size: 22px;
@@ -248,11 +259,10 @@
     margin-bottom: 8px;
     overflow: hidden;
     box-shadow: 0 4px 12px rgba(26,86,196,0.3);
-  }
-  .logo-icon img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
+    background: #1A56C4;
+    color: white;
+    font-size: 26px;
+    font-weight: 800;
   }
   .logo-title { font-size: 16px; font-weight: 700; color: var(--text); }
   .logo-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
@@ -673,7 +683,7 @@
     display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px;
   }
   .img-preview-item {
-    position: relative; width: 70px; height: 60px;
+    position: relative; width: 70px; height: 70px;
   }
   .img-preview-item img {
     width: 100%; height: 100%;
@@ -686,6 +696,16 @@
     background: var(--danger); color: #fff;
     border-radius: 50%; border: none; cursor: pointer;
     font-size: 9px; display: flex; align-items: center; justify-content: center;
+  }
+  .img-preview-filename {
+    font-size: 9px;
+    color: var(--muted);
+    text-align: center;
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 70px;
   }
 
   .modal-overlay {
@@ -775,11 +795,12 @@
     align-items: center;
     gap: 4px;
     white-space: nowrap;
+    transition: all 0.3s;
   }
   #sync-status.synced { background: var(--success); color: #fff; border-color: var(--success); }
   #sync-status.syncing { background: var(--warning); color: #fff; border-color: var(--warning); }
   #sync-status.error { background: var(--danger); color: #fff; border-color: var(--danger); }
-  #sync-status.offline { background: var(--muted); color: #fff; border-color: var(--muted); }
+  #sync-status.offline { background: #e74c3c; color: #fff; border-color: #e74c3c; }
   
   .order-actions { display: flex; gap: 3px; justify-content: center; flex-wrap: wrap; }
   .order-actions button { padding: 2px 8px; font-size: 10px; min-height: 28px; }
@@ -854,31 +875,30 @@
     gap: 12px;
   }
   .invoice-print .invoice-logo-icon {
-    width: 60px;
-    height: 60px;
-    border-radius: 14px;
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
     border: 2px solid #1A56C4;
-  }
-  .invoice-print .invoice-logo-icon img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
+    background: #1A56C4;
+    color: white;
+    font-size: 22px;
+    font-weight: 800;
   }
   .invoice-print .invoice-shop-name {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 700;
     color: #1A56C4;
   }
   .invoice-print .invoice-shop-sub {
-    font-size: 12px;
+    font-size: 11px;
     color: #7B849E;
   }
   .invoice-print .invoice-title {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 700;
     color: #1A56C4;
     text-align: left;
@@ -886,71 +906,61 @@
   .invoice-print .invoice-info {
     display: flex;
     justify-content: space-between;
-    font-size: 12px;
+    font-size: 11px;
     color: #3D4461;
-    margin-bottom: 12px;
-    padding: 8px 0;
+    margin-bottom: 10px;
+    padding: 6px 0;
     border-bottom: 1px dashed #D6DCE9;
+    flex-wrap: wrap;
+    gap: 4px;
   }
   .invoice-print .invoice-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 12px;
-    margin: 12px 0;
+    font-size: 10px;
+    margin: 10px 0;
   }
   .invoice-print .invoice-table th {
     background: #F4F6FB;
     color: #1A56C4;
-    padding: 8px 10px;
+    padding: 5px 6px;
     border: 1px solid #D6DCE9;
     text-align: center;
-    font-size: 11px;
+    font-size: 9px;
   }
   .invoice-print .invoice-table td {
-    padding: 6px 10px;
+    padding: 4px 6px;
     border: 1px solid #D6DCE9;
     text-align: center;
     color: #1A1F36;
+    font-size: 10px;
   }
   .invoice-print .invoice-total {
     display: flex;
     justify-content: flex-end;
-    gap: 20px;
-    font-size: 14px;
+    gap: 16px;
+    font-size: 13px;
     font-weight: 600;
-    padding-top: 12px;
+    padding-top: 10px;
     border-top: 2px solid #1A56C4;
-    margin-top: 12px;
+    margin-top: 10px;
   }
   .invoice-print .invoice-footer {
     text-align: center;
-    font-size: 11px;
+    font-size: 10px;
     color: #7B849E;
-    margin-top: 16px;
+    margin-top: 12px;
     border-top: 1px solid #D6DCE9;
-    padding-top: 10px;
+    padding-top: 8px;
   }
   .invoice-print .invoice-signature {
     display: flex;
     justify-content: space-between;
-    margin-top: 12px;
-    font-size: 12px;
+    margin-top: 10px;
+    font-size: 11px;
     color: #3D4461;
-  }
-
-  /* ====== STAMP / SEAL STYLES ====== */
-  .stamp-container {
-    position: absolute;
-    bottom: 80px;
-    left: 30px;
-    z-index: 10;
-  }
-  .stamp-container img {
-    width: 110px;
-    height: 110px;
-    opacity: 0.75;
-    transform: rotate(-15deg);
-    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.15));
+    flex-wrap: wrap;
+    gap: 4px;
   }
 
   @media print {
@@ -971,10 +981,6 @@
     }
     .invoice-print .invoice-logo-icon {
       border: 2px solid #1A56C4 !important;
-      -webkit-print-color-adjust: exact !important;
-      print-color-adjust: exact !important;
-    }
-    .stamp-container img {
       -webkit-print-color-adjust: exact !important;
       print-color-adjust: exact !important;
     }
@@ -1084,7 +1090,7 @@
   @media (max-width: 768px) {
     #sidebar { width: 56px; min-width: 56px; }
     .logo-area { padding: 12px 8px; }
-    .logo-icon { width: 36px; height: 36px; margin-bottom: 4px; }
+    .logo-icon { width: 36px; height: 36px; margin-bottom: 4px; font-size: 18px; }
     .logo-title { display: none; }
     .logo-sub { display: none; }
     .nav-section-title { display: none; }
@@ -1115,8 +1121,7 @@
     tbody td { padding: 6px 8px; font-size: 11px; }
     .note-viewer-title { font-size: 15px; }
     .login-box { padding: 24px 16px; }
-    .login-box .logo-icon { width: 64px; height: 64px; }
-    .stamp-container img { width: 80px; height: 80px; }
+    .login-box .logo-icon { width: 64px; height: 64px; font-size: 28px; }
   }
 
   @media (max-width: 480px) {
@@ -1136,15 +1141,13 @@
     .report-tab { font-size: 11px; padding: 4px 10px; min-height: 30px; }
     .modal { padding: 12px; }
     .login-box { padding: 20px 12px; }
-    .login-box .logo-icon { width: 56px; height: 56px; }
+    .login-box .logo-icon { width: 56px; height: 56px; font-size: 24px; }
     .login-box h1 { font-size: 18px; }
-    .stamp-container img { width: 60px; height: 60px; }
   }
 
   #page-tips .page-body { padding: 0; }
   #tips-layout { display: flex; flex: 1; overflow: hidden; height: 100%; }
 
-  /* Drag & Drop Styles */
   .draggable-row {
     cursor: grab;
     transition: all 0.2s;
@@ -1173,13 +1176,6 @@
     color: var(--accent);
   }
   
-  /* رنگ سبز برای سود در فاکتور */
-  .invoice-print .profit-green {
-    color: #1A7F4B !important;
-    font-weight: 700 !important;
-  }
-  
-  /* Persian DateTime Picker - Improved with seconds */
   .persian-datetime-wrapper {
     position: relative;
     width: 100%;
@@ -1188,7 +1184,7 @@
     font-family: 'Vazirmatn', Tahoma, sans-serif !important;
     direction: rtl !important;
     text-align: center !important;
-    font-size: 12px !important;
+    font-size: 11px !important;
     padding: 4px 2px !important;
     border: 1px solid var(--border) !important;
     border-radius: var(--radius-sm) !important;
@@ -1197,7 +1193,7 @@
     min-height: 32px !important;
     outline: none !important;
     cursor: pointer !important;
-    min-width: 44px !important;
+    min-width: 40px !important;
     flex: 1 !important;
   }
   .persian-datetime-wrapper select:focus {
@@ -1217,7 +1213,7 @@
   }
   .persian-datetime-row select {
     flex: 1;
-    min-width: 40px;
+    min-width: 36px;
   }
   .persian-datetime-row .sep {
     color: var(--muted);
@@ -1232,7 +1228,6 @@
     font-weight: 500;
   }
   
-  /* Dark mode fix for Chrome desktop */
   [data-theme="dark"] .persian-datetime-wrapper select {
     background: var(--surface2) !important;
     color: var(--text) !important;
@@ -1243,7 +1238,6 @@
     color: var(--text) !important;
   }
   
-  /* Chrome desktop logout and background fix */
   [data-theme="dark"] .logout-btn {
     color: var(--text2) !important;
     border-color: var(--border) !important;
@@ -1254,7 +1248,6 @@
     border-color: var(--danger) !important;
   }
   
-  /* Force background color for all elements in dark mode */
   [data-theme="dark"] {
     background: var(--bg) !important;
   }
@@ -1283,7 +1276,6 @@
     background: rgba(0,0,0,0.7) !important;
   }
   
-  /* Force text colors in dark mode */
   [data-theme="dark"] .text-muted {
     color: var(--muted) !important;
   }
@@ -1306,14 +1298,14 @@
     color: var(--muted) !important;
   }
   
-  /* Fix invoice print on mobile */
   @media print {
-    .invoice-print .stamp-container {
-      display: block !important;
+    .invoice-print .invoice-table th {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
     }
-    .invoice-print .stamp-container img {
-      max-width: 90px !important;
-      max-height: 90px !important;
+    .invoice-print .invoice-logo-icon {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
     }
   }
 </style>
@@ -1323,11 +1315,9 @@
 <!-- ══ LOGIN PAGE ══ -->
 <div id="login-page">
   <div class="login-box">
-    <div class="logo-icon">
-      <img src="logo.png" alt="کافینت چنار" onerror="this.parentElement.textContent='کافینت چنار';this.parentElement.style.background='#1A56C4';this.parentElement.style.color='white';this.parentElement.style.fontSize='20px';this.parentElement.style.fontWeight='800';">
-    </div>
+    <div class="logo-icon">ک</div>
     <h1>کافینت چنار</h1>
-    <div class="sub">مرکز خدمات اینترنتی و ثبت‌ نام اینترنتی</div>
+    <div class="sub">مرکز خدمات اینترنتی و ثبت‌نام اینترنتی</div>
     
     <div class="field">
       <label>🔐 توکن گیت‌هاب</label>
@@ -1335,9 +1325,7 @@
       <div class="hint">توکن را از <a href="https://github.com/settings/tokens?type=beta" target="_blank">github.com/settings/tokens</a> دریافت کنید</div>
       <div class="hint" style="color:var(--danger);line-height:1.7;margin-top:6px">
         ⚠️ حتماً یک توکن <b>Fine-grained</b> بسازید که فقط به ریپازیتوری
-        <code>kafinet-data</code> و فقط با دسترسی <b>Contents: Read and write</b> محدود باشد،
-        نه یک Classic token با دسترسی کامل به همه‌ی ریپوها. این توکن روی همین مرورگر ذخیره می‌شود؛
-        روی دستگاه‌های عمومی/مشترک از آن استفاده نکنید و در پایان کار حتماً «خروج» بزنید.
+        <code>kafinet-data</code> و فقط با دسترسی <b>Contents: Read and write</b> محدود باشد
       </div>
     </div>
     
@@ -1357,9 +1345,7 @@
   <!-- SIDEBAR -->
   <div id="sidebar">
     <div class="logo-area">
-      <div class="logo-icon">
-        <img src="logo.png" alt="کافینت چنار" onerror="this.parentElement.textContent='کافینت چنار';this.parentElement.style.background='#1A56C4';this.parentElement.style.color='white';this.parentElement.style.fontSize='18px';this.parentElement.style.fontWeight='800';">
-      </div>
+      <div class="logo-icon">ک</div>
       <div class="logo-title">کافینت چنار</div>
       <div class="logo-sub">مرکز خدمات اینترنتی</div>
     </div>
@@ -1500,7 +1486,6 @@
     <div class="page" id="page-orders">
       <div class="page-body">
         <div class="card mb-4">
-          <!-- ====== CUSTOMER SEARCH ====== -->
           <div class="form-grid form-grid-2 mb-3">
             <div class="field">
               <label>🔍 جستجوی مشتری</label>
@@ -1523,7 +1508,7 @@
               </div>
             </div>
           </div>
-          <div class="form-grid form-grid-4 mb-3">
+          <div class="form-grid form-grid-3 mb-3">
             <div class="field"><label>تعداد</label><input id="order-qty" type="number" value="1" min="1"></div>
             <div class="field"><label>تخفیف (%)</label><input id="order-discount" type="number" value="0" min="0" max="100"></div>
             <div class="field"><label>تخفیف هر واحد (ریال)</label><input id="order-discount-amount" type="number" value="0" min="0" placeholder="مبلغ ریالی"></div>
@@ -1543,8 +1528,8 @@
           <div id="cart-table">
             <div class="table-wrap" style="border:none">
               <table>
-                <thead><tr><th>خدمت</th><th>تعداد</th><th>قیمت واحد</th><th>تخفیف %</th><th>تخفیف هر واحد</th><th>سود (تخفیف کل)</th><th>جمع</th><th></th></tr></thead>
-                <tbody id="cart-tbody"><tr class="empty-row"><td colspan="8">سبد خالی است</td></tr></tbody>
+                <thead><tr><th>خدمت</th><th>تعداد</th><th>قیمت واحد</th><th>تخفیف %</th><th>تخفیف هر واحد</th><th>جمع</th><th></th></tr></thead>
+                <tbody id="cart-tbody"><tr class="empty-row"><td colspan="7">سبد خالی است</td></tr></tbody>
               </table>
             </div>
           </div>
@@ -1859,14 +1844,13 @@
       <div style="font-weight:600;margin-bottom:8px">📋 اقلام سفارش</div>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>خدمت</th><th>تعداد</th><th>قیمت واحد</th><th>تخفیف %</th><th>تخفیف هر واحد</th><th>سود (تخفیف کل)</th><th>جمع</th></tr></thead>
+          <thead><tr><th>خدمت</th><th>تعداد</th><th>قیمت واحد</th><th>تخفیف %</th><th>تخفیف هر واحد</th><th>جمع</th></tr></thead>
           <tbody id="detail-items"></tbody>
         </table>
       </div>
       <div class="row-center" style="justify-content:space-between;margin-top:12px">
         <div>
           <span class="text-muted">جمع کل:</span> <span id="detail-total" class="font-bold text-accent" style="font-size:18px">۰ ریال</span>
-          <span style="margin-right:12px;font-size:11px;color:var(--muted)">(سود: <span id="detail-profit" style="color:var(--success);font-weight:600">۰ ریال</span>)</span>
         </div>
         <div class="row-center gap-2">
           <button class="btn btn-warning btn-sm" onclick="editOrderFromDetail()">✏️ ویرایش</button>
@@ -1912,6 +1896,47 @@ let syncTimer = null;
 let isSyncing = false;
 let pendingChanges = false;
 let currentSHA = null;
+let toastQueue = [];
+let isToastShowing = false;
+const DEBUG = false; // ← برای حذف لاگ‌ها در محیط تولید
+
+// ====== TOAST QUEUE SYSTEM ======
+function showToast(msg, type = '') {
+  toastQueue.push({ msg, type });
+  if (!isToastShowing) {
+    processToastQueue();
+  }
+}
+
+function processToastQueue() {
+  if (toastQueue.length === 0) {
+    isToastShowing = false;
+    return;
+  }
+  
+  isToastShowing = true;
+  const item = toastQueue.shift();
+  const t = document.getElementById('toast');
+  t.textContent = item.msg;
+  t.className = 'show ' + item.type;
+  
+  setTimeout(() => {
+    t.className = '';
+    setTimeout(processToastQueue, 300);
+  }, 2500);
+}
+
+function toast(msg, type = '') {
+  showToast(msg, type);
+}
+
+function log(...args) {
+  if (DEBUG) console.log(...args);
+}
+
+function warn(...args) {
+  if (DEBUG) console.warn(...args);
+}
 
 function getRepoUrl() {
   return `https://api.github.com/repos/${SYNC_CONFIG.USERNAME}/${SYNC_CONFIG.REPO_NAME}/contents/${SYNC_CONFIG.FILE_PATH}`;
@@ -1946,6 +1971,9 @@ async function syncToCloud() {
       last_update: nowStr()
     };
     
+    // ذخیره محلی قبل از ارسال (برای جلوگیری از از دست رفتن داده)
+    localStorage.setItem('sync_snapshot', JSON.stringify(data));
+    
     const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
     
     let sha = null;
@@ -1960,11 +1988,13 @@ async function syncToCloud() {
       if (getResponse.ok) {
         const fileData = await getResponse.json();
         sha = fileData.sha;
+      } else if (getResponse.status === 404) {
+        sha = null;
+      } else {
+        throw new Error(`GitHub API error: ${getResponse.status}`);
       }
     } catch (e) {
-      // اگر فایل قبلاً وجود نداشته باشد (404) یا خطای شبکه رخ دهد، sha همچنان null می‌ماند
-      // و درخواست PUT بعدی به‌عنوان ایجاد فایل جدید ارسال می‌شود. خطا را برای دیباگ لاگ می‌کنیم.
-      console.warn('عدم دریافت sha فایل قبل از سینک (احتمالاً فایل جدید است):', e);
+      warn('Error fetching file:', e);
     }
     
     const body = {
@@ -1991,18 +2021,20 @@ async function syncToCloud() {
     }
     
     const result = await updateResponse.json();
-    currentSHA = result.content.sha;
+    if (result.content) currentSHA = result.content.sha;
     setSyncStatus('synced', '✅ همگام شد');
     pendingChanges = false;
+    // پاک کردن snapshot پس از موفقیت
+    localStorage.removeItem('sync_snapshot');
     
   } catch (e) {
-    console.error('Sync error:', e);
+    log('Sync error:', e);
     if (e.status === 401 || e.status === 403) {
       setSyncStatus('error', '⚠️ توکن نامعتبر یا دسترسی ناکافی');
+      toast('توکن نامعتبر است! لطفاً دوباره وارد شوید.', 'danger');
     } else if (e.status === 409) {
-      // تعارض: نسخه‌ی روی گیت‌هاب از زمان آخرین دریافت ما تغییر کرده (مثلاً دستگاه دیگری هم‌زمان ذخیره کرده)
-      setSyncStatus('error', '⚠️ تعارض داده؛ ابتدا دریافت از سرور را اجرا کنید');
-      toast('داده‌ها روی سرور تغییر کرده؛ لطفاً صفحه را رفرش کنید تا آخرین نسخه دریافت شود', 'danger');
+      setSyncStatus('error', '⚠️ تعارض داده‌ها');
+      toast('تعارض در داده‌ها! لطفاً صفحه را رفرش کنید.', 'danger');
     } else {
       setSyncStatus('error', '⚠️ خطا در همگام‌سازی');
     }
@@ -2069,7 +2101,7 @@ async function syncFromCloud() {
     }
     
   } catch (e) {
-    console.error('Sync from cloud error:', e);
+    log('Sync from cloud error:', e);
     if (e.message.includes('401') || e.message.includes('403')) {
       setSyncStatus('error', '⚠️ توکن نامعتبر');
     } else {
@@ -2154,6 +2186,7 @@ function logout() {
     document.getElementById('login-token').value = '';
     document.getElementById('login-token').focus();
     updateLoginStatus('offline', '⛔ قطع');
+    toast('خروج انجام شد', 'success');
   }
 }
 
@@ -2173,7 +2206,6 @@ const DB = {
 };
 
 function initDB() {
-  // ====== سرویس‌های پیش‌فرض ======
   if (!DB.get('services')) DB.set('services', [
     {id:1,name:'استفاده از سیستم',category:'سیستم',price:50000,stock:20},
     {id:2,name:'پرینت سیاه‌سفید',category:'پرینت',price:5000,stock:999},
@@ -2195,14 +2227,12 @@ function initDB() {
     {id:18,name:'رایت CD/DVD',category:'خدمات فایل',price:30000,stock:999},
   ]);
 
-  // ====== مشتریان پیش‌فرض ======
   if (!DB.get('customers')) DB.set('customers', [
     {id:1,first_name:'علی',last_name:'احمدی',phone:'09121234567',national:'1234567890',address:'تهران',debt:0,info:'مشتری دائمی',join_date:today()},
     {id:2,first_name:'مریم',last_name:'رضایی',phone:'09351234567',national:'0987654321',address:'تهران',debt:50000,info:'نیاز به پیگیری',join_date:today()},
     {id:3,first_name:'محمد',last_name:'کریمی',phone:'09123456789',national:'1122334455',address:'اصفهان',debt:0,info:'',join_date:today()},
   ]);
 
-  // ====== تعرفه‌های پیش‌فرض ======
   if (!DB.get('tariffs')) DB.set('tariffs', [
     {id:1,name:'استفاده از سیستم',description:'هر ساعت',price:50000,unit:'ساعت',active:'فعال'},
     {id:2,name:'پرینت A4 سیاه‌سفید',description:'هر برگ',price:5000,unit:'برگ',active:'فعال'},
@@ -2214,14 +2244,12 @@ function initDB() {
     {id:8,name:'گیمینگ',description:'بازی آنلاین',price:80000,unit:'ساعت',active:'فعال'},
   ]);
 
-  // ====== اطلاعیه‌های پیش‌فرض ======
   if (!DB.get('internal_news')) DB.set('internal_news', [
     {id:1,title:'شروع ثبت‌نام کنکور سراسری ۱۴۰۴',content:'ثبت‌نام کنکور سراسری از امروز آغاز شد. مدارک لازم: کارت ملی، شناسنامه، مدرک تحصیلی. هزینه ۱۵۰ هزار تومان.',category:'ثبت نام',date:today(),priority:'فوری',pinned:true,active:true},
     {id:2,title:'آزمون استخدامی دستگاه‌های اجرایی',content:'ثبت‌نام آزمون استخدامی تا پایان هفته ادامه دارد.',category:'ثبت نام',date:today(),priority:'بالا',pinned:true,active:true},
     {id:3,title:'تخفیف ویژه پرینت و فتوکپی',content:'تا پایان این ماه پرینت سیاه‌سفید ۵۰٪ تخفیف.',category:'تخفیف',date:today(),priority:'متوسط',pinned:false,active:true},
   ]);
 
-  // ====== راهنماهای پیش‌فرض ======
   if (!DB.get('tips')) DB.set('tips', [
     {id:1,folder:'کنکور و آموزش',title:'ثبت‌نام کنکور سراسری',url:'https://sanjesh.org',
      body:'مرحله ۱: وارد سایت sanjesh.org شوید\nمرحله ۲: روی گزینه «ثبت‌نام» کلیک کنید\nمرحله ۳: کد ملی و اطلاعات شناسنامه‌ای را وارد کنید\nمرحله ۴: رشته و شهر محل سکونت را انتخاب کنید\nمرحله ۵: مدرک تحصیلی و اطلاعات آموزشی را وارد نمایید\nمرحله ۶: عکس ۳×۴ را با فرمت JPG آپلود کنید\nمرحله ۷: هزینه ثبت‌نام را از طریق درگاه پرداخت کنید\nمرحله ۸: کد رهگیری را دریافت و نگهداری کنید',
@@ -2234,7 +2262,6 @@ function initDB() {
      images:[],date:today()},
   ]);
 
-  // ====== سفارش‌ها - خالی ======
   if (!DB.get('orders')) DB.set('orders', []);
   if (!DB.get('order_items')) DB.set('order_items', []);
 }
@@ -2246,23 +2273,17 @@ function today() { return new Date().toLocaleDateString('fa-IR'); }
 function nowStr() { return new Date().toLocaleString('fa-IR'); }
 function fmtNum(n) { return Number(n||0).toLocaleString('fa-IR'); }
 function nextId(arr) { return arr.length ? Math.max(...arr.map(x=>x.id||0)) + 1 : 1; }
-function norm(s) { return (s||'').replace(/ي/g,'ی').replace(/ك/g,'ک').toLowerCase(); }
+function norm(s) { return String(s||'').replace(/ي/g,'ی').replace(/ك/g,'ک').toLowerCase(); }
 
-// ============================================
-// SECURITY: HTML ESCAPING (XSS PREVENTION)
-// ============================================
-// هر متنی که از کاربر گرفته شده (نام، تلفن، یادداشت و...) قبل از قرار گرفتن
-// داخل innerHTML باید از این تابع رد شود تا کد HTML/JS داخل آن اجرا نشود.
 const _escMap = { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' };
 function esc(str) {
   return String(str ?? '').replace(/[&<>"']/g, ch => _escMap[ch]);
 }
 
-function toast(msg, type='') {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = 'show ' + type;
-  setTimeout(() => t.className = '', 2800);
+function safeUrl(u) {
+  const s = String(u||'').trim();
+  if (/^(https?:)\/\//i.test(s)) return esc(s);
+  return '';
 }
 
 function clearSearch(id, fn) {
@@ -2295,13 +2316,13 @@ function searchCustomers(query) {
   
   const matches = custs.filter(c => {
     const fullName = norm(c.first_name + ' ' + c.last_name);
-    const phone = c.phone || '';
-    const national = c.national || '';
+    const phone = norm(c.phone || '');
+    const national = norm(c.national || '');
     return fullName.includes(nq) || 
-           phone.includes(q) || 
-           national.includes(q) ||
-           (c.first_name && norm(c.first_name).includes(nq)) ||
-           (c.last_name && norm(c.last_name).includes(nq));
+           phone.includes(nq) || 
+           national.includes(nq) ||
+           norm(c.first_name || '').includes(nq) ||
+           norm(c.last_name || '').includes(nq);
   }).slice(0, 10);
   
   if (!matches.length) {
@@ -2314,8 +2335,12 @@ function searchCustomers(query) {
   dropdown.innerHTML = matches.map(c => {
     const fullName = c.first_name + ' ' + c.last_name;
     let displayName = esc(fullName);
-    if (norm(fullName).includes(nq)) {
-      displayName = highlightText(fullName, q);
+    const idx = norm(fullName).indexOf(nq);
+    if (idx !== -1) {
+      const before = esc(fullName.substring(0, idx));
+      const matched = esc(fullName.substring(idx, idx + q.length));
+      const after = esc(fullName.substring(idx + q.length));
+      displayName = before + '<span class="highlight">' + matched + '</span>' + after;
     }
     return `<div class="item" onclick="selectCustomer(${Number(c.id)})">
       ${displayName}
@@ -2326,17 +2351,6 @@ function searchCustomers(query) {
       </span>
     </div>`;
   }).join('');
-}
-
-// متن را escape می‌کند و فقط قسمت منطبق‌شده با جستجو را داخل <span class="highlight"> می‌گذارد.
-// escape قبل از برش متن انجام می‌شود تا هیچ HTML خامی از ورودی کاربر عبور نکند.
-function highlightText(text, query) {
-  const idx = norm(text).indexOf(norm(query));
-  if (idx === -1) return esc(text);
-  const before = text.substring(0, idx);
-  const matched = text.substring(idx, idx + query.length);
-  const after = text.substring(idx + query.length);
-  return esc(before) + '<span class="highlight">' + esc(matched) + '</span>' + esc(after);
 }
 
 function selectCustomer(id) {
@@ -2364,7 +2378,6 @@ function clearSelectedCustomer() {
   document.getElementById('customer-dropdown').classList.remove('show');
 }
 
-// حذف همه سفارش‌ها
 function clearAllOrders() {
   if (!confirm('آیا از حذف همه سفارش‌ها مطمئن هستید؟')) return;
   DB.set('orders', []);
@@ -2386,12 +2399,7 @@ document.addEventListener('click', function(e) {
 // ============================================
 // DRAG & DROP
 // ============================================
-let dragState = {
-  sourceTable: null,
-  sourceIndex: null,
-  sourceId: null,
-  sourceData: null
-};
+let dragState = { sourceTable: null, sourceIndex: null, sourceId: null };
 
 function initDragDrop(tableId, itemsKey, renderFn) {
   const table = document.getElementById(tableId);
@@ -2462,7 +2470,7 @@ function initDragDrop(tableId, itemsKey, renderFn) {
     
     dragRow = null;
     dragOverRow = null;
-    dragState = { sourceTable: null, sourceIndex: null, sourceId: null, sourceData: null };
+    dragState = { sourceTable: null, sourceIndex: null, sourceId: null };
   });
 }
 
@@ -2903,15 +2911,12 @@ function addToCart() {
   const unitPrice = selProd.price;
   let afterPercentDiscount = Math.round(unitPrice * (1 - discountPercent / 100));
   let finalUnitPrice = Math.max(0, afterPercentDiscount - discountAmount);
-  // سود = تخفیف کل برای این محصول = (قیمت اصلی - قیمت نهایی) × تعداد
-  const totalDiscount = (unitPrice - finalUnitPrice) * qty;
   const sub = finalUnitPrice * qty;
   
   const existing = cart.find(c=>c.product_id===selProd.id && c.discount_percent===discountPercent && c.discount_amount===discountAmount);
   if (existing) { 
     existing.qty += qty; 
     existing.subtotal += sub;
-    existing.total_discount += totalDiscount;
   } else {
     cart.push({
       product_id:selProd.id,
@@ -2920,7 +2925,6 @@ function addToCart() {
       unit_price:unitPrice,
       discount_percent:discountPercent,
       discount_amount:discountAmount,
-      total_discount:totalDiscount,
       final_unit_price:finalUnitPrice,
       subtotal:sub
     });
@@ -2938,7 +2942,7 @@ function refreshCart() {
   const tbody = document.getElementById('cart-tbody');
   tbody.innerHTML = '';
   if (!cart.length) { 
-    tbody.innerHTML='<tr class="empty-row"><td colspan="8">سبد خالی است</td></tr>'; 
+    tbody.innerHTML='<tr class="empty-row"><td colspan="7">سبد خالی است</td></tr>'; 
     document.getElementById('cart-total').textContent='جمع کل: ۰ ریال'; 
     return; 
   }
@@ -2949,7 +2953,6 @@ function refreshCart() {
       <td>${fmtNum(item.unit_price)}</td>
       <td>${Number(item.discount_percent)}%</td>
       <td>${fmtNum(item.discount_amount)}</td>
-      <td>${fmtNum(item.total_discount)}</td>
       <td>${fmtNum(item.subtotal)}</td>
       <td><button class="btn btn-danger btn-sm" onclick="removeCartItem(${Number(i)})">✕</button></td>
     </tr>`;
@@ -2964,7 +2967,6 @@ function clearCart() { cart=[]; refreshCart(); }
 function submitOrder() {
   if (!cart.length) { toast('سبد خالی است','danger'); return; }
   
-  // گرفتن مشتری از selectedCustomer
   let custId = null;
   if (selectedCustomer) {
     custId = selectedCustomer.id;
@@ -3010,10 +3012,9 @@ function submitOrder() {
 }
 
 // ============================================
-// PERSIAN DATETIME PICKER HELPERS WITH SECONDS
+// PERSIAN DATETIME PICKER
 // ============================================
 function getPersianDateParts(dateStr) {
-  // dateStr format: 1403/01/15 14:30:25 or 1403/01/15 14:30
   if (!dateStr) return null;
   const parts = dateStr.split(' ');
   if (parts.length < 2) return null;
@@ -3050,7 +3051,6 @@ function initPersianDatePickers() {
   
   if (!yearSelect) return;
   
-  // Populate years (1390-1410)
   yearSelect.innerHTML = '';
   for (let y = 1390; y <= 1410; y++) {
     const opt = document.createElement('option');
@@ -3059,7 +3059,6 @@ function initPersianDatePickers() {
     yearSelect.appendChild(opt);
   }
   
-  // Populate months (1-12)
   monthSelect.innerHTML = '';
   const monthNames = ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'];
   for (let m = 1; m <= 12; m++) {
@@ -3069,7 +3068,6 @@ function initPersianDatePickers() {
     monthSelect.appendChild(opt);
   }
   
-  // Populate days (1-31)
   daySelect.innerHTML = '';
   for (let d = 1; d <= 31; d++) {
     const opt = document.createElement('option');
@@ -3078,7 +3076,6 @@ function initPersianDatePickers() {
     daySelect.appendChild(opt);
   }
   
-  // Populate hours (0-23)
   hourSelect.innerHTML = '';
   for (let h = 0; h <= 23; h++) {
     const opt = document.createElement('option');
@@ -3087,7 +3084,6 @@ function initPersianDatePickers() {
     hourSelect.appendChild(opt);
   }
   
-  // Populate minutes (0-59)
   minuteSelect.innerHTML = '';
   for (let m = 0; m <= 59; m++) {
     const opt = document.createElement('option');
@@ -3096,7 +3092,6 @@ function initPersianDatePickers() {
     minuteSelect.appendChild(opt);
   }
   
-  // Populate seconds (0-59)
   secondSelect.innerHTML = '';
   for (let s = 0; s <= 59; s++) {
     const opt = document.createElement('option');
@@ -3109,9 +3104,7 @@ function initPersianDatePickers() {
 function setPersianDateTime(dateStr) {
   const parts = getPersianDateParts(dateStr);
   if (!parts) {
-    // Set to current time
     const now = new Date();
-    // Convert Gregorian to Persian (rough approximation)
     const pYear = now.getFullYear() - 621;
     const pMonth = now.getMonth() + 1;
     const pDay = now.getDate();
@@ -3182,11 +3175,8 @@ function openOrderEditModal(order) {
   });
   
   document.getElementById('edit-order-id').textContent = '#'+order.id;
-  
-  // Initialize pickers if not done yet
   initPersianDatePickers();
   
-  // Set date from order
   if (order.date) {
     setPersianDateTime(order.date);
   } else {
@@ -3213,7 +3203,8 @@ function renderEditItems() {
     const tr = document.createElement('tr');
     tr.className = item._selected ? 'selected' : '';
     tr.dataset.idx = idx;
-    tr.onclick = function() {
+    tr.onclick = function(e) {
+      if (e.target.closest('input') || e.target.closest('button')) return;
       editItems.forEach(i=>i._selected=false);
       editItems[idx]._selected = true;
       renderEditItems();
@@ -3287,7 +3278,6 @@ function saveOrderEdit() {
   
   order.customer_id = +document.getElementById('order-edit-cust').value;
   
-  // دریافت تاریخ از picker با ثانیه
   const dateValue = getPersianDateTimeFromPicker();
   if (dateValue) {
     order.date = dateValue;
@@ -3346,19 +3336,15 @@ function showOrderDetail(id) {
   const tbody = document.getElementById('detail-items');
   tbody.innerHTML = '';
   if (!orderItems.length) {
-    tbody.innerHTML = '<tr class="empty-row"><td colspan="7">هیچ آیتمی وجود ندارد</td></tr>';
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="6">هیچ آیتمی وجود ندارد</td></tr>';
   } else {
     orderItems.forEach(item=>{
-      // سود = تخفیف کل = (قیمت اصلی - قیمت نهایی) × تعداد
-      const finalPrice = Math.max(0, Math.round(item.unit_price * (1 - (item.discount_percent||0) / 100)) - (item.discount_amount||0));
-      const totalDiscount = (item.unit_price - finalPrice) * item.qty;
       tbody.innerHTML += `<tr>
         <td>${esc(item.product_name)}</td>
         <td>${Number(item.qty)}</td>
         <td>${fmtNum(item.unit_price)}</td>
         <td>${Number(item.discount_percent||0)}%</td>
         <td>${fmtNum(item.discount_amount||0)}</td>
-        <td>${fmtNum(totalDiscount)}</td>
         <td>${fmtNum(item.subtotal)}</td>
       </tr>`;
     });
@@ -3366,13 +3352,6 @@ function showOrderDetail(id) {
   
   const total = orderItems.reduce((s,i)=>s+(i.subtotal||0),0);
   document.getElementById('detail-total').textContent = fmtNum(total)+' ریال';
-  
-  // سود کل = مجموع تخفیف کل هر آیتم
-  const totalProfit = orderItems.reduce((s,item) => {
-    const finalPrice = Math.max(0, Math.round(item.unit_price * (1 - (item.discount_percent||0) / 100)) - (item.discount_amount||0));
-    return s + ((item.unit_price - finalPrice) * item.qty);
-  }, 0);
-  document.getElementById('detail-profit').textContent = fmtNum(totalProfit)+' ریال';
   
   document.getElementById('order-detail-modal').classList.add('open');
 }
@@ -3404,7 +3383,7 @@ function filterOrders(q) {
 }
 
 // ============================================
-// INVOICE PRINT WITH STAMP - FIXED FOR MOBILE
+// INVOICE PRINT
 // ============================================
 function printInvoice() {
   if (!viewedOrderId) { toast('سفارشی انتخاب نشده','danger'); return; }
@@ -3423,27 +3402,14 @@ function printInvoice() {
   const orderItems = items.filter(i=>i.order_id===viewedOrderId);
   const total = orderItems.reduce((s,i)=>s+(i.subtotal||0),0);
   
-  // محاسبه سود کل
-  const totalProfit = orderItems.reduce((s,item) => {
-    const finalPrice = Math.max(0, Math.round(item.unit_price * (1 - (item.discount_percent||0) / 100)) - (item.discount_amount||0));
-    return s + ((item.unit_price - finalPrice) * item.qty);
-  }, 0);
-  
-  // تاریخ شمسی برای مهر
   const persianDate = new Date().toLocaleDateString('fa-IR');
+  const persianTime = new Date().toLocaleTimeString('fa-IR');
   
   let html = `
   <div class="invoice-print" style="max-width:800px;margin:0 auto;background:white;padding:25px 20px;font-family:'Vazirmatn',Tahoma,sans-serif;direction:rtl;position:relative;">
-    <!-- مهر تصویری -->
-    <div class="stamp-container" style="position:absolute;bottom:60px;left:20px;z-index:10;">
-      <img src="stamp.png" alt="مهر" style="width:90px;height:90px;opacity:0.75;transform:rotate(-15deg);filter:drop-shadow(0 2px 8px rgba(0,0,0,0.15));" onerror="this.style.display='none';">
-    </div>
-    
     <div class="invoice-header" style="display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #1A56C4;padding-bottom:14px;margin-bottom:14px;">
       <div class="invoice-logo" style="display:flex;align-items:center;gap:10px;">
-        <div class="invoice-logo-icon" style="width:50px;height:50px;border-radius:12px;display:flex;align-items:center;justify-content:center;overflow:hidden;border:2px solid #1A56C4;">
-          <img src="logo.png" alt="کافینت چنار" style="width:100%;height:100%;object-fit:contain;" onerror="this.parentElement.textContent='کافینت';this.parentElement.style.background='#1A56C4';this.parentElement.style.color='white';this.parentElement.style.fontSize='12px';this.parentElement.style.fontWeight='800';">
-        </div>
+        <div class="invoice-logo-icon" style="width:50px;height:50px;border-radius:12px;display:flex;align-items:center;justify-content:center;overflow:hidden;border:2px solid #1A56C4;background:#1A56C4;color:white;font-size:22px;font-weight:800;">ک</div>
         <div>
           <div class="invoice-shop-name" style="font-size:18px;font-weight:700;color:#1A56C4;">کافینت چنار</div>
           <div class="invoice-shop-sub" style="font-size:11px;color:#7B849E;">مرکز خدمات اینترنتی و ثبت‌نام</div>
@@ -3454,9 +3420,10 @@ function printInvoice() {
       <div class="invoice-title" style="font-size:16px;font-weight:700;color:#1A56C4;text-align:left;">فاکتور رسمی</div>
     </div>
     
-    <div class="invoice-info" style="display:flex;justify-content:space-between;font-size:11px;color:#3D4461;margin-bottom:10px;padding:6px 0;border-bottom:1px dashed #D6DCE9;">
+    <div class="invoice-info" style="display:flex;justify-content:space-between;font-size:11px;color:#3D4461;margin-bottom:10px;padding:6px 0;border-bottom:1px dashed #D6DCE9;flex-wrap:wrap;gap:4px;">
       <div><strong>شماره فاکتور:</strong> #${Number(order.id)}</div>
-      <div><strong>تاریخ:</strong> ${esc(order.date||'-')}</div>
+      <div><strong>تاریخ:</strong> ${esc(order.date?.split(' ')[0] || '-')}</div>
+      <div><strong>ساعت:</strong> ${esc(order.date?.split(' ')[1] || '-')}</div>
       <div><strong>وضعیت:</strong> ${esc(order.status||'تکمیل شده')}</div>
     </div>
     
@@ -3502,14 +3469,13 @@ function printInvoice() {
     <div class="invoice-total" style="display:flex;justify-content:flex-end;gap:16px;font-size:13px;font-weight:600;padding-top:10px;border-top:2px solid #1A56C4;margin-top:10px;">
       <span>جمع کل:</span>
       <span>${fmtNum(total)} ریال</span>
-      <span style="color:#1A7F4B;font-weight:700;font-size:12px;">(سود شما: ${fmtNum(totalProfit)} ریال)</span>
     </div>
     
-    <div class="invoice-signature" style="display:flex;justify-content:space-between;margin-top:10px;font-size:11px;color:#3D4461;">
+    <div class="invoice-signature" style="display:flex;justify-content:space-between;margin-top:10px;font-size:11px;color:#3D4461;flex-wrap:wrap;gap:4px;">
       <div>امضا: .........................</div>
       <div style="display:flex;align-items:center;gap:6px;">
-        <span>مهر و تاریخ:</span>
-        <span style="font-size:11px;color:#8B0000;font-weight:600;">${persianDate}</span>
+        <span>تاریخ:</span>
+        <span style="font-size:11px;color:#8B0000;font-weight:600;">${persianDate} — ${persianTime}</span>
       </div>
     </div>
     
@@ -3524,10 +3490,8 @@ function printInvoice() {
   container.innerHTML = html;
   container.style.display = 'block';
   
-  // Better mobile printing
   const printWindow = window.open('', '_blank', 'width=800,height=600,scrollbars=yes');
   if (!printWindow) {
-    // If popup blocked, use print directly on current window
     const printContent = document.getElementById('invoice-print-container').innerHTML;
     document.body.innerHTML = printContent;
     window.print();
@@ -3549,25 +3513,20 @@ function printInvoice() {
         .invoice-print { max-width:900px; margin:0 auto; background:white; padding:20px; border-radius:8px; box-shadow:0 2px 10px rgba(0,0,0,0.1); position:relative; }
         .invoice-header { display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #1A56C4; padding-bottom:12px; margin-bottom:12px; }
         .invoice-logo { display:flex; align-items:center; gap:10px; }
-        .invoice-logo-icon { width:50px; height:50px; border-radius:12px; display:flex; align-items:center; justify-content:center; overflow:hidden; border:2px solid #1A56C4; }
-        .invoice-logo-icon img { width:100%; height:100%; object-fit:contain; }
+        .invoice-logo-icon { width:50px; height:50px; border-radius:12px; display:flex; align-items:center; justify-content:center; overflow:hidden; border:2px solid #1A56C4; background:#1A56C4; color:white; font-size:22px; font-weight:800; }
         .invoice-shop-name { font-size:18px; font-weight:700; color:#1A56C4; }
         .invoice-shop-sub { font-size:11px; color:#7B849E; }
         .invoice-title { font-size:16px; font-weight:700; color:#1A56C4; text-align:left; }
-        .invoice-info { display:flex; justify-content:space-between; font-size:11px; color:#3D4461; margin-bottom:10px; padding:6px 0; border-bottom:1px dashed #D6DCE9; }
+        .invoice-info { display:flex; justify-content:space-between; font-size:11px; color:#3D4461; margin-bottom:10px; padding:6px 0; border-bottom:1px dashed #D6DCE9; flex-wrap:wrap; gap:4px; }
         .invoice-table { width:100%; border-collapse:collapse; font-size:10px; margin:10px 0; }
         .invoice-table th { background:#F4F6FB; color:#1A56C4; padding:5px 6px; border:1px solid #D6DCE9; text-align:center; font-size:9px; }
         .invoice-table td { padding:4px 6px; border:1px solid #D6DCE9; text-align:center; color:#1A1F36; font-size:10px; }
         .invoice-total { display:flex; justify-content:flex-end; gap:16px; font-size:13px; font-weight:600; padding-top:10px; border-top:2px solid #1A56C4; margin-top:10px; }
-        .invoice-total .profit-green { color:#1A7F4B; font-weight:700; }
-        .invoice-signature { display:flex; justify-content:space-between; margin-top:10px; font-size:11px; color:#3D4461; }
+        .invoice-signature { display:flex; justify-content:space-between; margin-top:10px; font-size:11px; color:#3D4461; flex-wrap:wrap; gap:4px; }
         .invoice-footer { text-align:center; font-size:10px; color:#7B849E; margin-top:12px; border-top:1px solid #D6DCE9; padding-top:8px; }
-        .stamp-container { position:absolute; bottom:50px; left:20px; z-index:10; }
-        .stamp-container img { width:80px; height:80px; opacity:0.75; transform:rotate(-15deg); filter:drop-shadow(0 2px 8px rgba(0,0,0,0.15)); }
         @media print {
           body { background:white; padding:0; }
           .invoice-print { box-shadow:none; border-radius:0; padding:15px; }
-          .stamp-container img { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
           .invoice-table th { background:#e9ecef !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
           .invoice-logo-icon { border:2px solid #1A56C4 !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
         }
@@ -3578,7 +3537,6 @@ function printInvoice() {
           .invoice-table { font-size:9px; }
           .invoice-table th, .invoice-table td { padding:3px 4px; font-size:8px; }
           .invoice-total { font-size:11px; gap:10px; flex-wrap:wrap; }
-          .stamp-container img { width:60px; height:60px; }
         }
       </style>
     </head>
@@ -3612,7 +3570,6 @@ function loadTips(searchQ) {
   const tree = document.getElementById('folder-tree');
   tree.innerHTML = '';
 
-  // Object.create(null) به‌جای {} تا نام پوشه‌ای مثل "__proto__" باعث prototype pollution نشود
   const folders = Object.create(null);
   tips.forEach(t=>{
     const f = t.folder||'عمومی';
@@ -3683,7 +3640,6 @@ function showNote(id) {
   document.getElementById('note-viewer-breadcrumb').textContent = (note.folder||'عمومی') + ' › ' + note.title;
 
   const viewer = document.getElementById('note-viewer');
-  // src تصاویر از data URL داخلی می‌آید (base64)، اما برای احتیاط escape هم می‌شود.
   const imgsHtml = (note.images||[]).map((img,i)=>`<img class="note-img-thumb" src="${esc(img)}" onclick="openLightboxFromNote(${Number(i)})" alt="">`).join('');
   const safeLink = safeUrl(note.url);
 
@@ -3700,19 +3656,10 @@ function showNote(id) {
   `;
 }
 
-// چون src تصویر (data URL) می‌تواند طولانی باشد، به‌جای تزریق مستقیم در onclick، بر اساس ایندکس تصویر را باز می‌کنیم.
 function openLightboxFromNote(imgIndex) {
   if (!currentNote || !currentNote.images) return;
   const img = currentNote.images[imgIndex];
-  if (img) openLightbox(img);
-}
-
-// توجه: از تابع مشترک esc() (تعریف‌شده در بخش UTILS) برای escape استفاده می‌کنیم.
-// همچنین لینک‌های کاربر را محدود به http/https می‌کنیم تا از javascript: URI جلوگیری شود.
-function safeUrl(u) {
-  const s = String(u||'').trim();
-  if (/^(https?:)\/\//i.test(s)) return esc(s);
-  return '';
+  if (img) openLightbox(esc(img));
 }
 
 function searchTips(q) { loadTips(q); }
@@ -3789,13 +3736,19 @@ function renderImgPreview() {
   pendingImgs.forEach((img,i)=>{
     const wrap = document.createElement('div');
     wrap.className='img-preview-item';
-    wrap.innerHTML=`<img src="${esc(img.dataUrl)}" alt="${esc(img.name)}">
-      <button class="img-preview-remove" onclick="removeImg(${Number(i)})">✕</button>`;
+    wrap.innerHTML = `
+      <img src="${esc(img.dataUrl)}" alt="${esc(img.name)}">
+      <button class="img-preview-remove" onclick="removeImg(${Number(i)})">✕</button>
+      <div class="img-preview-filename">${esc(img.name)}</div>
+    `;
     grid.appendChild(wrap);
   });
 }
 
-function removeImg(i) { pendingImgs.splice(i,1); renderImgPreview(); }
+function removeImg(i) { 
+  pendingImgs = pendingImgs.filter((_, idx) => idx !== i);
+  renderImgPreview(); 
+}
 
 function openLightbox(src) {
   document.getElementById('lightbox-img').src=src;
@@ -3947,6 +3900,12 @@ function showReport(type) {
     labels = sortedDates;
     values = sortedDates.map(d => daily[d]||0);
     title = 'همه فروش‌ها';
+  }
+  
+  if (!labels.length || !values.length) {
+    labels = ['بدون داده'];
+    values = [0];
+    title = 'هیچ داده‌ای برای نمایش وجود ندارد';
   }
   
   updateChart(labels, values, title);
@@ -4159,16 +4118,20 @@ if (savedToken && savedToken !== '') {
   updateLoginStatus('offline', '⛔ منتظر ورود توکن');
 }
 
-console.log('✅ تمام اصلاحات انجام شد:');
-console.log('   ✅ تلفن: 086-43220702');
-console.log('   ✅ آدرس: محلات - میدان چنار - پلاک 71');
-console.log('   ✅ سود با رنگ سبز و عنوان "سود شما" در فاکتور');
-console.log('   ✅ تاریخ و ساعت فاکتور به صورت فارسی');
-console.log('   ✅ ویرایش سفارش با تاریخ شمسی به صورت کشویی + ثانیه');
-console.log('   ✅ فونت و اعداد در فیلد تاریخ شمسی با فونت و اعداد فارسی');
-console.log('   ✅ رفع مشکل نمایش پس‌زمینه و خروج در کروم دسکتاپ');
-console.log('   ✅ نام برنامه روی هوم اسکرین "کافینت چنار"');
-console.log('   ✅ رفع مشکل چاپ فاکتور روی گوشی');
+log('✅ تمام اصلاحات نهایی انجام شد:');
+log('   ✅ آیکون‌های PWA با SVG ساده');
+log('   ✅ چارت برای دیتای خالی ایمن شد');
+log('   ✅ سود از فاکتور حذف شد');
+log('   ✅ Toast با سیستم صف (Queue)');
+log('   ✅ جستجوی مشتری با norm()');
+log('   ✅ حذف تصویر با filter');
+log('   ✅ Conflict Handling بهبود یافته');
+log('   ✅ مهر حذف شد');
+log('   ✅ ساعت به فاکتور اضافه شد');
+log('   ✅ نام فایل در آپلود تصویر نمایش داده می‌شود');
+log('   ✅ وضعیت آفلاین با رنگ قرمز مشخص شد');
+log('   ✅ لاگ‌ها با DEBUG کنترل می‌شوند');
+log('   ✅ ذخیره snapshot قبل از ارسال به سرور');
 </script>
 </body>
 </html>
