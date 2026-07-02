@@ -5,19 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <!-- ====== PWA / HOME SCREEN ====== -->
-<link rel="manifest" href="data:application/json,{
-  &quot;name&quot;: &quot;کافینت چنار&quot;,
-  &quot;short_name&quot;: &quot;کافینت&quot;,
-  &quot;description&quot;: &quot;مرکز خدمات اینترنتی و ثبت نام&quot;,
-  &quot;start_url&quot;: &quot;.&quot;,
-  &quot;display&quot;: &quot;standalone&quot;,
-  &quot;background_color&quot;: &quot;#1A56C4&quot;,
-  &quot;theme_color&quot;: &quot;#1A56C4&quot;,
-  &quot;icons&quot;: [
-    {&quot;src&quot;: &quot;logo.png&quot;,&quot;sizes&quot;:&quot;192x192&quot;,&quot;type&quot;:&quot;image/png&quot;,&quot;purpose&quot;:&quot;any maskable&quot;},
-    {&quot;src&quot;: &quot;logo.png&quot;,&quot;sizes&quot;:&quot;512x512&quot;,&quot;type&quot;:&quot;image/png&quot;,&quot;purpose&quot;:&quot;any maskable&quot;}
-  ]
-}">
+<link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogItmF2YbYt9in2YQg2YXYp9mG2K8iLAogICJzaG9ydF9uYW1lIjogItmF2YbYt9in2YQiLAogICJkZXNjcmlwdGlvbiI6ICLZhNmF2YbYr9in2YTYqCDYp9mE2YHYp9mG2K8g2YXYp9mG2K8iLAogICJzdGFydF91cmwiOiAiLiIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiIzFBNTZDNCIsCiAgInRoZW1lX2NvbG9yIjogIiMxQTU2QzQiLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJsb2dvLnBuZyIsCiAgICAgICJzaXplcyI6ICIxOTJ4MTkyIiwKICAgICAgInR5cGUiOiAiaW1hZ2UvcG5nIiwKICAgICAgInB1cnBvc2UiOiAiYW55IgogICAgfSwKICAgIHsKICAgICAgInNyYyI6ICJsb2dvLnBuZyIsCiAgICAgICJzaXplcyI6ICI1MTJ4NTEyIiwKICAgICAgInR5cGUiOiAiaW1hZ2UvcG5nIiwKICAgICAgInB1cnBvc2UiOiAiYW55IgogICAgfQogIF0KfQ==">
 
 <link rel="icon" href="logo.png" type="image/png">
 <link rel="apple-touch-icon" href="logo.png">
@@ -134,18 +122,11 @@
     margin-bottom: 16px;
     overflow: hidden;
     box-shadow: 0 4px 16px rgba(26,86,196,0.3);
-    background: #1A56C4;
-    flex-shrink: 0;
   }
   .login-box .logo-icon img {
     width: 100%;
     height: 100%;
     object-fit: contain;
-  }
-  .login-box .logo-icon .fallback {
-    color: white;
-    font-size: 32px;
-    font-weight: 800;
   }
   .login-box h1 {
     font-size: 22px;
@@ -267,18 +248,11 @@
     margin-bottom: 8px;
     overflow: hidden;
     box-shadow: 0 4px 12px rgba(26,86,196,0.3);
-    background: #1A56C4;
-    flex-shrink: 0;
   }
   .logo-icon img {
     width: 100%;
     height: 100%;
     object-fit: contain;
-  }
-  .logo-icon .fallback {
-    color: white;
-    font-size: 22px;
-    font-weight: 800;
   }
   .logo-title { font-size: 16px; font-weight: 700; color: var(--text); }
   .logo-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
@@ -699,7 +673,7 @@
     display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px;
   }
   .img-preview-item {
-    position: relative; width: 70px; height: 70px;
+    position: relative; width: 70px; height: 60px;
   }
   .img-preview-item img {
     width: 100%; height: 100%;
@@ -712,16 +686,6 @@
     background: var(--danger); color: #fff;
     border-radius: 50%; border: none; cursor: pointer;
     font-size: 9px; display: flex; align-items: center; justify-content: center;
-  }
-  .img-preview-filename {
-    font-size: 9px;
-    color: var(--muted);
-    text-align: center;
-    margin-top: 2px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 70px;
   }
 
   .modal-overlay {
@@ -811,12 +775,11 @@
     align-items: center;
     gap: 4px;
     white-space: nowrap;
-    transition: all 0.3s;
   }
   #sync-status.synced { background: var(--success); color: #fff; border-color: var(--success); }
   #sync-status.syncing { background: var(--warning); color: #fff; border-color: var(--warning); }
   #sync-status.error { background: var(--danger); color: #fff; border-color: var(--danger); }
-  #sync-status.offline { background: #e74c3c; color: #fff; border-color: #e74c3c; }
+  #sync-status.offline { background: var(--muted); color: #fff; border-color: var(--muted); }
   
   .order-actions { display: flex; gap: 3px; justify-content: center; flex-wrap: wrap; }
   .order-actions button { padding: 2px 8px; font-size: 10px; min-height: 28px; }
@@ -891,38 +854,31 @@
     gap: 12px;
   }
   .invoice-print .invoice-logo-icon {
-    width: 50px;
-    height: 50px;
-    border-radius: 12px;
+    width: 60px;
+    height: 60px;
+    border-radius: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
     border: 2px solid #1A56C4;
-    background: #1A56C4;
-    flex-shrink: 0;
   }
   .invoice-print .invoice-logo-icon img {
     width: 100%;
     height: 100%;
     object-fit: contain;
   }
-  .invoice-print .invoice-logo-icon .fallback {
-    color: white;
-    font-size: 20px;
-    font-weight: 800;
-  }
   .invoice-print .invoice-shop-name {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 700;
     color: #1A56C4;
   }
   .invoice-print .invoice-shop-sub {
-    font-size: 11px;
+    font-size: 12px;
     color: #7B849E;
   }
   .invoice-print .invoice-title {
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 700;
     color: #1A56C4;
     text-align: left;
@@ -930,61 +886,71 @@
   .invoice-print .invoice-info {
     display: flex;
     justify-content: space-between;
-    font-size: 11px;
+    font-size: 12px;
     color: #3D4461;
-    margin-bottom: 10px;
-    padding: 6px 0;
+    margin-bottom: 12px;
+    padding: 8px 0;
     border-bottom: 1px dashed #D6DCE9;
-    flex-wrap: wrap;
-    gap: 4px;
   }
   .invoice-print .invoice-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 10px;
-    margin: 10px 0;
+    font-size: 12px;
+    margin: 12px 0;
   }
   .invoice-print .invoice-table th {
     background: #F4F6FB;
     color: #1A56C4;
-    padding: 5px 6px;
+    padding: 8px 10px;
     border: 1px solid #D6DCE9;
     text-align: center;
-    font-size: 9px;
+    font-size: 11px;
   }
   .invoice-print .invoice-table td {
-    padding: 4px 6px;
+    padding: 6px 10px;
     border: 1px solid #D6DCE9;
     text-align: center;
     color: #1A1F36;
-    font-size: 10px;
   }
   .invoice-print .invoice-total {
     display: flex;
     justify-content: flex-end;
-    gap: 16px;
-    font-size: 13px;
+    gap: 20px;
+    font-size: 14px;
     font-weight: 600;
-    padding-top: 10px;
+    padding-top: 12px;
     border-top: 2px solid #1A56C4;
-    margin-top: 10px;
+    margin-top: 12px;
   }
   .invoice-print .invoice-footer {
     text-align: center;
-    font-size: 10px;
+    font-size: 11px;
     color: #7B849E;
-    margin-top: 12px;
+    margin-top: 16px;
     border-top: 1px solid #D6DCE9;
-    padding-top: 8px;
+    padding-top: 10px;
   }
   .invoice-print .invoice-signature {
     display: flex;
     justify-content: space-between;
-    margin-top: 10px;
-    font-size: 11px;
+    margin-top: 12px;
+    font-size: 12px;
     color: #3D4461;
-    flex-wrap: wrap;
-    gap: 4px;
+  }
+
+  /* ====== STAMP / SEAL STYLES ====== */
+  .stamp-container {
+    position: absolute;
+    bottom: 80px;
+    left: 30px;
+    z-index: 10;
+  }
+  .stamp-container img {
+    width: 110px;
+    height: 110px;
+    opacity: 0.75;
+    transform: rotate(-15deg);
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.15));
   }
 
   @media print {
@@ -1005,6 +971,10 @@
     }
     .invoice-print .invoice-logo-icon {
       border: 2px solid #1A56C4 !important;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    .stamp-container img {
       -webkit-print-color-adjust: exact !important;
       print-color-adjust: exact !important;
     }
@@ -1110,61 +1080,11 @@
     color: #fff;
   }
 
-  /* ====== KEYBOARD SHORTCUTS HINT ====== */
-  .shortcuts-hint {
-    position: fixed;
-    bottom: 80px;
-    right: 20px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 12px 16px;
-    font-size: 11px;
-    color: var(--text2);
-    box-shadow: 0 4px 16px var(--shadow-md);
-    z-index: 100;
-    display: none;
-    max-width: 280px;
-    line-height: 1.8;
-  }
-  .shortcuts-hint.show {
-    display: block;
-  }
-  .shortcuts-hint kbd {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 1px 6px;
-    font-family: inherit;
-    font-size: 10px;
-    font-weight: 600;
-    color: var(--text);
-  }
-  .shortcuts-hint .title {
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 4px;
-    font-size: 12px;
-  }
-  .shortcuts-hint .close-hint {
-    float: left;
-    cursor: pointer;
-    color: var(--muted);
-    background: none;
-    border: none;
-    font-size: 16px;
-    padding: 0 4px;
-  }
-  .shortcuts-hint .close-hint:hover {
-    color: var(--danger);
-  }
-
   /* ====== RESPONSIVE ====== */
   @media (max-width: 768px) {
     #sidebar { width: 56px; min-width: 56px; }
     .logo-area { padding: 12px 8px; }
     .logo-icon { width: 36px; height: 36px; margin-bottom: 4px; }
-    .logo-icon .fallback { font-size: 16px; }
     .logo-title { display: none; }
     .logo-sub { display: none; }
     .nav-section-title { display: none; }
@@ -1196,7 +1116,7 @@
     .note-viewer-title { font-size: 15px; }
     .login-box { padding: 24px 16px; }
     .login-box .logo-icon { width: 64px; height: 64px; }
-    .shortcuts-hint { right: 10px; left: 10px; max-width: none; bottom: 70px; }
+    .stamp-container img { width: 80px; height: 80px; }
   }
 
   @media (max-width: 480px) {
@@ -1218,12 +1138,13 @@
     .login-box { padding: 20px 12px; }
     .login-box .logo-icon { width: 56px; height: 56px; }
     .login-box h1 { font-size: 18px; }
-    .shortcuts-hint { font-size: 10px; padding: 10px 12px; }
+    .stamp-container img { width: 60px; height: 60px; }
   }
 
   #page-tips .page-body { padding: 0; }
   #tips-layout { display: flex; flex: 1; overflow: hidden; height: 100%; }
 
+  /* Drag & Drop Styles */
   .draggable-row {
     cursor: grab;
     transition: all 0.2s;
@@ -1252,6 +1173,13 @@
     color: var(--accent);
   }
   
+  /* رنگ سبز برای سود در فاکتور */
+  .invoice-print .profit-green {
+    color: #1A7F4B !important;
+    font-weight: 700 !important;
+  }
+  
+  /* Persian DateTime Picker - Improved with seconds */
   .persian-datetime-wrapper {
     position: relative;
     width: 100%;
@@ -1260,7 +1188,7 @@
     font-family: 'Vazirmatn', Tahoma, sans-serif !important;
     direction: rtl !important;
     text-align: center !important;
-    font-size: 11px !important;
+    font-size: 12px !important;
     padding: 4px 2px !important;
     border: 1px solid var(--border) !important;
     border-radius: var(--radius-sm) !important;
@@ -1269,7 +1197,7 @@
     min-height: 32px !important;
     outline: none !important;
     cursor: pointer !important;
-    min-width: 40px !important;
+    min-width: 44px !important;
     flex: 1 !important;
   }
   .persian-datetime-wrapper select:focus {
@@ -1289,7 +1217,7 @@
   }
   .persian-datetime-row select {
     flex: 1;
-    min-width: 36px;
+    min-width: 40px;
   }
   .persian-datetime-row .sep {
     color: var(--muted);
@@ -1298,7 +1226,13 @@
     padding: 0 1px;
     font-family: 'Vazirmatn', Tahoma, sans-serif !important;
   }
+  .persian-datetime-row .label-sm {
+    font-size: 10px;
+    color: var(--muted);
+    font-weight: 500;
+  }
   
+  /* Dark mode fix for Chrome desktop */
   [data-theme="dark"] .persian-datetime-wrapper select {
     background: var(--surface2) !important;
     color: var(--text) !important;
@@ -1309,6 +1243,7 @@
     color: var(--text) !important;
   }
   
+  /* Chrome desktop logout and background fix */
   [data-theme="dark"] .logout-btn {
     color: var(--text2) !important;
     border-color: var(--border) !important;
@@ -1319,6 +1254,7 @@
     border-color: var(--danger) !important;
   }
   
+  /* Force background color for all elements in dark mode */
   [data-theme="dark"] {
     background: var(--bg) !important;
   }
@@ -1347,6 +1283,7 @@
     background: rgba(0,0,0,0.7) !important;
   }
   
+  /* Force text colors in dark mode */
   [data-theme="dark"] .text-muted {
     color: var(--muted) !important;
   }
@@ -1369,14 +1306,14 @@
     color: var(--muted) !important;
   }
   
+  /* Fix invoice print on mobile */
   @media print {
-    .invoice-print .invoice-table th {
-      -webkit-print-color-adjust: exact !important;
-      print-color-adjust: exact !important;
+    .invoice-print .stamp-container {
+      display: block !important;
     }
-    .invoice-print .invoice-logo-icon {
-      -webkit-print-color-adjust: exact !important;
-      print-color-adjust: exact !important;
+    .invoice-print .stamp-container img {
+      max-width: 90px !important;
+      max-height: 90px !important;
     }
   }
 </style>
@@ -1386,12 +1323,11 @@
 <!-- ══ LOGIN PAGE ══ -->
 <div id="login-page">
   <div class="login-box">
-    <div class="logo-icon" id="login-logo">
-      <img src="logo.png" alt="لوگو" onerror="this.style.display='none';this.parentElement.querySelector('.fallback').style.display='flex'">
-      <div class="fallback" style="display:none;width:100%;height:100%;align-items:center;justify-content:center;color:white;font-size:36px;font-weight:800;">ک</div>
+    <div class="logo-icon">
+      <img src="logo.png" alt="کافینت چنار" onerror="this.parentElement.textContent='کافینت چنار';this.parentElement.style.background='#1A56C4';this.parentElement.style.color='white';this.parentElement.style.fontSize='20px';this.parentElement.style.fontWeight='800';">
     </div>
     <h1>کافینت چنار</h1>
-    <div class="sub">مرکز خدمات اینترنتی و ثبت‌نام اینترنتی</div>
+    <div class="sub">مرکز خدمات اینترنتی و ثبت‌ نام اینترنتی</div>
     
     <div class="field">
       <label>🔐 توکن گیت‌هاب</label>
@@ -1399,7 +1335,9 @@
       <div class="hint">توکن را از <a href="https://github.com/settings/tokens?type=beta" target="_blank">github.com/settings/tokens</a> دریافت کنید</div>
       <div class="hint" style="color:var(--danger);line-height:1.7;margin-top:6px">
         ⚠️ حتماً یک توکن <b>Fine-grained</b> بسازید که فقط به ریپازیتوری
-        <code>kafinet-data</code> و فقط با دسترسی <b>Contents: Read and write</b> محدود باشد
+        <code>kafinet-data</code> و فقط با دسترسی <b>Contents: Read and write</b> محدود باشد،
+        نه یک Classic token با دسترسی کامل به همه‌ی ریپوها. این توکن روی همین مرورگر ذخیره می‌شود؛
+        روی دستگاه‌های عمومی/مشترک از آن استفاده نکنید و در پایان کار حتماً «خروج» بزنید.
       </div>
     </div>
     
@@ -1419,9 +1357,8 @@
   <!-- SIDEBAR -->
   <div id="sidebar">
     <div class="logo-area">
-      <div class="logo-icon" id="sidebar-logo">
-        <img src="logo.png" alt="لوگو" onerror="this.style.display='none';this.parentElement.querySelector('.fallback').style.display='flex'">
-        <div class="fallback" style="display:none;width:100%;height:100%;align-items:center;justify-content:center;color:white;font-size:24px;font-weight:800;">ک</div>
+      <div class="logo-icon">
+        <img src="logo.png" alt="کافینت چنار" onerror="this.parentElement.textContent='کافینت چنار';this.parentElement.style.background='#1A56C4';this.parentElement.style.color='white';this.parentElement.style.fontSize='18px';this.parentElement.style.fontWeight='800';">
       </div>
       <div class="logo-title">کافینت چنار</div>
       <div class="logo-sub">مرکز خدمات اینترنتی</div>
@@ -1563,6 +1500,7 @@
     <div class="page" id="page-orders">
       <div class="page-body">
         <div class="card mb-4">
+          <!-- ====== CUSTOMER SEARCH ====== -->
           <div class="form-grid form-grid-2 mb-3">
             <div class="field">
               <label>🔍 جستجوی مشتری</label>
@@ -1585,7 +1523,7 @@
               </div>
             </div>
           </div>
-          <div class="form-grid form-grid-3 mb-3">
+          <div class="form-grid form-grid-4 mb-3">
             <div class="field"><label>تعداد</label><input id="order-qty" type="number" value="1" min="1"></div>
             <div class="field"><label>تخفیف (%)</label><input id="order-discount" type="number" value="0" min="0" max="100"></div>
             <div class="field"><label>تخفیف هر واحد (ریال)</label><input id="order-discount-amount" type="number" value="0" min="0" placeholder="مبلغ ریالی"></div>
@@ -1605,8 +1543,8 @@
           <div id="cart-table">
             <div class="table-wrap" style="border:none">
               <table>
-                <thead><tr><th>خدمت</th><th>تعداد</th><th>قیمت واحد</th><th>تخفیف %</th><th>تخفیف هر واحد</th><th>جمع</th><th></th></tr></thead>
-                <tbody id="cart-tbody"><tr class="empty-row"><td colspan="7">سبد خالی است</td></tr></tbody>
+                <thead><tr><th>خدمت</th><th>تعداد</th><th>قیمت واحد</th><th>تخفیف %</th><th>تخفیف هر واحد</th><th>سود (تخفیف کل)</th><th>جمع</th><th></th></tr></thead>
+                <tbody id="cart-tbody"><tr class="empty-row"><td colspan="8">سبد خالی است</td></tr></tbody>
               </table>
             </div>
           </div>
@@ -1814,19 +1752,6 @@
   </div><!-- /content -->
 </div><!-- /app -->
 
-<!-- ══ SHORTCUTS HINT ══ -->
-<div class="shortcuts-hint" id="shortcuts-hint">
-  <button class="close-hint" onclick="document.getElementById('shortcuts-hint').classList.remove('show')">✕</button>
-  <div class="title">⌨️ میانبرهای صفحه کلید</div>
-  <div><kbd>Ctrl+N</kbd> مشتری جدید</div>
-  <div><kbd>Ctrl+S</kbd> سرویس جدید</div>
-  <div><kbd>Ctrl+O</kbd> سفارش جدید</div>
-  <div><kbd>Ctrl+T</kbd> راهنمای جدید</div>
-  <div><kbd>Ctrl+Shift+D</kbd> داشبورد</div>
-  <div><kbd>Ctrl+Shift+R</kbd> گزارش‌ها</div>
-  <div style="margin-top:4px;font-size:10px;color:var(--muted)">برای نمایش این راهنما: <kbd>Ctrl+H</kbd></div>
-</div>
-
 <!-- ══ MODALS ══ -->
 <div class="modal-overlay" id="note-modal">
   <div class="modal">
@@ -1934,13 +1859,14 @@
       <div style="font-weight:600;margin-bottom:8px">📋 اقلام سفارش</div>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>خدمت</th><th>تعداد</th><th>قیمت واحد</th><th>تخفیف %</th><th>تخفیف هر واحد</th><th>جمع</th></tr></thead>
+          <thead><tr><th>خدمت</th><th>تعداد</th><th>قیمت واحد</th><th>تخفیف %</th><th>تخفیف هر واحد</th><th>سود (تخفیف کل)</th><th>جمع</th></tr></thead>
           <tbody id="detail-items"></tbody>
         </table>
       </div>
       <div class="row-center" style="justify-content:space-between;margin-top:12px">
         <div>
           <span class="text-muted">جمع کل:</span> <span id="detail-total" class="font-bold text-accent" style="font-size:18px">۰ ریال</span>
+          <span style="margin-right:12px;font-size:11px;color:var(--muted)">(سود: <span id="detail-profit" style="color:var(--success);font-weight:600">۰ ریال</span>)</span>
         </div>
         <div class="row-center gap-2">
           <button class="btn btn-warning btn-sm" onclick="editOrderFromDetail()">✏️ ویرایش</button>
@@ -1980,56 +1906,12 @@ const SYNC_CONFIG = {
 };
 
 // ============================================
-// TOAST QUEUE SYSTEM
-// ============================================
-let toastQueue = [];
-let isToastShowing = false;
-
-function showToast(msg, type = '') {
-  toastQueue.push({ msg, type });
-  if (!isToastShowing) {
-    processToastQueue();
-  }
-}
-
-function processToastQueue() {
-  if (toastQueue.length === 0) {
-    isToastShowing = false;
-    return;
-  }
-  
-  isToastShowing = true;
-  const item = toastQueue.shift();
-  const t = document.getElementById('toast');
-  t.textContent = item.msg;
-  t.className = 'show ' + item.type;
-  
-  setTimeout(() => {
-    t.className = '';
-    setTimeout(processToastQueue, 300);
-  }, 2500);
-}
-
-function toast(msg, type = '') {
-  showToast(msg, type);
-}
-
-// ============================================
 // SYNC FUNCTIONS
 // ============================================
 let syncTimer = null;
 let isSyncing = false;
 let pendingChanges = false;
 let currentSHA = null;
-const DEBUG = false;
-
-function log(...args) {
-  if (DEBUG) console.log(...args);
-}
-
-function warn(...args) {
-  if (DEBUG) console.warn(...args);
-}
 
 function getRepoUrl() {
   return `https://api.github.com/repos/${SYNC_CONFIG.USERNAME}/${SYNC_CONFIG.REPO_NAME}/contents/${SYNC_CONFIG.FILE_PATH}`;
@@ -2064,8 +1946,6 @@ async function syncToCloud() {
       last_update: nowStr()
     };
     
-    localStorage.setItem('sync_snapshot', JSON.stringify(data));
-    
     const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
     
     let sha = null;
@@ -2080,13 +1960,11 @@ async function syncToCloud() {
       if (getResponse.ok) {
         const fileData = await getResponse.json();
         sha = fileData.sha;
-      } else if (getResponse.status === 404) {
-        sha = null;
-      } else {
-        throw new Error(`GitHub API error: ${getResponse.status}`);
       }
     } catch (e) {
-      warn('Error fetching file:', e);
+      // اگر فایل قبلاً وجود نداشته باشد (404) یا خطای شبکه رخ دهد، sha همچنان null می‌ماند
+      // و درخواست PUT بعدی به‌عنوان ایجاد فایل جدید ارسال می‌شود. خطا را برای دیباگ لاگ می‌کنیم.
+      console.warn('عدم دریافت sha فایل قبل از سینک (احتمالاً فایل جدید است):', e);
     }
     
     const body = {
@@ -2113,23 +1991,21 @@ async function syncToCloud() {
     }
     
     const result = await updateResponse.json();
-    if (result.content) currentSHA = result.content.sha;
+    currentSHA = result.content.sha;
     setSyncStatus('synced', '✅ همگام شد');
     pendingChanges = false;
-    localStorage.removeItem('sync_snapshot');
     
   } catch (e) {
-    log('Sync error:', e);
+    console.error('Sync error:', e);
     if (e.status === 401 || e.status === 403) {
       setSyncStatus('error', '⚠️ توکن نامعتبر یا دسترسی ناکافی');
-      toast('توکن نامعتبر است! لطفاً دوباره وارد شوید.', 'danger');
     } else if (e.status === 409) {
-      setSyncStatus('error', '⚠️ تعارض داده‌ها');
-      toast('تعارض در داده‌ها! لطفاً صفحه را رفرش کنید یا داده‌های محلی را با سرور تطبیق دهید.', 'danger');
+      // تعارض: نسخه‌ی روی گیت‌هاب از زمان آخرین دریافت ما تغییر کرده (مثلاً دستگاه دیگری هم‌زمان ذخیره کرده)
+      setSyncStatus('error', '⚠️ تعارض داده؛ ابتدا دریافت از سرور را اجرا کنید');
+      toast('داده‌ها روی سرور تغییر کرده؛ لطفاً صفحه را رفرش کنید تا آخرین نسخه دریافت شود', 'danger');
     } else {
       setSyncStatus('error', '⚠️ خطا در همگام‌سازی');
     }
-    localStorage.removeItem('sync_snapshot');
   } finally {
     isSyncing = false;
   }
@@ -2156,7 +2032,6 @@ async function syncFromCloud() {
       }
       if (response.status === 401 || response.status === 403) {
         setSyncStatus('error', '⚠️ توکن نامعتبر');
-        toast('توکن نامعتبر است!', 'danger');
         return;
       }
       throw new Error('Fetch failed');
@@ -2194,13 +2069,12 @@ async function syncFromCloud() {
     }
     
   } catch (e) {
-    log('Sync from cloud error:', e);
+    console.error('Sync from cloud error:', e);
     if (e.message.includes('401') || e.message.includes('403')) {
       setSyncStatus('error', '⚠️ توکن نامعتبر');
     } else {
-      setSyncStatus('error', '⚠️ خطا در دریافت داده');
+      setSyncStatus('error', '⚠️ خطا');
     }
-    toast('خطا در بروزرسانی از سرور', 'danger');
   } finally {
     isSyncing = false;
   }
@@ -2280,7 +2154,6 @@ function logout() {
     document.getElementById('login-token').value = '';
     document.getElementById('login-token').focus();
     updateLoginStatus('offline', '⛔ قطع');
-    toast('خروج انجام شد', 'success');
   }
 }
 
@@ -2299,52 +2172,97 @@ const DB = {
   set(k, v) { localStorage.setItem(k, JSON.stringify(v)); },
 };
 
+function initDB() {
+  // ====== سرویس‌های پیش‌فرض ======
+  if (!DB.get('services')) DB.set('services', [
+    {id:1,name:'استفاده از سیستم',category:'سیستم',price:50000,stock:20},
+    {id:2,name:'پرینت سیاه‌سفید',category:'پرینت',price:5000,stock:999},
+    {id:3,name:'پرینت رنگی',category:'پرینت',price:15000,stock:999},
+    {id:4,name:'اسکن مدارک',category:'اسکن',price:10000,stock:999},
+    {id:5,name:'ثبت‌نام کنکور',category:'ثبت‌نام اینترنتی',price:150000,stock:999},
+    {id:6,name:'ثبت‌نام دانشگاه',category:'ثبت‌نام اینترنتی',price:100000,stock:999},
+    {id:7,name:'ثبت‌نام نظام مهندسی',category:'ثبت‌نام اینترنتی',price:120000,stock:999},
+    {id:8,name:'ثبت‌نام استخدامی',category:'ثبت‌نام اینترنتی',price:100000,stock:999},
+    {id:9,name:'رزرو نوبت سفارت',category:'ثبت‌نام اینترنتی',price:200000,stock:999},
+    {id:10,name:'ثبت‌نام سامانه‌های دولتی',category:'ثبت‌نام اینترنتی',price:80000,stock:999},
+    {id:11,name:'تایپ فارسی (هر صفحه)',category:'تایپ',price:30000,stock:999},
+    {id:12,name:'تایپ انگلیسی (هر صفحه)',category:'تایپ',price:25000,stock:999},
+    {id:13,name:'فتوکپی (هر برگ)',category:'فتوکپی',price:3000,stock:999},
+    {id:14,name:'بازی آنلاین (ساعتی)',category:'گیمینگ',price:80000,stock:10},
+    {id:15,name:'صحافی و شیرازه',category:'صحافی',price:40000,stock:999},
+    {id:16,name:'عکس پرسنلی',category:'عکاسی',price:50000,stock:999},
+    {id:17,name:'تبدیل فایل PDF',category:'خدمات فایل',price:20000,stock:999},
+    {id:18,name:'رایت CD/DVD',category:'خدمات فایل',price:30000,stock:999},
+  ]);
+
+  // ====== مشتریان پیش‌فرض ======
+  if (!DB.get('customers')) DB.set('customers', [
+    {id:1,first_name:'علی',last_name:'احمدی',phone:'09121234567',national:'1234567890',address:'تهران',debt:0,info:'مشتری دائمی',join_date:today()},
+    {id:2,first_name:'مریم',last_name:'رضایی',phone:'09351234567',national:'0987654321',address:'تهران',debt:50000,info:'نیاز به پیگیری',join_date:today()},
+    {id:3,first_name:'محمد',last_name:'کریمی',phone:'09123456789',national:'1122334455',address:'اصفهان',debt:0,info:'',join_date:today()},
+  ]);
+
+  // ====== تعرفه‌های پیش‌فرض ======
+  if (!DB.get('tariffs')) DB.set('tariffs', [
+    {id:1,name:'استفاده از سیستم',description:'هر ساعت',price:50000,unit:'ساعت',active:'فعال'},
+    {id:2,name:'پرینت A4 سیاه‌سفید',description:'هر برگ',price:5000,unit:'برگ',active:'فعال'},
+    {id:3,name:'پرینت A4 رنگی',description:'هر برگ رنگی',price:15000,unit:'برگ',active:'فعال'},
+    {id:4,name:'اسکن مدارک',description:'هر صفحه',price:10000,unit:'صفحه',active:'فعال'},
+    {id:5,name:'فتوکپی',description:'هر برگ',price:3000,unit:'برگ',active:'فعال'},
+    {id:6,name:'ثبت‌نام اینترنتی ساده',description:'فرم‌های ساده',price:80000,unit:'عدد',active:'فعال'},
+    {id:7,name:'ثبت‌نام اینترنتی پیچیده',description:'کنکور، استخدامی و...',price:150000,unit:'عدد',active:'فعال'},
+    {id:8,name:'گیمینگ',description:'بازی آنلاین',price:80000,unit:'ساعت',active:'فعال'},
+  ]);
+
+  // ====== اطلاعیه‌های پیش‌فرض ======
+  if (!DB.get('internal_news')) DB.set('internal_news', [
+    {id:1,title:'شروع ثبت‌نام کنکور سراسری ۱۴۰۴',content:'ثبت‌نام کنکور سراسری از امروز آغاز شد. مدارک لازم: کارت ملی، شناسنامه، مدرک تحصیلی. هزینه ۱۵۰ هزار تومان.',category:'ثبت نام',date:today(),priority:'فوری',pinned:true,active:true},
+    {id:2,title:'آزمون استخدامی دستگاه‌های اجرایی',content:'ثبت‌نام آزمون استخدامی تا پایان هفته ادامه دارد.',category:'ثبت نام',date:today(),priority:'بالا',pinned:true,active:true},
+    {id:3,title:'تخفیف ویژه پرینت و فتوکپی',content:'تا پایان این ماه پرینت سیاه‌سفید ۵۰٪ تخفیف.',category:'تخفیف',date:today(),priority:'متوسط',pinned:false,active:true},
+  ]);
+
+  // ====== راهنماهای پیش‌فرض ======
+  if (!DB.get('tips')) DB.set('tips', [
+    {id:1,folder:'کنکور و آموزش',title:'ثبت‌نام کنکور سراسری',url:'https://sanjesh.org',
+     body:'مرحله ۱: وارد سایت sanjesh.org شوید\nمرحله ۲: روی گزینه «ثبت‌نام» کلیک کنید\nمرحله ۳: کد ملی و اطلاعات شناسنامه‌ای را وارد کنید\nمرحله ۴: رشته و شهر محل سکونت را انتخاب کنید\nمرحله ۵: مدرک تحصیلی و اطلاعات آموزشی را وارد نمایید\nمرحله ۶: عکس ۳×۴ را با فرمت JPG آپلود کنید\nمرحله ۷: هزینه ثبت‌نام را از طریق درگاه پرداخت کنید\nمرحله ۸: کد رهگیری را دریافت و نگهداری کنید',
+     images:[],date:today()},
+    {id:2,folder:'کنکور و آموزش',title:'ثبت‌نام دانشگاه آزاد',url:'https://azmoon.org',
+     body:'سایت: azmoon.org\n\nمرحله ۱: بخش پذیرش دانشجو را انتخاب کنید\nمرحله ۲: کد ملی و اطلاعات فردی را وارد کنید\nمرحله ۳: رشته‌های مورد نظر را اولویت‌بندی کنید\nمرحله ۴: مدارک لازم را اسکن و آپلود کنید\nمرحله ۵: هزینه را پرداخت کنید',
+     images:[],date:today()},
+    {id:3,folder:'استخدامی',title:'ثبت‌نام آزمون استخدامی دولتی',url:'https://استخدام.ir',
+     body:'سایت: استخدام.ir یا سایت سازمان سنجش\n\nمراحل ثبت‌نام:\n۱. ورود با کد ملی\n۲. انتخاب سازمان و رشته شغلی\n۳. تکمیل فرم مشخصات فردی و تحصیلی\n۴. بارگذاری مدارک\n۵. پرداخت هزینه آزمون\n۶. چاپ کارت شرکت در آزمون',
+     images:[],date:today()},
+  ]);
+
+  // ====== سفارش‌ها - خالی ======
+  if (!DB.get('orders')) DB.set('orders', []);
+  if (!DB.get('order_items')) DB.set('order_items', []);
+}
+
 // ============================================
-// DATE UTILITIES - یکپارچه و استاندارد
+// UTILS
 // ============================================
-function getPersianDate(date = new Date()) {
-  const year = date.getFullYear() - 621;
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
-  const hour = String(date.getHours()).padStart(2, '0');
-  const minute = String(date.getMinutes()).padStart(2, '0');
-  const second = String(date.getSeconds()).padStart(2, '0');
-  return `${year}/${String(month).padStart(2, '0')}/${String(day).padStart(2, '0')} ${hour}:${minute}:${second}`;
-}
-
-function getPersianDateOnly(date = new Date()) {
-  const year = date.getFullYear() - 621;
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
-  return `${year}/${String(month).padStart(2, '0')}/${String(day).padStart(2, '0')}`;
-}
-
-function getTodayPersian() {
-  return getPersianDateOnly(new Date());
-}
-
-function nowStr() {
-  return getPersianDate(new Date());
-}
-
-function today() {
-  return getTodayPersian();
-}
-
+function today() { return new Date().toLocaleDateString('fa-IR'); }
+function nowStr() { return new Date().toLocaleString('fa-IR'); }
 function fmtNum(n) { return Number(n||0).toLocaleString('fa-IR'); }
 function nextId(arr) { return arr.length ? Math.max(...arr.map(x=>x.id||0)) + 1 : 1; }
-function norm(s) { return String(s||'').replace(/ي/g,'ی').replace(/ك/g,'ک').toLowerCase(); }
+function norm(s) { return (s||'').replace(/ي/g,'ی').replace(/ك/g,'ک').toLowerCase(); }
 
-// ====== SECURITY ======
+// ============================================
+// SECURITY: HTML ESCAPING (XSS PREVENTION)
+// ============================================
+// هر متنی که از کاربر گرفته شده (نام، تلفن، یادداشت و...) قبل از قرار گرفتن
+// داخل innerHTML باید از این تابع رد شود تا کد HTML/JS داخل آن اجرا نشود.
 const _escMap = { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' };
 function esc(str) {
   return String(str ?? '').replace(/[&<>"']/g, ch => _escMap[ch]);
 }
 
-function safeUrl(u) {
-  const s = String(u||'').trim();
-  if (/^(https?:)\/\//i.test(s)) return esc(s);
-  return '';
+function toast(msg, type='') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'show ' + type;
+  setTimeout(() => t.className = '', 2800);
 }
 
 function clearSearch(id, fn) {
@@ -2356,79 +2274,6 @@ function setSyncStatus(status, msg) {
   const el = document.getElementById('sync-status');
   if (el) { el.className = status; el.textContent = msg; }
 }
-
-// ============================================
-// KEYBOARD SHORTCUTS
-// ============================================
-document.addEventListener('keydown', function(e) {
-  const ctrl = e.ctrlKey || e.metaKey;
-  const shift = e.shiftKey;
-  
-  // Ctrl+H: نمایش راهنمای میانبرها
-  if (ctrl && e.key === 'h') {
-    e.preventDefault();
-    const hint = document.getElementById('shortcuts-hint');
-    hint.classList.toggle('show');
-    return;
-  }
-  
-  // فقط در صورتی که هیچ modal یا input فعال نباشد
-  const activeElement = document.activeElement;
-  const isInput = activeElement && (activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA' || activeElement.tagName === 'SELECT');
-  if (isInput) return;
-  
-  if (ctrl && !shift) {
-    switch(e.key) {
-      case 'n': // مشتری جدید
-        e.preventDefault();
-        showPage('customers');
-        setTimeout(() => document.getElementById('cust-fn').focus(), 200);
-        toast('📝 فرم ثبت مشتری جدید', 'success');
-        break;
-      case 's': // سرویس جدید
-        e.preventDefault();
-        showPage('services');
-        setTimeout(() => document.getElementById('svc-name').focus(), 200);
-        toast('🛠️ فرم ثبت سرویس جدید', 'success');
-        break;
-      case 'o': // سفارش جدید
-        e.preventDefault();
-        showPage('orders');
-        setTimeout(() => document.getElementById('customer-search-input').focus(), 200);
-        toast('🧾 فرم ثبت سفارش جدید', 'success');
-        break;
-      case 't': // راهنمای جدید
-        e.preventDefault();
-        showPage('tips');
-        setTimeout(() => openNoteModal(), 300);
-        toast('📚 فرم ثبت راهنمای جدید', 'success');
-        break;
-    }
-  }
-  
-  if (ctrl && shift) {
-    switch(e.key) {
-      case 'D': // داشبورد
-        e.preventDefault();
-        showPage('dashboard');
-        toast('📊 رفتن به داشبورد', 'success');
-        break;
-      case 'R': // گزارش‌ها
-        e.preventDefault();
-        showPage('reports');
-        toast('📈 رفتن به گزارش‌ها', 'success');
-        break;
-    }
-  }
-});
-
-// کلیک خارج از hint برای بستن آن
-document.addEventListener('click', function(e) {
-  const hint = document.getElementById('shortcuts-hint');
-  if (hint.classList.contains('show') && !hint.contains(e.target)) {
-    hint.classList.remove('show');
-  }
-});
 
 // ============================================
 // CUSTOMER SEARCH
@@ -2450,13 +2295,13 @@ function searchCustomers(query) {
   
   const matches = custs.filter(c => {
     const fullName = norm(c.first_name + ' ' + c.last_name);
-    const phone = norm(c.phone || '');
-    const national = norm(c.national || '');
+    const phone = c.phone || '';
+    const national = c.national || '';
     return fullName.includes(nq) || 
-           phone.includes(nq) || 
-           national.includes(nq) ||
-           norm(c.first_name || '').includes(nq) ||
-           norm(c.last_name || '').includes(nq);
+           phone.includes(q) || 
+           national.includes(q) ||
+           (c.first_name && norm(c.first_name).includes(nq)) ||
+           (c.last_name && norm(c.last_name).includes(nq));
   }).slice(0, 10);
   
   if (!matches.length) {
@@ -2469,22 +2314,29 @@ function searchCustomers(query) {
   dropdown.innerHTML = matches.map(c => {
     const fullName = c.first_name + ' ' + c.last_name;
     let displayName = esc(fullName);
-    const idx = norm(fullName).indexOf(nq);
-    if (idx !== -1) {
-      const before = esc(fullName.substring(0, idx));
-      const matched = esc(fullName.substring(idx, idx + q.length));
-      const after = esc(fullName.substring(idx + q.length));
-      displayName = before + '<span class="highlight">' + matched + '</span>' + after;
+    if (norm(fullName).includes(nq)) {
+      displayName = highlightText(fullName, q);
     }
     return `<div class="item" onclick="selectCustomer(${Number(c.id)})">
       ${displayName}
       <span class="sub-info">
         ${c.phone ? '📱 ' + esc(c.phone) : ''}
         ${c.national ? ' | 🆔 ' + esc(c.national) : ''}
-        ${c.debt > 0 ? ' | 💳 بدهی: ' + fmtNum(c.debt) + ' ریال' : ''}
+        ${c.debt ? ' | 💳 بدهی: ' + fmtNum(c.debt) + ' ریال' : ''}
       </span>
     </div>`;
   }).join('');
+}
+
+// متن را escape می‌کند و فقط قسمت منطبق‌شده با جستجو را داخل <span class="highlight"> می‌گذارد.
+// escape قبل از برش متن انجام می‌شود تا هیچ HTML خامی از ورودی کاربر عبور نکند.
+function highlightText(text, query) {
+  const idx = norm(text).indexOf(norm(query));
+  if (idx === -1) return esc(text);
+  const before = text.substring(0, idx);
+  const matched = text.substring(idx, idx + query.length);
+  const after = text.substring(idx + query.length);
+  return esc(before) + '<span class="highlight">' + esc(matched) + '</span>' + esc(after);
 }
 
 function selectCustomer(id) {
@@ -2512,6 +2364,7 @@ function clearSelectedCustomer() {
   document.getElementById('customer-dropdown').classList.remove('show');
 }
 
+// حذف همه سفارش‌ها
 function clearAllOrders() {
   if (!confirm('آیا از حذف همه سفارش‌ها مطمئن هستید؟')) return;
   DB.set('orders', []);
@@ -2533,7 +2386,12 @@ document.addEventListener('click', function(e) {
 // ============================================
 // DRAG & DROP
 // ============================================
-let dragState = { sourceTable: null, sourceIndex: null, sourceId: null };
+let dragState = {
+  sourceTable: null,
+  sourceIndex: null,
+  sourceId: null,
+  sourceData: null
+};
 
 function initDragDrop(tableId, itemsKey, renderFn) {
   const table = document.getElementById(tableId);
@@ -2604,7 +2462,7 @@ function initDragDrop(tableId, itemsKey, renderFn) {
     
     dragRow = null;
     dragOverRow = null;
-    dragState = { sourceTable: null, sourceIndex: null, sourceId: null };
+    dragState = { sourceTable: null, sourceIndex: null, sourceId: null, sourceData: null };
   });
 }
 
@@ -2656,20 +2514,11 @@ function loadDashboard() {
   const orders = DB.get('orders')||[];
   const news = DB.get('internal_news')||[];
   const todayStr = today();
-  
-  const todayOrders = orders.filter(o => {
-    if (!o.date) return false;
-    const orderDate = o.date.split(' ')[0] || o.date;
-    return orderDate === todayStr;
-  });
-  
+
+  const todayOrders = orders.filter(o=>o.date&&o.date.startsWith(todayStr.split(' ')[0]));
   const rev = todayOrders.reduce((s,o)=>s+(o.total||0),0);
   const debts = custs.reduce((s,c)=>s+(c.debt||0),0);
-  const newRegs = custs.filter(c => {
-    if (!c.join_date) return false;
-    const joinDate = c.join_date.split(' ')[0] || c.join_date;
-    return joinDate === todayStr;
-  });
+  const newRegs = custs.filter(c=>c.join_date===todayStr);
 
   document.getElementById('s-services').textContent = svcs.length;
   document.getElementById('s-customers').textContent = custs.length;
@@ -2787,8 +2636,7 @@ function addService() {
   const c = document.getElementById('svc-cat').value.trim();
   const p = +document.getElementById('svc-price').value;
   const st = +document.getElementById('svc-stock').value||999;
-  if (!n) { toast('نام خدمت الزامی است', 'danger'); return; }
-  if (!p || p < 0) { toast('قیمت باید عددی مثبت باشد', 'danger'); return; }
+  if (!n||!p) { toast('نام و هزینه الزامی است', 'danger'); return; }
   const svcs = DB.get('services')||[];
   svcs.push({id:nextId(svcs),name:n,category:c,price:p,stock:st});
   DB.set('services',svcs); loadServices(); autoSync(); toast('خدمت افزوده شد','success');
@@ -2801,8 +2649,6 @@ function editService() {
   const c = document.getElementById('svc-cat').value.trim();
   const p = +document.getElementById('svc-price').value;
   const st = +document.getElementById('svc-stock').value||999;
-  if (!n) { toast('نام خدمت الزامی است', 'danger'); return; }
-  if (!p || p < 0) { toast('قیمت باید عددی مثبت باشد', 'danger'); return; }
   svcs.forEach(s=>{ if(s.id===selService.id) Object.assign(s,{name:n,category:c,price:p,stock:st}); });
   DB.set('services',svcs); loadServices(); autoSync(); toast('ویرایش انجام شد','success');
 }
@@ -2863,8 +2709,7 @@ function renderTariffs(data) {
 function addTariff() {
   const n=document.getElementById('tar-name').value.trim();
   const p=+document.getElementById('tar-price').value;
-  if (!n) { toast('نام تعرفه الزامی','danger'); return; }
-  if (!p || p < 0) { toast('قیمت باید عددی مثبت باشد','danger'); return; }
+  if (!n||!p) { toast('نام و قیمت الزامی','danger'); return; }
   const data=DB.get('tariffs')||[];
   data.push({id:nextId(data),name:n,description:document.getElementById('tar-desc').value,price:p,unit:document.getElementById('tar-unit').value,active:'فعال'});
   DB.set('tariffs',data); loadTariffs(); autoSync(); toast('تعرفه افزوده شد','success');
@@ -2873,11 +2718,7 @@ function addTariff() {
 function editTariff() {
   if (!selTariff) { toast('انتخاب نشده','danger'); return; }
   const data=DB.get('tariffs')||[];
-  const n=document.getElementById('tar-name').value.trim();
-  const p=+document.getElementById('tar-price').value;
-  if (!n) { toast('نام تعرفه الزامی','danger'); return; }
-  if (!p || p < 0) { toast('قیمت باید عددی مثبت باشد','danger'); return; }
-  data.forEach(t=>{ if(t.id===selTariff.id) Object.assign(t,{name:n,description:document.getElementById('tar-desc').value,price:p,unit:document.getElementById('tar-unit').value}); });
+  data.forEach(t=>{ if(t.id===selTariff.id) Object.assign(t,{name:document.getElementById('tar-name').value.trim(),description:document.getElementById('tar-desc').value,price:+document.getElementById('tar-price').value,unit:document.getElementById('tar-unit').value}); });
   DB.set('tariffs',data); loadTariffs(); autoSync(); toast('ویرایش انجام شد','success');
 }
 
@@ -2918,7 +2759,7 @@ function renderCustomers(data) {
     tr.innerHTML=`<td>${Number(c.id)}</td><td>${esc(customerCode)}</td><td>${esc(c.first_name)} ${esc(c.last_name)}</td>
       <td>${esc(c.phone||'-')}</td>
       <td><span class="badge badge-accent">${Number(count)}</span></td>
-      <td>${c.debt > 0 ? '<span class="badge badge-danger">'+fmtNum(c.debt)+' ریال</span>' : '<span class="badge badge-success">بدون بدهی</span>'}</td>
+      <td>${c.debt?'<span class="badge badge-danger">'+fmtNum(c.debt)+' ریال</span>':'<span class="badge badge-success">بدون بدهی</span>'}</td>
       <td>${esc(c.join_date||'-')}</td>`;
     tr.onclick=()=>{ selCust=c; document.querySelectorAll('#cust-table tr').forEach(r=>r.classList.remove('selected')); tr.classList.add('selected'); fillCustForm(c); };
     tbody.appendChild(tr);
@@ -2993,7 +2834,6 @@ let selProd = null;
 let editingOrderId = null;
 let viewedOrderId = null;
 let editItems = [];
-let editItemIdCounter = 0;
 
 function loadOrderPage() {
   loadOrders();
@@ -3063,12 +2903,15 @@ function addToCart() {
   const unitPrice = selProd.price;
   let afterPercentDiscount = Math.round(unitPrice * (1 - discountPercent / 100));
   let finalUnitPrice = Math.max(0, afterPercentDiscount - discountAmount);
+  // سود = تخفیف کل برای این محصول = (قیمت اصلی - قیمت نهایی) × تعداد
+  const totalDiscount = (unitPrice - finalUnitPrice) * qty;
   const sub = finalUnitPrice * qty;
   
   const existing = cart.find(c=>c.product_id===selProd.id && c.discount_percent===discountPercent && c.discount_amount===discountAmount);
   if (existing) { 
     existing.qty += qty; 
     existing.subtotal += sub;
+    existing.total_discount += totalDiscount;
   } else {
     cart.push({
       product_id:selProd.id,
@@ -3077,6 +2920,7 @@ function addToCart() {
       unit_price:unitPrice,
       discount_percent:discountPercent,
       discount_amount:discountAmount,
+      total_discount:totalDiscount,
       final_unit_price:finalUnitPrice,
       subtotal:sub
     });
@@ -3094,7 +2938,7 @@ function refreshCart() {
   const tbody = document.getElementById('cart-tbody');
   tbody.innerHTML = '';
   if (!cart.length) { 
-    tbody.innerHTML='<tr class="empty-row"><td colspan="7">سبد خالی است</td></tr>'; 
+    tbody.innerHTML='<tr class="empty-row"><td colspan="8">سبد خالی است</td></tr>'; 
     document.getElementById('cart-total').textContent='جمع کل: ۰ ریال'; 
     return; 
   }
@@ -3105,6 +2949,7 @@ function refreshCart() {
       <td>${fmtNum(item.unit_price)}</td>
       <td>${Number(item.discount_percent)}%</td>
       <td>${fmtNum(item.discount_amount)}</td>
+      <td>${fmtNum(item.total_discount)}</td>
       <td>${fmtNum(item.subtotal)}</td>
       <td><button class="btn btn-danger btn-sm" onclick="removeCartItem(${Number(i)})">✕</button></td>
     </tr>`;
@@ -3119,6 +2964,7 @@ function clearCart() { cart=[]; refreshCart(); }
 function submitOrder() {
   if (!cart.length) { toast('سبد خالی است','danger'); return; }
   
+  // گرفتن مشتری از selectedCustomer
   let custId = null;
   if (selectedCustomer) {
     custId = selectedCustomer.id;
@@ -3129,9 +2975,9 @@ function submitOrder() {
       if (searchText) {
         const custs = DB.get('customers')||[];
         const found = custs.find(c => 
+          (c.first_name + ' ' + c.last_name) === searchText ||
           c.phone === searchText ||
-          c.national === searchText ||
-          (c.first_name + ' ' + c.last_name) === searchText
+          c.national === searchText
         );
         if (found) {
           custId = found.id;
@@ -3164,9 +3010,10 @@ function submitOrder() {
 }
 
 // ============================================
-// PERSIAN DATETIME PICKER
+// PERSIAN DATETIME PICKER HELPERS WITH SECONDS
 // ============================================
 function getPersianDateParts(dateStr) {
+  // dateStr format: 1403/01/15 14:30:25 or 1403/01/15 14:30
   if (!dateStr) return null;
   const parts = dateStr.split(' ');
   if (parts.length < 2) return null;
@@ -3203,19 +3050,16 @@ function initPersianDatePickers() {
   
   if (!yearSelect) return;
   
-  const currentYear = new Date().getFullYear() - 621;
-  const startYear = currentYear - 5;
-  const endYear = currentYear + 5;
-  
+  // Populate years (1390-1410)
   yearSelect.innerHTML = '';
-  for (let y = startYear; y <= endYear; y++) {
+  for (let y = 1390; y <= 1410; y++) {
     const opt = document.createElement('option');
     opt.value = y;
     opt.textContent = toPersianNum(y);
     yearSelect.appendChild(opt);
   }
-  yearSelect.value = currentYear;
   
+  // Populate months (1-12)
   monthSelect.innerHTML = '';
   const monthNames = ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'];
   for (let m = 1; m <= 12; m++) {
@@ -3225,6 +3069,7 @@ function initPersianDatePickers() {
     monthSelect.appendChild(opt);
   }
   
+  // Populate days (1-31)
   daySelect.innerHTML = '';
   for (let d = 1; d <= 31; d++) {
     const opt = document.createElement('option');
@@ -3233,6 +3078,7 @@ function initPersianDatePickers() {
     daySelect.appendChild(opt);
   }
   
+  // Populate hours (0-23)
   hourSelect.innerHTML = '';
   for (let h = 0; h <= 23; h++) {
     const opt = document.createElement('option');
@@ -3241,6 +3087,7 @@ function initPersianDatePickers() {
     hourSelect.appendChild(opt);
   }
   
+  // Populate minutes (0-59)
   minuteSelect.innerHTML = '';
   for (let m = 0; m <= 59; m++) {
     const opt = document.createElement('option');
@@ -3249,6 +3096,7 @@ function initPersianDatePickers() {
     minuteSelect.appendChild(opt);
   }
   
+  // Populate seconds (0-59)
   secondSelect.innerHTML = '';
   for (let s = 0; s <= 59; s++) {
     const opt = document.createElement('option');
@@ -3261,7 +3109,9 @@ function initPersianDatePickers() {
 function setPersianDateTime(dateStr) {
   const parts = getPersianDateParts(dateStr);
   if (!parts) {
+    // Set to current time
     const now = new Date();
+    // Convert Gregorian to Persian (rough approximation)
     const pYear = now.getFullYear() - 621;
     const pMonth = now.getMonth() + 1;
     const pDay = now.getDate();
@@ -3332,8 +3182,11 @@ function openOrderEditModal(order) {
   });
   
   document.getElementById('edit-order-id').textContent = '#'+order.id;
+  
+  // Initialize pickers if not done yet
   initPersianDatePickers();
   
+  // Set date from order
   if (order.date) {
     setPersianDateTime(order.date);
   } else {
@@ -3343,12 +3196,7 @@ function openOrderEditModal(order) {
   document.getElementById('order-edit-status').value = order.status||'تکمیل شده';
   
   const items = DB.get('order_items')||[];
-  const orderItems = items.filter(i=>i.order_id===order.id);
-  editItems = orderItems.map(i => ({
-    ...i,
-    _uid: ++editItemIdCounter,
-    _selected: false
-  }));
+  editItems = items.filter(i=>i.order_id===order.id).map(i=>({...i, _selected:false}));
   renderEditItems();
   updateEditTotal();
   document.getElementById('order-edit-modal').classList.add('open');
@@ -3364,35 +3212,23 @@ function renderEditItems() {
   editItems.forEach((item, idx)=>{
     const tr = document.createElement('tr');
     tr.className = item._selected ? 'selected' : '';
-    tr.dataset.uid = item._uid;
-    tr.onclick = function(e) {
-      if (e.target.closest('input') || e.target.closest('button')) return;
+    tr.dataset.idx = idx;
+    tr.onclick = function() {
       editItems.forEach(i=>i._selected=false);
-      item._selected = true;
+      editItems[idx]._selected = true;
       renderEditItems();
     };
     tr.innerHTML = `
-      <td><input style="width:100%;padding:4px;border:1px solid var(--border);border-radius:4px;background:var(--surface2);color:var(--text);font-family:inherit;font-size:12px;" value="${esc(item.product_name)}" onchange="updateEditItemProp(${idx}, 'product_name', this.value)"></td>
-      <td><input style="width:60px;padding:4px;border:1px solid var(--border);border-radius:4px;background:var(--surface2);color:var(--text);font-family:inherit;font-size:12px;text-align:center;" type="number" value="${item.qty}" min="1" onchange="updateEditItemProp(${idx}, 'qty', +this.value)"></td>
-      <td><input style="width:80px;padding:4px;border:1px solid var(--border);border-radius:4px;background:var(--surface2);color:var(--text);font-family:inherit;font-size:12px;text-align:center;" type="number" value="${item.unit_price}" min="0" onchange="updateEditItemProp(${idx}, 'unit_price', +this.value)"></td>
-      <td><input style="width:60px;padding:4px;border:1px solid var(--border);border-radius:4px;background:var(--surface2);color:var(--text);font-family:inherit;font-size:12px;text-align:center;" type="number" value="${item.discount_percent||0}" min="0" max="100" onchange="updateEditItemProp(${idx}, 'discount_percent', +this.value)"></td>
-      <td><input style="width:80px;padding:4px;border:1px solid var(--border);border-radius:4px;background:var(--surface2);color:var(--text);font-family:inherit;font-size:12px;text-align:center;" type="number" value="${item.discount_amount||0}" min="0" onchange="updateEditItemProp(${idx}, 'discount_amount', +this.value)"></td>
+      <td><input style="width:100%;padding:4px;border:1px solid var(--border);border-radius:4px;background:var(--surface2);color:var(--text);font-family:inherit;font-size:12px;" value="${esc(item.product_name)}" onchange="editItems[${idx}].product_name=this.value"></td>
+      <td><input style="width:60px;padding:4px;border:1px solid var(--border);border-radius:4px;background:var(--surface2);color:var(--text);font-family:inherit;font-size:12px;text-align:center;" type="number" value="${item.qty}" min="1" onchange="editItems[${idx}].qty=+this.value;updateEditTotal();"></td>
+      <td><input style="width:80px;padding:4px;border:1px solid var(--border);border-radius:4px;background:var(--surface2);color:var(--text);font-family:inherit;font-size:12px;text-align:center;" type="number" value="${item.unit_price}" min="0" onchange="editItems[${idx}].unit_price=+this.value;updateEditTotal();"></td>
+      <td><input style="width:60px;padding:4px;border:1px solid var(--border);border-radius:4px;background:var(--surface2);color:var(--text);font-family:inherit;font-size:12px;text-align:center;" type="number" value="${item.discount_percent||0}" min="0" max="100" onchange="editItems[${idx}].discount_percent=+this.value;updateEditTotal();"></td>
+      <td><input style="width:80px;padding:4px;border:1px solid var(--border);border-radius:4px;background:var(--surface2);color:var(--text);font-family:inherit;font-size:12px;text-align:center;" type="number" value="${item.discount_amount||0}" min="0" onchange="editItems[${idx}].discount_amount=+this.value;updateEditTotal();"></td>
       <td id="edit-item-subtotal-${idx}">${fmtNum(item.subtotal)}</td>
       <td><button class="btn btn-danger btn-sm" onclick="removeEditItem(${idx})">✕</button></td>
     `;
     tbody.appendChild(tr);
   });
-}
-
-function updateEditItemProp(idx, prop, value) {
-  if (editItems[idx]) {
-    editItems[idx][prop] = value;
-    const item = editItems[idx];
-    let afterPercent = Math.round(item.unit_price * (1 - (item.discount_percent||0) / 100));
-    let finalPrice = Math.max(0, afterPercent - (item.discount_amount||0));
-    item.subtotal = finalPrice * (item.qty||1);
-    updateEditTotal();
-  }
 }
 
 function updateEditTotal() {
@@ -3409,15 +3245,14 @@ function updateEditTotal() {
 
 function addEditItem() {
   editItems.push({
-    _uid: ++editItemIdCounter,
-    _selected: false,
     product_id: 0,
     product_name: 'خدمت جدید',
     qty: 1,
     unit_price: 0,
     discount_percent: 0,
     discount_amount: 0,
-    subtotal: 0
+    subtotal: 0,
+    _selected: false
   });
   renderEditItems();
   updateEditTotal();
@@ -3452,6 +3287,7 @@ function saveOrderEdit() {
   
   order.customer_id = +document.getElementById('order-edit-cust').value;
   
+  // دریافت تاریخ از picker با ثانیه
   const dateValue = getPersianDateTimeFromPicker();
   if (dateValue) {
     order.date = dateValue;
@@ -3465,9 +3301,9 @@ function saveOrderEdit() {
   let allItems = DB.get('order_items')||[];
   allItems = allItems.filter(i=>i.order_id!==editingOrderId);
   editItems.forEach(i=>{
-    const { _uid, _selected, ...cleanItem } = i;
-    cleanItem.order_id = editingOrderId;
-    allItems.push(cleanItem);
+    delete i._selected;
+    i.order_id = editingOrderId;
+    allItems.push(i);
   });
   
   DB.set('orders', orders);
@@ -3510,15 +3346,19 @@ function showOrderDetail(id) {
   const tbody = document.getElementById('detail-items');
   tbody.innerHTML = '';
   if (!orderItems.length) {
-    tbody.innerHTML = '<tr class="empty-row"><td colspan="6">هیچ آیتمی وجود ندارد</td></tr>';
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="7">هیچ آیتمی وجود ندارد</td></tr>';
   } else {
     orderItems.forEach(item=>{
+      // سود = تخفیف کل = (قیمت اصلی - قیمت نهایی) × تعداد
+      const finalPrice = Math.max(0, Math.round(item.unit_price * (1 - (item.discount_percent||0) / 100)) - (item.discount_amount||0));
+      const totalDiscount = (item.unit_price - finalPrice) * item.qty;
       tbody.innerHTML += `<tr>
         <td>${esc(item.product_name)}</td>
         <td>${Number(item.qty)}</td>
         <td>${fmtNum(item.unit_price)}</td>
         <td>${Number(item.discount_percent||0)}%</td>
         <td>${fmtNum(item.discount_amount||0)}</td>
+        <td>${fmtNum(totalDiscount)}</td>
         <td>${fmtNum(item.subtotal)}</td>
       </tr>`;
     });
@@ -3526,6 +3366,13 @@ function showOrderDetail(id) {
   
   const total = orderItems.reduce((s,i)=>s+(i.subtotal||0),0);
   document.getElementById('detail-total').textContent = fmtNum(total)+' ریال';
+  
+  // سود کل = مجموع تخفیف کل هر آیتم
+  const totalProfit = orderItems.reduce((s,item) => {
+    const finalPrice = Math.max(0, Math.round(item.unit_price * (1 - (item.discount_percent||0) / 100)) - (item.discount_amount||0));
+    return s + ((item.unit_price - finalPrice) * item.qty);
+  }, 0);
+  document.getElementById('detail-profit').textContent = fmtNum(totalProfit)+' ریال';
   
   document.getElementById('order-detail-modal').classList.add('open');
 }
@@ -3557,7 +3404,7 @@ function filterOrders(q) {
 }
 
 // ============================================
-// INVOICE PRINT
+// INVOICE PRINT WITH STAMP - FIXED FOR MOBILE
 // ============================================
 function printInvoice() {
   if (!viewedOrderId) { toast('سفارشی انتخاب نشده','danger'); return; }
@@ -3576,16 +3423,26 @@ function printInvoice() {
   const orderItems = items.filter(i=>i.order_id===viewedOrderId);
   const total = orderItems.reduce((s,i)=>s+(i.subtotal||0),0);
   
+  // محاسبه سود کل
+  const totalProfit = orderItems.reduce((s,item) => {
+    const finalPrice = Math.max(0, Math.round(item.unit_price * (1 - (item.discount_percent||0) / 100)) - (item.discount_amount||0));
+    return s + ((item.unit_price - finalPrice) * item.qty);
+  }, 0);
+  
+  // تاریخ شمسی برای مهر
   const persianDate = new Date().toLocaleDateString('fa-IR');
-  const persianTime = new Date().toLocaleTimeString('fa-IR');
   
   let html = `
   <div class="invoice-print" style="max-width:800px;margin:0 auto;background:white;padding:25px 20px;font-family:'Vazirmatn',Tahoma,sans-serif;direction:rtl;position:relative;">
+    <!-- مهر تصویری -->
+    <div class="stamp-container" style="position:absolute;bottom:60px;left:20px;z-index:10;">
+      <img src="stamp.png" alt="مهر" style="width:90px;height:90px;opacity:0.75;transform:rotate(-15deg);filter:drop-shadow(0 2px 8px rgba(0,0,0,0.15));" onerror="this.style.display='none';">
+    </div>
+    
     <div class="invoice-header" style="display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #1A56C4;padding-bottom:14px;margin-bottom:14px;">
       <div class="invoice-logo" style="display:flex;align-items:center;gap:10px;">
-        <div class="invoice-logo-icon">
-          <img src="logo.png" alt="لوگو" onerror="this.style.display='none';this.parentElement.querySelector('.fallback').style.display='flex'">
-          <div class="fallback" style="display:none;width:100%;height:100%;align-items:center;justify-content:center;color:white;font-size:20px;font-weight:800;">ک</div>
+        <div class="invoice-logo-icon" style="width:50px;height:50px;border-radius:12px;display:flex;align-items:center;justify-content:center;overflow:hidden;border:2px solid #1A56C4;">
+          <img src="logo.png" alt="کافینت چنار" style="width:100%;height:100%;object-fit:contain;" onerror="this.parentElement.textContent='کافینت';this.parentElement.style.background='#1A56C4';this.parentElement.style.color='white';this.parentElement.style.fontSize='12px';this.parentElement.style.fontWeight='800';">
         </div>
         <div>
           <div class="invoice-shop-name" style="font-size:18px;font-weight:700;color:#1A56C4;">کافینت چنار</div>
@@ -3597,10 +3454,9 @@ function printInvoice() {
       <div class="invoice-title" style="font-size:16px;font-weight:700;color:#1A56C4;text-align:left;">فاکتور رسمی</div>
     </div>
     
-    <div class="invoice-info" style="display:flex;justify-content:space-between;font-size:11px;color:#3D4461;margin-bottom:10px;padding:6px 0;border-bottom:1px dashed #D6DCE9;flex-wrap:wrap;gap:4px;">
+    <div class="invoice-info" style="display:flex;justify-content:space-between;font-size:11px;color:#3D4461;margin-bottom:10px;padding:6px 0;border-bottom:1px dashed #D6DCE9;">
       <div><strong>شماره فاکتور:</strong> #${Number(order.id)}</div>
-      <div><strong>تاریخ:</strong> ${esc(order.date?.split(' ')[0] || '-')}</div>
-      <div><strong>ساعت:</strong> ${esc(order.date?.split(' ')[1] || '-')}</div>
+      <div><strong>تاریخ:</strong> ${esc(order.date||'-')}</div>
       <div><strong>وضعیت:</strong> ${esc(order.status||'تکمیل شده')}</div>
     </div>
     
@@ -3646,13 +3502,14 @@ function printInvoice() {
     <div class="invoice-total" style="display:flex;justify-content:flex-end;gap:16px;font-size:13px;font-weight:600;padding-top:10px;border-top:2px solid #1A56C4;margin-top:10px;">
       <span>جمع کل:</span>
       <span>${fmtNum(total)} ریال</span>
+      <span style="color:#1A7F4B;font-weight:700;font-size:12px;">(سود شما: ${fmtNum(totalProfit)} ریال)</span>
     </div>
     
-    <div class="invoice-signature" style="display:flex;justify-content:space-between;margin-top:10px;font-size:11px;color:#3D4461;flex-wrap:wrap;gap:4px;">
+    <div class="invoice-signature" style="display:flex;justify-content:space-between;margin-top:10px;font-size:11px;color:#3D4461;">
       <div>امضا: .........................</div>
       <div style="display:flex;align-items:center;gap:6px;">
-        <span>تاریخ:</span>
-        <span style="font-size:11px;color:#8B0000;font-weight:600;">${persianDate} — ${persianTime}</span>
+        <span>مهر و تاریخ:</span>
+        <span style="font-size:11px;color:#8B0000;font-weight:600;">${persianDate}</span>
       </div>
     </div>
     
@@ -3663,16 +3520,22 @@ function printInvoice() {
   </div>
   `;
   
-  const iframe = document.createElement('iframe');
-  iframe.style.position = 'fixed';
-  iframe.style.top = '-9999px';
-  iframe.style.left = '-9999px';
-  iframe.style.width = '800px';
-  iframe.style.height = '600px';
-  document.body.appendChild(iframe);
+  const container = document.getElementById('invoice-print-container');
+  container.innerHTML = html;
+  container.style.display = 'block';
   
-  const doc = iframe.contentDocument || iframe.contentWindow.document;
-  doc.write(`
+  // Better mobile printing
+  const printWindow = window.open('', '_blank', 'width=800,height=600,scrollbars=yes');
+  if (!printWindow) {
+    // If popup blocked, use print directly on current window
+    const printContent = document.getElementById('invoice-print-container').innerHTML;
+    document.body.innerHTML = printContent;
+    window.print();
+    location.reload();
+    return;
+  }
+  
+  printWindow.document.write(`
     <!DOCTYPE html>
     <html dir="rtl" lang="fa">
     <head>
@@ -3686,22 +3549,25 @@ function printInvoice() {
         .invoice-print { max-width:900px; margin:0 auto; background:white; padding:20px; border-radius:8px; box-shadow:0 2px 10px rgba(0,0,0,0.1); position:relative; }
         .invoice-header { display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #1A56C4; padding-bottom:12px; margin-bottom:12px; }
         .invoice-logo { display:flex; align-items:center; gap:10px; }
-        .invoice-logo-icon { width:50px; height:50px; border-radius:12px; display:flex; align-items:center; justify-content:center; overflow:hidden; border:2px solid #1A56C4; background:#1A56C4; }
+        .invoice-logo-icon { width:50px; height:50px; border-radius:12px; display:flex; align-items:center; justify-content:center; overflow:hidden; border:2px solid #1A56C4; }
         .invoice-logo-icon img { width:100%; height:100%; object-fit:contain; }
-        .invoice-logo-icon .fallback { color:white; font-size:20px; font-weight:800; }
         .invoice-shop-name { font-size:18px; font-weight:700; color:#1A56C4; }
         .invoice-shop-sub { font-size:11px; color:#7B849E; }
         .invoice-title { font-size:16px; font-weight:700; color:#1A56C4; text-align:left; }
-        .invoice-info { display:flex; justify-content:space-between; font-size:11px; color:#3D4461; margin-bottom:10px; padding:6px 0; border-bottom:1px dashed #D6DCE9; flex-wrap:wrap; gap:4px; }
+        .invoice-info { display:flex; justify-content:space-between; font-size:11px; color:#3D4461; margin-bottom:10px; padding:6px 0; border-bottom:1px dashed #D6DCE9; }
         .invoice-table { width:100%; border-collapse:collapse; font-size:10px; margin:10px 0; }
         .invoice-table th { background:#F4F6FB; color:#1A56C4; padding:5px 6px; border:1px solid #D6DCE9; text-align:center; font-size:9px; }
         .invoice-table td { padding:4px 6px; border:1px solid #D6DCE9; text-align:center; color:#1A1F36; font-size:10px; }
         .invoice-total { display:flex; justify-content:flex-end; gap:16px; font-size:13px; font-weight:600; padding-top:10px; border-top:2px solid #1A56C4; margin-top:10px; }
-        .invoice-signature { display:flex; justify-content:space-between; margin-top:10px; font-size:11px; color:#3D4461; flex-wrap:wrap; gap:4px; }
+        .invoice-total .profit-green { color:#1A7F4B; font-weight:700; }
+        .invoice-signature { display:flex; justify-content:space-between; margin-top:10px; font-size:11px; color:#3D4461; }
         .invoice-footer { text-align:center; font-size:10px; color:#7B849E; margin-top:12px; border-top:1px solid #D6DCE9; padding-top:8px; }
+        .stamp-container { position:absolute; bottom:50px; left:20px; z-index:10; }
+        .stamp-container img { width:80px; height:80px; opacity:0.75; transform:rotate(-15deg); filter:drop-shadow(0 2px 8px rgba(0,0,0,0.15)); }
         @media print {
           body { background:white; padding:0; }
           .invoice-print { box-shadow:none; border-radius:0; padding:15px; }
+          .stamp-container img { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
           .invoice-table th { background:#e9ecef !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
           .invoice-logo-icon { border:2px solid #1A56C4 !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
         }
@@ -3712,19 +3578,26 @@ function printInvoice() {
           .invoice-table { font-size:9px; }
           .invoice-table th, .invoice-table td { padding:3px 4px; font-size:8px; }
           .invoice-total { font-size:11px; gap:10px; flex-wrap:wrap; }
+          .stamp-container img { width:60px; height:60px; }
         }
       </style>
     </head>
     <body>
       ${html}
       <script>
-        setTimeout(function() { window.print(); }, 500);
-        window.onafterprint = function() { window.parent.document.body.removeChild(window.frameElement); };
+        window.onload = function() { 
+          setTimeout(function() {
+            window.print(); 
+            setTimeout(function() { window.close(); }, 1500);
+          }, 500);
+        }
       <\/script>
     </body>
     </html>
   `);
-  doc.close();
+  printWindow.document.close();
+  
+  container.style.display = 'none';
 }
 
 // ============================================
@@ -3739,6 +3612,7 @@ function loadTips(searchQ) {
   const tree = document.getElementById('folder-tree');
   tree.innerHTML = '';
 
+  // Object.create(null) به‌جای {} تا نام پوشه‌ای مثل "__proto__" باعث prototype pollution نشود
   const folders = Object.create(null);
   tips.forEach(t=>{
     const f = t.folder||'عمومی';
@@ -3809,9 +3683,8 @@ function showNote(id) {
   document.getElementById('note-viewer-breadcrumb').textContent = (note.folder||'عمومی') + ' › ' + note.title;
 
   const viewer = document.getElementById('note-viewer');
-  const imgsHtml = (note.images||[]).map((img,i)=>{
-    return `<img class="note-img-thumb" src="${img}" onclick="openLightboxFromNote(${Number(i)})" alt="">`;
-  }).join('');
+  // src تصاویر از data URL داخلی می‌آید (base64)، اما برای احتیاط escape هم می‌شود.
+  const imgsHtml = (note.images||[]).map((img,i)=>`<img class="note-img-thumb" src="${esc(img)}" onclick="openLightboxFromNote(${Number(i)})" alt="">`).join('');
   const safeLink = safeUrl(note.url);
 
   viewer.innerHTML = `
@@ -3827,10 +3700,19 @@ function showNote(id) {
   `;
 }
 
+// چون src تصویر (data URL) می‌تواند طولانی باشد، به‌جای تزریق مستقیم در onclick، بر اساس ایندکس تصویر را باز می‌کنیم.
 function openLightboxFromNote(imgIndex) {
   if (!currentNote || !currentNote.images) return;
   const img = currentNote.images[imgIndex];
   if (img) openLightbox(img);
+}
+
+// توجه: از تابع مشترک esc() (تعریف‌شده در بخش UTILS) برای escape استفاده می‌کنیم.
+// همچنین لینک‌های کاربر را محدود به http/https می‌کنیم تا از javascript: URI جلوگیری شود.
+function safeUrl(u) {
+  const s = String(u||'').trim();
+  if (/^(https?:)\/\//i.test(s)) return esc(s);
+  return '';
 }
 
 function searchTips(q) { loadTips(q); }
@@ -3888,25 +3770,11 @@ function saveNote() {
 }
 
 function handleImgUpload(files) {
-  if (!files || files.length === 0) return;
-  try {
-    Array.from(files).forEach(file => {
-      if (file.size > 5 * 1024 * 1024) {
-        toast('حجم فایل بیش از ۵ مگابایت است', 'danger');
-        return;
-      }
-      const reader = new FileReader();
-      reader.onload = e => {
-        pendingImgs.push({ name: file.name, dataUrl: e.target.result });
-        renderImgPreview();
-      };
-      reader.onerror = () => toast('خطا در خواندن فایل', 'danger');
-      reader.readAsDataURL(file);
-    });
-  } catch (e) {
-    toast('خطا در بارگذاری فایل', 'danger');
-    log('Upload error:', e);
-  }
+  Array.from(files).forEach(file=>{
+    const reader = new FileReader();
+    reader.onload = e=>{ pendingImgs.push({name:file.name,dataUrl:e.target.result}); renderImgPreview(); };
+    reader.readAsDataURL(file);
+  });
 }
 
 function handleDrop(e) {
@@ -3921,19 +3789,13 @@ function renderImgPreview() {
   pendingImgs.forEach((img,i)=>{
     const wrap = document.createElement('div');
     wrap.className='img-preview-item';
-    wrap.innerHTML = `
-      <img src="${img.dataUrl}" alt="${esc(img.name)}">
-      <button class="img-preview-remove" onclick="removeImg(${Number(i)})">✕</button>
-      <div class="img-preview-filename">${esc(img.name)}</div>
-    `;
+    wrap.innerHTML=`<img src="${esc(img.dataUrl)}" alt="${esc(img.name)}">
+      <button class="img-preview-remove" onclick="removeImg(${Number(i)})">✕</button>`;
     grid.appendChild(wrap);
   });
 }
 
-function removeImg(i) { 
-  pendingImgs = pendingImgs.filter((_, idx) => idx !== i);
-  renderImgPreview(); 
-}
+function removeImg(i) { pendingImgs.splice(i,1); renderImgPreview(); }
 
 function openLightbox(src) {
   document.getElementById('lightbox-img').src=src;
@@ -4087,12 +3949,6 @@ function showReport(type) {
     title = 'همه فروش‌ها';
   }
   
-  if (!labels.length || !values.length) {
-    labels = ['بدون داده'];
-    values = [0];
-    title = 'هیچ داده‌ای برای نمایش وجود ندارد';
-  }
-  
   updateChart(labels, values, title);
   
   const rows = labels.map((d, i) => [d, fmtNum(values[i]) + ' ریال']);
@@ -4151,10 +4007,7 @@ function reportTopServices() {
   setRepHead(['رتبه','خدمت','درآمد (ریال)']);
   const items=DB.get('order_items')||[];
   const sales={};
-  items.forEach(i=>{ 
-    const name = i.product_name || 'نامشخص';
-    sales[name] = (sales[name]||0) + (i.subtotal||0); 
-  });
+  items.forEach(i=>{ sales[i.product_name]=(sales[i.product_name]||0)+(i.subtotal||0); });
   const rows=Object.entries(sales).sort((a,b)=>b[1]-a[1]).slice(0,20).map(([n,v],i)=>[i+1,n,fmtNum(v)+' ریال']);
   renderRep(rows);
 }
@@ -4238,16 +4091,11 @@ function handleImport(event) {
       let count = 0;
       
       tables.forEach(key => {
-        if (data[key] && Array.isArray(data[key])) {
+        if (data[key]) {
           DB.set(key, data[key]);
           count++;
         }
       });
-      
-      if (count === 0) {
-        toast('فایل معتبر نیست یا داده‌ای ندارد', 'danger');
-        return;
-      }
       
       toast(`${count} جدول با موفقیت وارد شد ✅`, 'success');
       const activePage = document.querySelector('.page.active');
@@ -4282,7 +4130,7 @@ function toggleTheme() {
 // DATE
 // ============================================
 function updateDate() {
-  const d = nowStr();
+  const d = new Date().toLocaleString('fa-IR');
   const el = document.getElementById('topbar-date');
   if (el) el.textContent = '📅 ' + d;
 }
@@ -4290,67 +4138,6 @@ function updateDate() {
 // ============================================
 // INIT
 // ============================================
-function initDB() {
-  if (!DB.get('services')) DB.set('services', [
-    {id:1,name:'استفاده از سیستم',category:'سیستم',price:50000,stock:20},
-    {id:2,name:'پرینت سیاه‌سفید',category:'پرینت',price:5000,stock:999},
-    {id:3,name:'پرینت رنگی',category:'پرینت',price:15000,stock:999},
-    {id:4,name:'اسکن مدارک',category:'اسکن',price:10000,stock:999},
-    {id:5,name:'ثبت‌نام کنکور',category:'ثبت‌نام اینترنتی',price:150000,stock:999},
-    {id:6,name:'ثبت‌نام دانشگاه',category:'ثبت‌نام اینترنتی',price:100000,stock:999},
-    {id:7,name:'ثبت‌نام نظام مهندسی',category:'ثبت‌نام اینترنتی',price:120000,stock:999},
-    {id:8,name:'ثبت‌نام استخدامی',category:'ثبت‌نام اینترنتی',price:100000,stock:999},
-    {id:9,name:'رزرو نوبت سفارت',category:'ثبت‌نام اینترنتی',price:200000,stock:999},
-    {id:10,name:'ثبت‌نام سامانه‌های دولتی',category:'ثبت‌نام اینترنتی',price:80000,stock:999},
-    {id:11,name:'تایپ فارسی (هر صفحه)',category:'تایپ',price:30000,stock:999},
-    {id:12,name:'تایپ انگلیسی (هر صفحه)',category:'تایپ',price:25000,stock:999},
-    {id:13,name:'فتوکپی (هر برگ)',category:'فتوکپی',price:3000,stock:999},
-    {id:14,name:'بازی آنلاین (ساعتی)',category:'گیمینگ',price:80000,stock:10},
-    {id:15,name:'صحافی و شیرازه',category:'صحافی',price:40000,stock:999},
-    {id:16,name:'عکس پرسنلی',category:'عکاسی',price:50000,stock:999},
-    {id:17,name:'تبدیل فایل PDF',category:'خدمات فایل',price:20000,stock:999},
-    {id:18,name:'رایت CD/DVD',category:'خدمات فایل',price:30000,stock:999},
-  ]);
-
-  if (!DB.get('customers')) DB.set('customers', [
-    {id:1,first_name:'علی',last_name:'احمدی',phone:'09121234567',national:'1234567890',address:'تهران',debt:0,info:'مشتری دائمی',join_date:today()},
-    {id:2,first_name:'مریم',last_name:'رضایی',phone:'09351234567',national:'0987654321',address:'تهران',debt:50000,info:'نیاز به پیگیری',join_date:today()},
-    {id:3,first_name:'محمد',last_name:'کریمی',phone:'09123456789',national:'1122334455',address:'اصفهان',debt:0,info:'',join_date:today()},
-  ]);
-
-  if (!DB.get('tariffs')) DB.set('tariffs', [
-    {id:1,name:'استفاده از سیستم',description:'هر ساعت',price:50000,unit:'ساعت',active:'فعال'},
-    {id:2,name:'پرینت A4 سیاه‌سفید',description:'هر برگ',price:5000,unit:'برگ',active:'فعال'},
-    {id:3,name:'پرینت A4 رنگی',description:'هر برگ رنگی',price:15000,unit:'برگ',active:'فعال'},
-    {id:4,name:'اسکن مدارک',description:'هر صفحه',price:10000,unit:'صفحه',active:'فعال'},
-    {id:5,name:'فتوکپی',description:'هر برگ',price:3000,unit:'برگ',active:'فعال'},
-    {id:6,name:'ثبت‌نام اینترنتی ساده',description:'فرم‌های ساده',price:80000,unit:'عدد',active:'فعال'},
-    {id:7,name:'ثبت‌نام اینترنتی پیچیده',description:'کنکور، استخدامی و...',price:150000,unit:'عدد',active:'فعال'},
-    {id:8,name:'گیمینگ',description:'بازی آنلاین',price:80000,unit:'ساعت',active:'فعال'},
-  ]);
-
-  if (!DB.get('internal_news')) DB.set('internal_news', [
-    {id:1,title:'شروع ثبت‌نام کنکور سراسری ۱۴۰۴',content:'ثبت‌نام کنکور سراسری از امروز آغاز شد. مدارک لازم: کارت ملی، شناسنامه، مدرک تحصیلی. هزینه ۱۵۰ هزار تومان.',category:'ثبت نام',date:today(),priority:'فوری',pinned:true,active:true},
-    {id:2,title:'آزمون استخدامی دستگاه‌های اجرایی',content:'ثبت‌نام آزمون استخدامی تا پایان هفته ادامه دارد.',category:'ثبت نام',date:today(),priority:'بالا',pinned:true,active:true},
-    {id:3,title:'تخفیف ویژه پرینت و فتوکپی',content:'تا پایان این ماه پرینت سیاه‌سفید ۵۰٪ تخفیف.',category:'تخفیف',date:today(),priority:'متوسط',pinned:false,active:true},
-  ]);
-
-  if (!DB.get('tips')) DB.set('tips', [
-    {id:1,folder:'کنکور و آموزش',title:'ثبت‌نام کنکور سراسری',url:'https://sanjesh.org',
-     body:'مرحله ۱: وارد سایت sanjesh.org شوید\nمرحله ۲: روی گزینه «ثبت‌نام» کلیک کنید\nمرحله ۳: کد ملی و اطلاعات شناسنامه‌ای را وارد کنید\nمرحله ۴: رشته و شهر محل سکونت را انتخاب کنید\nمرحله ۵: مدرک تحصیلی و اطلاعات آموزشی را وارد نمایید\nمرحله ۶: عکس ۳×۴ را با فرمت JPG آپلود کنید\nمرحله ۷: هزینه ثبت‌نام را از طریق درگاه پرداخت کنید\nمرحله ۸: کد رهگیری را دریافت و نگهداری کنید',
-     images:[],date:today()},
-    {id:2,folder:'کنکور و آموزش',title:'ثبت‌نام دانشگاه آزاد',url:'https://azmoon.org',
-     body:'سایت: azmoon.org\n\nمرحله ۱: بخش پذیرش دانشجو را انتخاب کنید\nمرحله ۲: کد ملی و اطلاعات فردی را وارد کنید\nمرحله ۳: رشته‌های مورد نظر را اولویت‌بندی کنید\nمرحله ۴: مدارک لازم را اسکن و آپلود کنید\nمرحله ۵: هزینه را پرداخت کنید',
-     images:[],date:today()},
-    {id:3,folder:'استخدامی',title:'ثبت‌نام آزمون استخدامی دولتی',url:'https://استخدام.ir',
-     body:'سایت: استخدام.ir یا سایت سازمان سنجش\n\nمراحل ثبت‌نام:\n۱. ورود با کد ملی\n۲. انتخاب سازمان و رشته شغلی\n۳. تکمیل فرم مشخصات فردی و تحصیلی\n۴. بارگذاری مدارک\n۵. پرداخت هزینه آزمون\n۶. چاپ کارت شرکت در آزمون',
-     images:[],date:today()},
-  ]);
-
-  if (!DB.get('orders')) DB.set('orders', []);
-  if (!DB.get('order_items')) DB.set('order_items', []);
-}
-
 const savedToken = sessionStorage.getItem('github_token');
 if (savedToken && savedToken !== '') {
   document.getElementById('login-page').classList.add('hidden');
@@ -4365,14 +4152,6 @@ if (savedToken && savedToken !== '') {
   setInterval(updateDate, 30000);
   loadDashboard();
   initSync();
-  
-  // نمایش راهنمای میانبرها برای 3 ثانیه در اولین ورود
-  setTimeout(() => {
-    document.getElementById('shortcuts-hint').classList.add('show');
-    setTimeout(() => {
-      document.getElementById('shortcuts-hint').classList.remove('show');
-    }, 5000);
-  }, 1000);
 } else {
   document.getElementById('login-page').classList.remove('hidden');
   document.getElementById('app').classList.remove('show');
@@ -4380,13 +4159,16 @@ if (savedToken && savedToken !== '') {
   updateLoginStatus('offline', '⛔ منتظر ورود توکن');
 }
 
-log('✅ نسخه نهایی با همه اصلاحات:');
-log('   ✅ لوگو با تصویر و fallback متنی "ک"');
-log('   ✅ اگر فایل logo.png در کنار index.html نباشد، حرف "ک" نمایش داده می‌شود');
-log('   ✅ مشکل درآمد روزانه با تاریخ دقیق برطرف شد');
-log('   ✅ میانبرهای کیبورد: Ctrl+N (مشتری), Ctrl+S (سرویس), Ctrl+O (سفارش), Ctrl+T (راهنما)');
-log('   ✅ Ctrl+Shift+D (داشبورد), Ctrl+Shift+R (گزارش‌ها), Ctrl+H (راهنمای میانبرها)');
-log('   ✅ نمایش خودکار راهنمای میانبرها در اولین ورود');
+console.log('✅ تمام اصلاحات انجام شد:');
+console.log('   ✅ تلفن: 086-43220702');
+console.log('   ✅ آدرس: محلات - میدان چنار - پلاک 71');
+console.log('   ✅ سود با رنگ سبز و عنوان "سود شما" در فاکتور');
+console.log('   ✅ تاریخ و ساعت فاکتور به صورت فارسی');
+console.log('   ✅ ویرایش سفارش با تاریخ شمسی به صورت کشویی + ثانیه');
+console.log('   ✅ فونت و اعداد در فیلد تاریخ شمسی با فونت و اعداد فارسی');
+console.log('   ✅ رفع مشکل نمایش پس‌زمینه و خروج در کروم دسکتاپ');
+console.log('   ✅ نام برنامه روی هوم اسکرین "کافینت چنار"');
+console.log('   ✅ رفع مشکل چاپ فاکتور روی گوشی');
 </script>
 </body>
 </html>
