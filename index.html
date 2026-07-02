@@ -1305,6 +1305,17 @@
   [data-theme="dark"] .topbar-date {
     color: var(--muted) !important;
   }
+  
+  /* Fix invoice print on mobile */
+  @media print {
+    .invoice-print .stamp-container {
+      display: block !important;
+    }
+    .invoice-print .stamp-container img {
+      max-width: 90px !important;
+      max-height: 90px !important;
+    }
+  }
 </style>
 </head>
 <body>
@@ -3363,7 +3374,7 @@ function filterOrders(q) {
 }
 
 // ============================================
-// INVOICE PRINT با مهر تصویری
+// INVOICE PRINT WITH STAMP - FIXED FOR MOBILE
 // ============================================
 function printInvoice() {
   if (!viewedOrderId) { toast('سفارشی انتخاب نشده','danger'); return; }
@@ -3390,52 +3401,51 @@ function printInvoice() {
   
   // تاریخ شمسی برای مهر
   const persianDate = new Date().toLocaleDateString('fa-IR');
-  const persianTime = new Date().toLocaleTimeString('fa-IR');
   
   let html = `
-  <div class="invoice-print" style="max-width:800px;margin:0 auto;background:white;padding:30px;font-family:'Vazirmatn',Tahoma,sans-serif;direction:rtl;position:relative;">
+  <div class="invoice-print" style="max-width:800px;margin:0 auto;background:white;padding:25px 20px;font-family:'Vazirmatn',Tahoma,sans-serif;direction:rtl;position:relative;">
     <!-- مهر تصویری -->
-    <div class="stamp-container">
-      <img src="stamp.png" alt="مهر" onerror="this.style.display='none';">
+    <div class="stamp-container" style="position:absolute;bottom:60px;left:20px;z-index:10;">
+      <img src="stamp.png" alt="مهر" style="width:90px;height:90px;opacity:0.75;transform:rotate(-15deg);filter:drop-shadow(0 2px 8px rgba(0,0,0,0.15));" onerror="this.style.display='none';">
     </div>
     
-    <div class="invoice-header">
-      <div class="invoice-logo">
-        <div class="invoice-logo-icon">
-          <img src="logo.png" alt="کافینت چنار" onerror="this.parentElement.textContent='کافینت چنار';this.parentElement.style.background='#1A56C4';this.parentElement.style.color='white';this.parentElement.style.fontSize='18px';this.parentElement.style.fontWeight='800';">
+    <div class="invoice-header" style="display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #1A56C4;padding-bottom:14px;margin-bottom:14px;">
+      <div class="invoice-logo" style="display:flex;align-items:center;gap:10px;">
+        <div class="invoice-logo-icon" style="width:50px;height:50px;border-radius:12px;display:flex;align-items:center;justify-content:center;overflow:hidden;border:2px solid #1A56C4;">
+          <img src="logo.png" alt="کافینت چنار" style="width:100%;height:100%;object-fit:contain;" onerror="this.parentElement.textContent='کافینت';this.parentElement.style.background='#1A56C4';this.parentElement.style.color='white';this.parentElement.style.fontSize='12px';this.parentElement.style.fontWeight='800';">
         </div>
         <div>
-          <div class="invoice-shop-name">کافینت چنار</div>
-          <div class="invoice-shop-sub">مرکز خدمات اینترنتی و ثبت‌نام</div>
-          <div class="invoice-shop-sub" style="font-size:11px;">📞 086-43220702</div>
-          <div class="invoice-shop-sub" style="font-size:11px;">🏠 محلات - میدان چنار - پلاک 71</div>
+          <div class="invoice-shop-name" style="font-size:18px;font-weight:700;color:#1A56C4;">کافینت چنار</div>
+          <div class="invoice-shop-sub" style="font-size:11px;color:#7B849E;">مرکز خدمات اینترنتی و ثبت‌نام</div>
+          <div class="invoice-shop-sub" style="font-size:10px;color:#7B849E;">📞 086-43220702</div>
+          <div class="invoice-shop-sub" style="font-size:10px;color:#7B849E;">🏠 محلات - میدان چنار - پلاک 71</div>
         </div>
       </div>
-      <div class="invoice-title">فاکتور رسمی</div>
+      <div class="invoice-title" style="font-size:16px;font-weight:700;color:#1A56C4;text-align:left;">فاکتور رسمی</div>
     </div>
     
-    <div class="invoice-info">
+    <div class="invoice-info" style="display:flex;justify-content:space-between;font-size:11px;color:#3D4461;margin-bottom:10px;padding:6px 0;border-bottom:1px dashed #D6DCE9;">
       <div><strong>شماره فاکتور:</strong> #${order.id}</div>
       <div><strong>تاریخ:</strong> ${order.date||'-'}</div>
       <div><strong>وضعیت:</strong> ${order.status||'تکمیل شده'}</div>
     </div>
     
-    <div style="margin-bottom:12px;padding:8px 12px;background:#f8f9fa;border-radius:8px;">
+    <div style="margin-bottom:10px;padding:6px 10px;background:#f8f9fa;border-radius:6px;font-size:11px;">
       <div><strong>مشتری:</strong> ${custName}</div>
       <div><strong>تلفن:</strong> ${custPhone}</div>
       ${custNational ? `<div><strong>کد ملی:</strong> ${custNational}</div>` : ''}
     </div>
     
-    <table class="invoice-table">
+    <table class="invoice-table" style="width:100%;border-collapse:collapse;font-size:10px;margin:10px 0;">
       <thead>
         <tr>
-          <th>ردیف</th>
-          <th>خدمت</th>
-          <th>تعداد</th>
-          <th>قیمت واحد</th>
-          <th>تخفیف %</th>
-          <th>تخفیف هر واحد</th>
-          <th>جمع</th>
+          <th style="background:#F4F6FB;color:#1A56C4;padding:5px 6px;border:1px solid #D6DCE9;text-align:center;font-size:9px;">ردیف</th>
+          <th style="background:#F4F6FB;color:#1A56C4;padding:5px 6px;border:1px solid #D6DCE9;text-align:center;font-size:9px;">خدمت</th>
+          <th style="background:#F4F6FB;color:#1A56C4;padding:5px 6px;border:1px solid #D6DCE9;text-align:center;font-size:9px;">تعداد</th>
+          <th style="background:#F4F6FB;color:#1A56C4;padding:5px 6px;border:1px solid #D6DCE9;text-align:center;font-size:9px;">قیمت واحد</th>
+          <th style="background:#F4F6FB;color:#1A56C4;padding:5px 6px;border:1px solid #D6DCE9;text-align:center;font-size:9px;">تخفیف %</th>
+          <th style="background:#F4F6FB;color:#1A56C4;padding:5px 6px;border:1px solid #D6DCE9;text-align:center;font-size:9px;">تخفیف هر واحد</th>
+          <th style="background:#F4F6FB;color:#1A56C4;padding:5px 6px;border:1px solid #D6DCE9;text-align:center;font-size:9px;">جمع</th>
         </tr>
       </thead>
       <tbody>
@@ -3444,13 +3454,13 @@ function printInvoice() {
   orderItems.forEach((item, idx) => {
     html += `
       <tr>
-        <td>${idx+1}</td>
-        <td>${item.product_name}</td>
-        <td>${item.qty}</td>
-        <td>${fmtNum(item.unit_price)}</td>
-        <td>${item.discount_percent||0}%</td>
-        <td>${fmtNum(item.discount_amount||0)}</td>
-        <td>${fmtNum(item.subtotal)}</td>
+        <td style="padding:4px 6px;border:1px solid #D6DCE9;text-align:center;color:#1A1F36;font-size:10px;">${idx+1}</td>
+        <td style="padding:4px 6px;border:1px solid #D6DCE9;text-align:center;color:#1A1F36;font-size:10px;">${item.product_name}</td>
+        <td style="padding:4px 6px;border:1px solid #D6DCE9;text-align:center;color:#1A1F36;font-size:10px;">${item.qty}</td>
+        <td style="padding:4px 6px;border:1px solid #D6DCE9;text-align:center;color:#1A1F36;font-size:10px;">${fmtNum(item.unit_price)}</td>
+        <td style="padding:4px 6px;border:1px solid #D6DCE9;text-align:center;color:#1A1F36;font-size:10px;">${item.discount_percent||0}%</td>
+        <td style="padding:4px 6px;border:1px solid #D6DCE9;text-align:center;color:#1A1F36;font-size:10px;">${fmtNum(item.discount_amount||0)}</td>
+        <td style="padding:4px 6px;border:1px solid #D6DCE9;text-align:center;color:#1A1F36;font-size:10px;">${fmtNum(item.subtotal)}</td>
       </tr>
     `;
   });
@@ -3459,21 +3469,21 @@ function printInvoice() {
       </tbody>
     </table>
     
-    <div class="invoice-total">
+    <div class="invoice-total" style="display:flex;justify-content:flex-end;gap:16px;font-size:13px;font-weight:600;padding-top:10px;border-top:2px solid #1A56C4;margin-top:10px;">
       <span>جمع کل:</span>
       <span>${fmtNum(total)} ریال</span>
-      <span style="color:#1A7F4B;font-weight:700;font-size:13px;">(سود شما: ${fmtNum(totalProfit)} ریال)</span>
+      <span style="color:#1A7F4B;font-weight:700;font-size:12px;">(سود شما: ${fmtNum(totalProfit)} ریال)</span>
     </div>
     
-    <div class="invoice-signature">
+    <div class="invoice-signature" style="display:flex;justify-content:space-between;margin-top:10px;font-size:11px;color:#3D4461;">
       <div>امضا: .........................</div>
-      <div style="display:flex;align-items:center;gap:8px;">
+      <div style="display:flex;align-items:center;gap:6px;">
         <span>مهر و تاریخ:</span>
-        <span style="font-size:12px;color:#8B0000;font-weight:600;">${persianDate}</span>
+        <span style="font-size:11px;color:#8B0000;font-weight:600;">${persianDate}</span>
       </div>
     </div>
     
-    <div class="invoice-footer">
+    <div class="invoice-footer" style="text-align:center;font-size:10px;color:#7B849E;margin-top:12px;border-top:1px solid #D6DCE9;padding-top:8px;">
       کافینت چنار - مرکز خدمات اینترنتی و ثبت‌نام اینترنتی<br>
       کلیه حقوق محفوظ است
     </div>
@@ -3484,9 +3494,14 @@ function printInvoice() {
   container.innerHTML = html;
   container.style.display = 'block';
   
-  const printWindow = window.open('', '_blank', 'width=900,height=700');
+  // Better mobile printing
+  const printWindow = window.open('', '_blank', 'width=800,height=600,scrollbars=yes');
   if (!printWindow) {
-    toast('لطفاً باز شدن پنجره را مجاز کنید', 'danger');
+    // If popup blocked, use print directly on current window
+    const printContent = document.getElementById('invoice-print-container').innerHTML;
+    document.body.innerHTML = printContent;
+    window.print();
+    location.reload();
     return;
   }
   
@@ -3495,41 +3510,57 @@ function printInvoice() {
     <html dir="rtl" lang="fa">
     <head>
       <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>فاکتور #${order.id}</title>
       <style>
         @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700;800&display=swap');
         * { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family:'Vazirmatn',Tahoma,sans-serif; padding:20px; background:#f0f0f0; }
-        .invoice-print { max-width:900px; margin:0 auto; background:white; padding:30px; border-radius:12px; box-shadow:0 4px 20px rgba(0,0,0,0.1); position:relative; }
-        .invoice-header { display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #1A56C4; padding-bottom:16px; margin-bottom:16px; }
-        .invoice-logo { display:flex; align-items:center; gap:12px; }
-        .invoice-logo-icon { width:60px; height:60px; border-radius:14px; display:flex; align-items:center; justify-content:center; overflow:hidden; border:2px solid #1A56C4; }
+        body { font-family:'Vazirmatn',Tahoma,sans-serif; padding:10px; background:#f0f0f0; }
+        .invoice-print { max-width:900px; margin:0 auto; background:white; padding:20px; border-radius:8px; box-shadow:0 2px 10px rgba(0,0,0,0.1); position:relative; }
+        .invoice-header { display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #1A56C4; padding-bottom:12px; margin-bottom:12px; }
+        .invoice-logo { display:flex; align-items:center; gap:10px; }
+        .invoice-logo-icon { width:50px; height:50px; border-radius:12px; display:flex; align-items:center; justify-content:center; overflow:hidden; border:2px solid #1A56C4; }
         .invoice-logo-icon img { width:100%; height:100%; object-fit:contain; }
-        .invoice-shop-name { font-size:20px; font-weight:700; color:#1A56C4; }
-        .invoice-shop-sub { font-size:12px; color:#7B849E; }
-        .invoice-title { font-size:18px; font-weight:700; color:#1A56C4; text-align:left; }
-        .invoice-info { display:flex; justify-content:space-between; font-size:12px; color:#3D4461; margin-bottom:12px; padding:8px 0; border-bottom:1px dashed #D6DCE9; }
-        .invoice-table { width:100%; border-collapse:collapse; font-size:11px; margin:12px 0; }
-        .invoice-table th { background:#F4F6FB; color:#1A56C4; padding:6px 8px; border:1px solid #D6DCE9; text-align:center; font-size:10px; }
-        .invoice-table td { padding:5px 8px; border:1px solid #D6DCE9; text-align:center; color:#1A1F36; }
-        .invoice-total { display:flex; justify-content:flex-end; gap:20px; font-size:14px; font-weight:600; padding-top:12px; border-top:2px solid #1A56C4; margin-top:12px; }
+        .invoice-shop-name { font-size:18px; font-weight:700; color:#1A56C4; }
+        .invoice-shop-sub { font-size:11px; color:#7B849E; }
+        .invoice-title { font-size:16px; font-weight:700; color:#1A56C4; text-align:left; }
+        .invoice-info { display:flex; justify-content:space-between; font-size:11px; color:#3D4461; margin-bottom:10px; padding:6px 0; border-bottom:1px dashed #D6DCE9; }
+        .invoice-table { width:100%; border-collapse:collapse; font-size:10px; margin:10px 0; }
+        .invoice-table th { background:#F4F6FB; color:#1A56C4; padding:5px 6px; border:1px solid #D6DCE9; text-align:center; font-size:9px; }
+        .invoice-table td { padding:4px 6px; border:1px solid #D6DCE9; text-align:center; color:#1A1F36; font-size:10px; }
+        .invoice-total { display:flex; justify-content:flex-end; gap:16px; font-size:13px; font-weight:600; padding-top:10px; border-top:2px solid #1A56C4; margin-top:10px; }
         .invoice-total .profit-green { color:#1A7F4B; font-weight:700; }
-        .invoice-signature { display:flex; justify-content:space-between; margin-top:12px; font-size:12px; color:#3D4461; }
-        .invoice-footer { text-align:center; font-size:11px; color:#7B849E; margin-top:16px; border-top:1px solid #D6DCE9; padding-top:10px; }
-        .stamp-container { position:absolute; bottom:80px; left:30px; z-index:10; }
-        .stamp-container img { width:110px; height:110px; opacity:0.75; transform:rotate(-15deg); filter:drop-shadow(0 2px 8px rgba(0,0,0,0.15)); }
+        .invoice-signature { display:flex; justify-content:space-between; margin-top:10px; font-size:11px; color:#3D4461; }
+        .invoice-footer { text-align:center; font-size:10px; color:#7B849E; margin-top:12px; border-top:1px solid #D6DCE9; padding-top:8px; }
+        .stamp-container { position:absolute; bottom:50px; left:20px; z-index:10; }
+        .stamp-container img { width:80px; height:80px; opacity:0.75; transform:rotate(-15deg); filter:drop-shadow(0 2px 8px rgba(0,0,0,0.15)); }
         @media print {
           body { background:white; padding:0; }
-          .invoice-print { box-shadow:none; border-radius:0; padding:20px; }
+          .invoice-print { box-shadow:none; border-radius:0; padding:15px; }
           .stamp-container img { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
           .invoice-table th { background:#e9ecef !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+          .invoice-logo-icon { border:2px solid #1A56C4 !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+        }
+        @media (max-width: 600px) {
+          .invoice-print { padding:12px; }
+          .invoice-shop-name { font-size:15px; }
+          .invoice-title { font-size:14px; }
+          .invoice-table { font-size:9px; }
+          .invoice-table th, .invoice-table td { padding:3px 4px; font-size:8px; }
+          .invoice-total { font-size:11px; gap:10px; flex-wrap:wrap; }
+          .stamp-container img { width:60px; height:60px; }
         }
       </style>
     </head>
     <body>
       ${html}
       <script>
-        window.onload = function() { window.print(); window.close(); }
+        window.onload = function() { 
+          setTimeout(function() {
+            window.print(); 
+            setTimeout(function() { window.close(); }, 1500);
+          }, 500);
+        }
       <\/script>
     </body>
     </html>
@@ -4093,6 +4124,7 @@ console.log('   ✅ ویرایش سفارش با تاریخ شمسی به صور
 console.log('   ✅ فونت و اعداد در فیلد تاریخ شمسی با فونت و اعداد فارسی');
 console.log('   ✅ رفع مشکل نمایش پس‌زمینه و خروج در کروم دسکتاپ');
 console.log('   ✅ نام برنامه روی هوم اسکرین "کافینت چنار"');
+console.log('   ✅ رفع مشکل چاپ فاکتور روی گوشی');
 </script>
 </body>
 </html>
