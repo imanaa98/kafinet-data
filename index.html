@@ -2255,8 +2255,11 @@ function toEnglishDigits(str) {
   return s;
 }
 
-function today() { return toEnglishDigits(new Date().toLocaleDateString('fa-IR')); }
-function nowStr() { return toEnglishDigits(new Date().toLocaleString('fa-IR')); }
+function today() { return new Date().toLocaleDateString('fa-IR'); }
+function nowStr() { return new Date().toLocaleString('fa-IR').replace(/،/g, ' '); }
+function fmtNum(n) { return Number(n||0).toLocaleString('fa-IR'); }
+function nextId(arr) { return arr.length ? Math.max(...arr.map(x=>x.id||0)) + 1 : 1; }
+function norm(s) { return (s||'').replace(/ي/g,'ی').replace(/ك/g,'ک').toLowerCase(); }
 function fmtNum(n) { return Number(n||0).toLocaleString('fa-IR'); }
 function nextId(arr) { return arr.length ? Math.max(...arr.map(x=>x.id||0)) + 1 : 1; }
 function norm(s) { return (s||'').replace(/ي/g,'ی').replace(/ك/g,'ک').toLowerCase(); }
@@ -2526,17 +2529,18 @@ function loadDashboard() {
   const custs = DB.get('customers')||[];
   const orders = DB.get('orders')||[];
   const news = DB.get('internal_news')||[];
-  const todayStr = today(); // now English digits: 1403/04/12
+  const todayStr = today(); // Persian digits: ۱۴۰۳/۰۴/۱۲
 
-  // Normalize: compare both sides with English digits
+  // Normalize both sides to English digits for robust comparison
+  const todayNorm = toEnglishDigits(todayStr);
   const todayOrders = orders.filter(o => {
     if (!o.date) return false;
-    const orderDate = toEnglishDigits(o.date.split(' ')[0]); // get date part, convert to English
-    return orderDate === todayStr;
+    const orderDate = toEnglishDigits(o.date).replace(/،/g, ' ').split(' ')[0];
+    return orderDate === todayNorm;
   });
   const rev = todayOrders.reduce((s,o)=>s+(o.total||0),0);
   const debts = custs.reduce((s,c)=>s+(c.debt||0),0);
-  const newRegs = custs.filter(c=>toEnglishDigits(c.join_date||'')===todayStr);
+  const newRegs = custs.filter(c => toEnglishDigits(c.join_date || '') === todayNorm);
 
   document.getElementById('s-services').textContent = svcs.length;
   document.getElementById('s-customers').textContent = custs.length;
@@ -3031,9 +3035,10 @@ function submitOrder() {
 // PERSIAN DATETIME PICKER HELPERS WITH SECONDS
 // ============================================
 function getPersianDateParts(dateStr) {
-  // dateStr format: 1403/01/15 14:30:25 or 1403/01/15 14:30
+  // dateStr format: 1403/01/15 14:30:25 or ۱۴۰۳/۰۱/۱۵ ۱۴:۳۰:۲۵
   if (!dateStr) return null;
-  const parts = dateStr.split(' ');
+  const normalized = toEnglishDigits(dateStr).replace(/،/g, ' ');
+  const parts = normalized.split(' ');
   if (parts.length < 2) return null;
   const dateParts = parts[0].split('/');
   const timeParts = parts[1].split(':');
@@ -3125,13 +3130,10 @@ function initPersianDatePickers() {
 }
 
 function setPersianDateTime(dateStr) {
-  // Normalize input to English digits first
-  const normalizedDateStr = toEnglishDigits(dateStr || '');
-  const parts = getPersianDateParts(normalizedDateStr);
+  const parts = getPersianDateParts(dateStr || '');
   if (!parts) {
-    // Set to current time
+    // Set to current time using Persian calendar approximation
     const now = new Date();
-    // Convert Gregorian to Persian (rough approximation)
     const pYear = now.getFullYear() - 621;
     const pMonth = now.getMonth() + 1;
     const pDay = now.getDate();
