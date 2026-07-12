@@ -1911,6 +1911,7 @@ const SYNC_CONFIG = {
 let syncTimer = null;
 let isSyncing = false;
 let pendingChanges = false;
+let localDirty = false;  // ← NEW: تغییرات محلی که هنوز سینک نشده
 let currentSHA = null;
 
 function getRepoUrl() {
@@ -1930,11 +1931,11 @@ async function syncToCloud() {
   if (!SYNC_CONFIG.ENABLED || isSyncing) return;
   const token = getToken();
   if (!token) return;
-  
+
   try {
     isSyncing = true;
     setSyncStatus('syncing', '⏳ همگام‌سازی...');
-    
+
     const data = {
       services: DB.get('services'),
       customers: DB.get('customers'),
@@ -1945,9 +1946,9 @@ async function syncToCloud() {
       tips: DB.get('tips'),
       last_update: nowStr()
     };
-    
+
     const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
-    
+
     let sha = null;
     try {
       const getResponse = await fetch(getRepoUrl(), {
@@ -1956,24 +1957,22 @@ async function syncToCloud() {
           'Accept': 'application/vnd.github.v3+json'
         }
       });
-      
+
       if (getResponse.ok) {
         const fileData = await getResponse.json();
         sha = fileData.sha;
       }
     } catch (e) {
-      // اگر فایل قبلاً وجود نداشته باشد (404) یا خطای شبکه رخ دهد، sha همچنان null می‌ماند
-      // و درخواست PUT بعدی به‌عنوان ایجاد فایل جدید ارسال می‌شود. خطا را برای دیباگ لاگ می‌کنیم.
       console.warn('عدم دریافت sha فایل قبل از سینک (احتمالاً فایل جدید است):', e);
     }
-    
+
     const body = {
       message: `همگام‌سازی خودکار - ${nowStr()}`,
       content: content,
       branch: 'main'
     };
     if (sha) body.sha = sha;
-    
+
     const updateResponse = await fetch(getRepoUrl(), {
       method: 'PUT',
       headers: {
@@ -1983,39 +1982,41 @@ async function syncToCloud() {
       },
       body: JSON.stringify(body)
     });
-    
+
     if (!updateResponse.ok) {
       const err = new Error('Sync failed');
       err.status = updateResponse.status;
       throw err;
     }
-    
+
     const result = await updateResponse.json();
     currentSHA = result.content.sha;
     setSyncStatus('synced', '✅ همگام شد');
     pendingChanges = false;
-    
+    localDirty = false;  // ← فقط در صورت موفقیت کامل false می‌شود
+
   } catch (e) {
     console.error('Sync error:', e);
     if (e.status === 401 || e.status === 403) {
       setSyncStatus('error', '⚠️ توکن نامعتبر یا دسترسی ناکافی');
     } else if (e.status === 409) {
-      // تعارض: نسخه‌ی روی گیت‌هاب از زمان آخرین دریافت ما تغییر کرده (مثلاً دستگاه دیگری هم‌زمان ذخیره کرده)
       setSyncStatus('error', '⚠️ تعارض داده؛ ابتدا دریافت از سرور را اجرا کنید');
       toast('داده‌ها روی سرور تغییر کرده؛ لطفاً صفحه را رفرش کنید تا آخرین نسخه دریافت شود', 'danger');
     } else {
       setSyncStatus('error', '⚠️ خطا در همگام‌سازی');
     }
+    // ← pendingChanges و localDirty همچنان true می‌مانند تا در فرصت بعدی دوباره تلاش شود
   } finally {
     isSyncing = false;
   }
 }
 
 async function syncFromCloud() {
-  if (!SYNC_CONFIG.ENABLED || isSyncing) return;
+  // ← FIX: اگر تغییرات محلی داریم که هنوز ارسال نشده، داده‌های قدیمی گیت‌هاب را نمی‌نویسیم
+  if (!SYNC_CONFIG.ENABLED || isSyncing || localDirty || pendingChanges) return;
   const token = getToken();
   if (!token) return;
-  
+
   try {
     isSyncing = true;
     const response = await fetch(getRepoUrl(), {
@@ -2024,7 +2025,7 @@ async function syncFromCloud() {
         'Accept': 'application/vnd.github.v3+json'
       }
     });
-    
+
     if (!response.ok) {
       if (response.status === 404) {
         setSyncStatus('offline', '💾 فایل داده‌ها وجود ندارد');
@@ -2036,15 +2037,15 @@ async function syncFromCloud() {
       }
       throw new Error('Fetch failed');
     }
-    
+
     const fileData = await response.json();
     currentSHA = fileData.sha;
     const content = decodeURIComponent(escape(atob(fileData.content)));
     const data = JSON.parse(content);
-    
+
     let changed = false;
     const tables = ['services', 'customers', 'orders', 'order_items', 'tariffs', 'internal_news', 'tips'];
-    
+
     tables.forEach(key => {
       if (data[key]) {
         const local = DB.get(key);
@@ -2055,7 +2056,7 @@ async function syncFromCloud() {
         }
       }
     });
-    
+
     if (changed) {
       setSyncStatus('synced', '🔄 داده‌ها بروز شد');
       const activePage = document.querySelector('.page.active');
@@ -2067,7 +2068,7 @@ async function syncFromCloud() {
     } else {
       setSyncStatus('synced', '✅ همگام');
     }
-    
+
   } catch (e) {
     console.error('Sync from cloud error:', e);
     if (e.message.includes('401') || e.message.includes('403')) {
@@ -2082,15 +2083,17 @@ async function syncFromCloud() {
 
 function autoSync() {
   if (!SYNC_CONFIG.ENABLED) return;
+  localDirty = true;       // ← NEW: نشان‌دهنده تغییرات محلی
   pendingChanges = true;
   if (syncTimer) { clearTimeout(syncTimer); syncTimer = null; }
   syncTimer = setTimeout(() => {
-    if (pendingChanges) { syncToCloud(); pendingChanges = false; }
+    if (pendingChanges) { syncToCloud(); }
+    // ← FIX: pendingChanges و localDirty فقط در صورت موفقیت syncToCloud false می‌شوند
     syncTimer = null;
   }, SYNC_CONFIG.SAVE_DELAY);
 }
 
-function initSync() {
+function initSync() {function initSync() {
   if (SYNC_CONFIG.ENABLED) {
     const token = SYNC_CONFIG.GITHUB_TOKEN;
     if (token && token !== '') {
@@ -2242,8 +2245,18 @@ function initDB() {
 // ============================================
 // UTILS
 // ============================================
-function today() { return new Date().toLocaleDateString('fa-IR'); }
-function nowStr() { return new Date().toLocaleString('fa-IR'); }
+function toEnglishDigits(str) {
+  const persianDigits = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+  const arabicDigits  = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
+  let s = String(str || '');
+  for (let i = 0; i < 10; i++) {
+    s = s.replace(new RegExp(persianDigits[i], 'g'), i).replace(new RegExp(arabicDigits[i], 'g'), i);
+  }
+  return s;
+}
+
+function today() { return toEnglishDigits(new Date().toLocaleDateString('fa-IR')); }
+function nowStr() { return toEnglishDigits(new Date().toLocaleString('fa-IR')); }
 function fmtNum(n) { return Number(n||0).toLocaleString('fa-IR'); }
 function nextId(arr) { return arr.length ? Math.max(...arr.map(x=>x.id||0)) + 1 : 1; }
 function norm(s) { return (s||'').replace(/ي/g,'ی').replace(/ك/g,'ک').toLowerCase(); }
@@ -2513,12 +2526,17 @@ function loadDashboard() {
   const custs = DB.get('customers')||[];
   const orders = DB.get('orders')||[];
   const news = DB.get('internal_news')||[];
-  const todayStr = today();
+  const todayStr = today(); // now English digits: 1403/04/12
 
-  const todayOrders = orders.filter(o=>o.date&&o.date.startsWith(todayStr.split(' ')[0]));
+  // Normalize: compare both sides with English digits
+  const todayOrders = orders.filter(o => {
+    if (!o.date) return false;
+    const orderDate = toEnglishDigits(o.date.split(' ')[0]); // get date part, convert to English
+    return orderDate === todayStr;
+  });
   const rev = todayOrders.reduce((s,o)=>s+(o.total||0),0);
   const debts = custs.reduce((s,c)=>s+(c.debt||0),0);
-  const newRegs = custs.filter(c=>c.join_date===todayStr);
+  const newRegs = custs.filter(c=>toEnglishDigits(c.join_date||'')===todayStr);
 
   document.getElementById('s-services').textContent = svcs.length;
   document.getElementById('s-customers').textContent = custs.length;
@@ -2791,7 +2809,7 @@ function addCustomer() {
     debt:+(document.getElementById('cust-debt').value||0),
     address:document.getElementById('cust-addr').value,
     info:document.getElementById('cust-info').value,
-    join_date:today()
+    join_date:today() // English digits: 1403/04/12
   });
   DB.set('customers',custs); loadCustomers(); autoSync(); toast('مشتری افزوده شد','success');
 }
@@ -3107,7 +3125,9 @@ function initPersianDatePickers() {
 }
 
 function setPersianDateTime(dateStr) {
-  const parts = getPersianDateParts(dateStr);
+  // Normalize input to English digits first
+  const normalizedDateStr = toEnglishDigits(dateStr || '');
+  const parts = getPersianDateParts(normalizedDateStr);
   if (!parts) {
     // Set to current time
     const now = new Date();
