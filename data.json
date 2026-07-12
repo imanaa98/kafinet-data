@@ -283,6 +283,13 @@
       "date": "1405/04/20 19:03:00",
       "total": 410002,
       "status": "تکمیل شده"
+    },
+    {
+      "id": 7,
+      "customer_id": 1,
+      "date": "۱۴۰۵/۰۷/۱۲ ۲۰:۳۴:۴۹",
+      "total": 2600000,
+      "status": "تکمیل شده"
     }
   ],
   "order_items": [
@@ -441,6 +448,18 @@
       "total_discount": 90000,
       "final_unit_price": 0,
       "subtotal": 0
+    },
+    {
+      "order_id": 7,
+      "product_id": 2,
+      "product_name": "پرینت سیاه‌ سفید تک رو a4",
+      "qty": 50,
+      "unit_price": 80000,
+      "discount_percent": 10,
+      "discount_amount": 20000,
+      "total_discount": 1400000,
+      "final_unit_price": 52000,
+      "subtotal": 2600000
     }
   ],
   "tariffs": [],
@@ -483,5 +502,5 @@
       "date": "۱۴۰۵/۴/۲۱"
     }
   ],
-  "last_update": "۱۴۰۵/۰۷/۱۲ ۲۰:۳۳:۱۳"
+  "last_update": "۱۴۰۵/۰۷/۱۲ ۲۰:۳۴:۵۲"
 }
