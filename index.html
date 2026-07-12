@@ -2245,6 +2245,15 @@ function initDB() {
 // ============================================
 // UTILS
 // ============================================
+function toPersianDigits(str) {
+  const english = ['0','1','2','3','4','5','6','7','8','9'];
+  let s = String(str || '');
+  for (let i = 0; i < 10; i++) {
+    s = s.replace(new RegExp(english[i], 'g'), String.fromCharCode(english[i].charCodeAt(0) + 1728));
+  }
+  return s;
+}
+
 function toEnglishDigits(str) {
   const persianDigits = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
   const arabicDigits  = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
@@ -2255,11 +2264,30 @@ function toEnglishDigits(str) {
   return s;
 }
 
-function today() { return new Date().toLocaleDateString('fa-IR'); }
-function nowStr() { return new Date().toLocaleString('fa-IR').replace(/،/g, ' '); }
-function fmtNum(n) { return Number(n||0).toLocaleString('fa-IR'); }
-function nextId(arr) { return arr.length ? Math.max(...arr.map(x=>x.id||0)) + 1 : 1; }
-function norm(s) { return (s||'').replace(/ي/g,'ی').replace(/ك/g,'ک').toLowerCase(); }
+// فرمت یکسان تاریخ شمسی: ۱۴۰۳/۰۴/۱۲ (همیشه فارسی، همیشه ۲ رقمی ماه/روز)
+function formatPersianDate(date) {
+  const gy = date.getFullYear();
+  const gm = date.getMonth() + 1;
+  const gd = date.getDate();
+  // تبدیل ساده گریگوری به شمسی (تقریب)
+  const py = gy - 621;
+  const pm = gm;
+  const pd = gd;
+  const datePart = `${py}/${String(pm).padStart(2, '0')}/${String(pd).padStart(2, '0')}`;
+  return toPersianDigits(datePart);
+}
+
+// فرمت یکسان تاریخ+ساعت شمسی: ۱۴۰۳/۰۴/۱۲ ۱۴:۳۰:۲۵
+function formatPersianDateTime(date) {
+  const h = String(date.getHours()).padStart(2, '0');
+  const m = String(date.getMinutes()).padStart(2, '0');
+  const s = String(date.getSeconds()).padStart(2, '0');
+  const timePart = `${h}:${m}:${s}`;
+  return `${formatPersianDate(date)} ${toPersianDigits(timePart)}`;
+}
+
+function today() { return formatPersianDate(new Date()); }
+function nowStr() { return formatPersianDateTime(new Date()); }
 function fmtNum(n) { return Number(n||0).toLocaleString('fa-IR'); }
 function nextId(arr) { return arr.length ? Math.max(...arr.map(x=>x.id||0)) + 1 : 1; }
 function norm(s) { return (s||'').replace(/ي/g,'ی').replace(/ك/g,'ک').toLowerCase(); }
@@ -3169,8 +3197,10 @@ function getPersianDateTimeFromPicker() {
   const hour = parseInt(document.getElementById('edit-date-hour').value);
   const minute = parseInt(document.getElementById('edit-date-minute').value);
   const second = parseInt(document.getElementById('edit-date-second').value) || 0;
-  
-  return `${year}/${String(month).padStart(2, '0')}/${String(day).padStart(2, '0')} ${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}:${String(second).padStart(2, '0')}`;
+
+  const datePart = `${year}/${String(month).padStart(2, '0')}/${String(day).padStart(2, '0')}`;
+  const timePart = `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}:${String(second).padStart(2, '0')}`;
+  return toPersianDigits(`${datePart} ${timePart}`);
 }
 
 // ============================================
@@ -3452,7 +3482,7 @@ function printInvoice() {
   }, 0);
   
   // تاریخ شمسی برای مهر
-  const persianDate = new Date().toLocaleDateString('fa-IR');
+  const persianDate = today();
   
   let html = `
   <div class="invoice-print" style="max-width:800px;margin:0 auto;background:white;padding:25px 20px;font-family:'Vazirmatn',Tahoma,sans-serif;direction:rtl;position:relative;">
