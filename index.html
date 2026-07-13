@@ -953,69 +953,7 @@
     filter: drop-shadow(0 2px 8px rgba(0,0,0,0.15));
   }
 
-  
-  /* Loading Spinner */
-  .spinner-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    z-index: 9998;
-    background: rgba(0,0,0,0.3);
-    align-items: center;
-    justify-content: center;
-    backdrop-filter: blur(2px);
-  }
-  .spinner-overlay.show { display: flex; }
-  .spinner {
-    width: 40px;
-    height: 40px;
-    border: 3px solid var(--surface3);
-    border-top-color: var(--accent);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  /* Empty state illustration */
-  .empty-state {
-    text-align: center;
-    padding: 40px 20px;
-    color: var(--muted);
-  }
-  .empty-state-icon {
-    font-size: 48px;
-    margin-bottom: 12px;
-    opacity: 0.5;
-  }
-
-  /* Toast improvements */
-  #toast {
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    z-index: 2000;
-    background: var(--text);
-    color: #fff;
-    padding: 12px 20px;
-    border-radius: var(--radius-sm);
-    font-size: 13px;
-    font-weight: 500;
-    transform: translateY(100px);
-    opacity: 0;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.25);
-    max-width: 90%;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  #toast.show { transform: translateY(0); opacity: 1; }
-  #toast.success { background: var(--success); }
-  #toast.danger { background: var(--danger); }
-  #toast.warning { background: var(--warning); color: #fff; }
-  #toast.info { background: var(--info); }
-
-@media print {
+  @media print {
     #app, #sidebar, #topbar, .modal-overlay, #toast, #login-page {
       display: none !important;
     }
@@ -1379,13 +1317,6 @@
     }
   }
 </style>
-
-  <!-- Content Security Policy -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src https://api.github.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
-  <meta http-equiv="X-Content-Type-Options" content="nosniff">
-  <meta http-equiv="X-Frame-Options" content="DENY">
-  <meta name="referrer" content="strict-origin-when-cross-origin">
-
 </head>
 <body>
 
@@ -2233,41 +2164,12 @@ function initSync() {
 // ============================================
 // LOGIN
 // ============================================
-
-// Rate limiting for login
-const LoginRateLimiter = {
-  attempts: 0,
-  lastAttempt: 0,
-  lockoutMinutes: 15,
-
-  canAttempt() {
-    if (this.attempts >= 5) {
-      const elapsed = (Date.now() - this.lastAttempt) / 1000 / 60;
-      if (elapsed < this.lockoutMinutes) {
-        const remaining = Math.ceil(this.lockoutMinutes - elapsed);
-        toast(`⏱️ حساب موقتاً قفل شده. ${remaining} دقیقه دیگر تلاش کنید.`, 'danger');
-        return false;
-      }
-      this.attempts = 0;
-    }
-    return true;
-  },
-
-  recordAttempt() {
-    this.attempts++;
-    this.lastAttempt = Date.now();
-  }
-};
-
 function login() {
   const tokenInput = document.getElementById('login-token');
   const error = document.getElementById('login-error');
   const token = tokenInput.value.trim();
   
-  if (!LoginRateLimiter.canAttempt()) return;
-
   if (!token || token === '') {
-    LoginRateLimiter.recordAttempt();
     error.textContent = '❌ لطفاً توکن گیت‌هاب را وارد کنید!';
     tokenInput.focus();
     tokenInput.style.borderColor = 'var(--danger)';
@@ -2318,440 +2220,9 @@ function updateLoginStatus(status, text) {
 // ============================================
 // DATA STORE
 // ============================================
-// ============================================
-// INDEXEDDB (Primary) + localStorage (Fallback)
-// ============================================
-const IDB = {
-  db: null,
-  DB_NAME: 'kafinet_db',
-  DB_VERSION: 1,
-
-  async init() {
-    return new Promise((resolve, reject) => {
-      const request = indexedDB.open(this.DB_NAME, this.DB_VERSION);
-      request.onerror = () => reject(request.error);
-      request.onsuccess = () => { this.db = request.result; resolve(this.db); };
-      request.onupgradeneeded = (event) => {
-        const db = event.target.result;
-        const tables = ['services', 'customers', 'orders', 'order_items', 'tariffs', 'internal_news', 'tips', 'meta'];
-        tables.forEach(table => {
-          if (!db.objectStoreNames.contains(table)) {
-            db.createObjectStore(table, { keyPath: '_key' });
-          }
-        });
-      };
-    });
-  },
-
-  async get(key) {
-    if (!this.db) await this.init();
-    return new Promise((resolve) => {
-      try {
-        const tx = this.db.transaction(key, 'readonly');
-        const store = tx.objectStore(key);
-        const req = store.get(key);
-        req.onsuccess = () => {
-          if (req.result) {
-            resolve(req.result._value);
-          } else {
-            // Fallback to localStorage for migration
-            const ls = localStorage.getItem(key);
-            resolve(ls ? JSON.parse(ls) : null);
-          }
-        };
-        req.onerror = () => resolve(null);
-      } catch (e) {
-        // Fallback
-        const ls = localStorage.getItem(key);
-        resolve(ls ? JSON.parse(ls) : null);
-      }
-    });
-  },
-
-  async set(key, value) {
-    if (!this.db) await this.init();
-    return new Promise((resolve) => {
-      try {
-        const tx = this.db.transaction(key, 'readwrite');
-        const store = tx.objectStore(key);
-        const req = store.put({ _key: key, _value: value });
-        req.onsuccess = () => {
-          // Also sync to localStorage as backup
-          try { localStorage.setItem(key, JSON.stringify(value)); } catch(e) {}
-          resolve(true);
-        };
-        req.onerror = () => {
-          // Fallback to localStorage
-          try { localStorage.setItem(key, JSON.stringify(value)); } catch(e) {}
-          resolve(false);
-        };
-      } catch (e) {
-        try { localStorage.setItem(key, JSON.stringify(value)); } catch(e2) {}
-        resolve(false);
-      }
-    });
-  },
-
-  async getAll(storeName) {
-    const data = await this.get(storeName);
-    return data || [];
-  }
-};
-
-// Backward-compatible DB wrapper
 const DB = {
-  get(k) { 
-    try { 
-      const ls = localStorage.getItem(k);
-      return ls ? JSON.parse(ls) : null;
-    } catch { return null; } 
-  },
-  set(k, v) { 
-    localStorage.setItem(k, JSON.stringify(v));
-    // Async sync to IndexedDB (non-blocking)
-    IDB.set(k, v).catch(() => {});
-  },
-};
-
-
-// Simple validation schema
-const Validator = {
-  required(value, fieldName) {
-    if (!value || String(value).trim() === '') return `${fieldName} الزامی است`;
-    return null;
-  },
-  min(value, min, fieldName) {
-    if (Number(value) < min) return `${fieldName} باید حداقل ${min} باشد`;
-    return null;
-  },
-  max(value, max, fieldName) {
-    if (Number(value) > max) return `${fieldName} باید حداکثر ${max} باشد`;
-    return null;
-  },
-  phone(value) {
-    if (!value) return null;
-    if (!/^09\d{9}$/.test(String(value).trim())) return 'شماره موبایل باید ۱۱ رقم و با ۰۹ شروع شود';
-    return null;
-  },
-  nationalCode(value) {
-    if (!value) return null;
-    const code = String(value).trim();
-    if (!/^\d{10}$/.test(code)) return 'کد ملی باید ۱۰ رقم باشد';
-    // Simple checksum validation
-    const digits = code.split('').map(Number);
-    const sum = digits.slice(0, 9).reduce((s, d, i) => s + d * (10 - i), 0);
-    const remainder = sum % 11;
-    const checkDigit = digits[9];
-    const validCheck = remainder < 2 ? checkDigit === remainder : checkDigit === 11 - remainder;
-    if (!validCheck) return 'کد ملی نامعتبر است';
-    return null;
-  },
-  validate(fields) {
-    const errors = {};
-    for (const [key, rules] of Object.entries(fields)) {
-      for (const rule of rules) {
-        const error = rule.fn(rule.value, ...(rule.args || []));
-        if (error) { errors[key] = error; break; }
-      }
-    }
-    return Object.keys(errors).length > 0 ? errors : null;
-  }
-};
-
-
-// Auto-save form drafts
-const DraftSaver = {
-  prefix: 'draft_',
-  save(formId, data) {
-    try { sessionStorage.setItem(this.prefix + formId, JSON.stringify({ data, time: Date.now() })); } catch(e) {}
-  },
-  load(formId) {
-    try {
-      const raw = sessionStorage.getItem(this.prefix + formId);
-      if (!raw) return null;
-      const parsed = JSON.parse(raw);
-      // Draft expires after 24 hours
-      if (Date.now() - parsed.time > 24 * 60 * 60 * 1000) {
-        sessionStorage.removeItem(this.prefix + formId);
-        return null;
-      }
-      return parsed.data;
-    } catch(e) { return null; }
-  },
-  clear(formId) {
-    sessionStorage.removeItem(this.prefix + formId);
-  }
-};
-
-
-// Virtual scrolling for large tables
-function renderVirtualTable(containerId, data, rowHeight = 40, visibleRows = 20) {
-  const container = document.getElementById(containerId);
-  if (!container) return;
-
-  const totalHeight = data.length * rowHeight;
-  const wrapper = document.createElement('div');
-  wrapper.style.cssText = `height:${visibleRows * rowHeight}px;overflow-y:auto;position:relative;`;
-  wrapper.innerHTML = `<div style="height:${totalHeight}px;position:relative;"><div class="virtual-content" style="position:absolute;top:0;left:0;right:0;"></div></div>`;
-
-  const contentDiv = wrapper.querySelector('.virtual-content');
-
-  function renderVisible() {
-    const scrollTop = wrapper.scrollTop;
-    const startIdx = Math.floor(scrollTop / rowHeight);
-    const endIdx = Math.min(startIdx + visibleRows + 2, data.length);
-    const offset = startIdx * rowHeight;
-
-    contentDiv.style.transform = `translateY(${offset}px)`;
-    contentDiv.innerHTML = data.slice(startIdx, endIdx).map(row => row.html).join('');
-  }
-
-  wrapper.addEventListener('scroll', throttle(renderVisible, 50));
-  renderVisible();
-
-  container.innerHTML = '';
-  container.appendChild(wrapper);
-}
-
-
-// Loading spinner control
-function showSpinner() {
-  document.getElementById('spinner-overlay')?.classList.add('show');
-}
-function hideSpinner() {
-  document.getElementById('spinner-overlay')?.classList.remove('show');
-}
-
-// Enhanced toast with icons
-const ToastIcons = {
-  success: '✅',
-  danger: '❌',
-  warning: '⚠️',
-  info: 'ℹ️',
-  default: ''
-};
-
-function showToast(msg, type = '') {
-  const t = document.getElementById('toast');
-  const icon = ToastIcons[type] || ToastIcons.default;
-  t.innerHTML = icon ? `<span>${icon}</span><span>${msg}</span>` : msg;
-  t.className = 'show ' + type;
-
-  // Auto-dismiss
-  if (window._toastTimer) clearTimeout(window._toastTimer);
-  window._toastTimer = setTimeout(() => {
-    t.className = '';
-  }, type === 'danger' ? 5000 : 3000);
-}
-
-// Override old toast function
-const toast = showToast;
-
-
-// Table pagination
-function paginateTable(tbodyId, data, renderFn, pageSize = 20) {
-  let currentPage = 1;
-  const totalPages = Math.ceil(data.length / pageSize);
-
-  function renderPage(page) {
-    currentPage = Math.max(1, Math.min(page, totalPages));
-    const start = (currentPage - 1) * pageSize;
-    const end = start + pageSize;
-    const pageData = data.slice(start, end);
-
-    renderFn(pageData);
-
-    // Add pagination controls
-    const tbody = document.getElementById(tbodyId);
-    const existingPager = tbody.parentElement?.querySelector('.table-pager');
-    if (existingPager) existingPager.remove();
-
-    if (totalPages > 1) {
-      const pager = document.createElement('div');
-      pager.className = 'table-pager';
-      pager.style.cssText = 'display:flex;gap:4px;justify-content:center;padding:10px;border-top:1px solid var(--border);font-size:12px;';
-
-      pager.innerHTML = `
-        <button class="btn btn-sm btn-secondary" ${currentPage === 1 ? 'disabled' : ''} onclick="window._pagerHandlers['${tbodyId}']?.(${currentPage - 1})">◀ قبلی</button>
-        <span style="padding:6px 12px;color:var(--muted);">صفحه ${currentPage} از ${totalPages}</span>
-        <button class="btn btn-sm btn-secondary" ${currentPage === totalPages ? 'disabled' : ''} onclick="window._pagerHandlers['${tbodyId}']?.(${currentPage + 1})">بعدی ▶</button>
-      `;
-
-      tbody.parentElement?.appendChild(pager);
-    }
-  }
-
-  if (!window._pagerHandlers) window._pagerHandlers = {};
-  window._pagerHandlers[tbodyId] = renderPage;
-
-  renderPage(1);
-  return { goToPage: renderPage, totalPages };
-}
-
-
-// Export to CSV (Excel-compatible)
-function exportToCSV(data, filename, headers) {
-  if (!data || !data.length) { toast('داده‌ای برای خروجی وجود ندارد', 'warning'); return; }
-
-  const csvRows = [];
-  // BOM for Excel UTF-8
-  csvRows.push('﻿' + headers.join(','));
-
-  for (const row of data) {
-    const values = headers.map(h => {
-      const val = row[h] ?? '';
-      // Escape quotes and wrap in quotes if contains comma
-      const escaped = String(val).replace(/"/g, '""');
-      return escaped.includes(',') ? `"${escaped}"` : escaped;
-    });
-    csvRows.push(values.join(','));
-  }
-
-  const blob = new Blob([csvRows.join('\n')], { type: 'text/csv;charset=utf-8;' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = filename + '.csv';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-  toast('✅ فایل CSV ذخیره شد', 'success');
-}
-
-
-// Enhanced confirmation dialog
-function confirmAction(message, options = {}) {
-  return new Promise((resolve) => {
-    const { title = 'تأیید عملیات', confirmText = 'تأیید', cancelText = 'انصراف', danger = false } = options;
-
-    const overlay = document.createElement('div');
-    overlay.className = 'modal-overlay';
-    overlay.style.cssText = 'display:flex;z-index:3000;';
-    overlay.innerHTML = `
-      <div class="modal" style="max-width:400px;text-align:center;">
-        <div style="font-size:40px;margin-bottom:12px;">${danger ? '⚠️' : '❓'}</div>
-        <div style="font-size:16px;font-weight:700;margin-bottom:8px;">${title}</div>
-        <div style="font-size:13px;color:var(--text2);margin-bottom:20px;line-height:1.7;">${message}</div>
-        <div style="display:flex;gap:8px;justify-content:center;">
-          <button class="btn btn-secondary" id="confirm-cancel">${cancelText}</button>
-          <button class="btn ${danger ? 'btn-danger' : 'btn-primary'}" id="confirm-ok">${confirmText}</button>
-        </div>
-      </div>
-    `;
-
-    document.body.appendChild(overlay);
-
-    const cleanup = () => {
-      overlay.remove();
-      document.removeEventListener('keydown', keyHandler);
-    };
-
-    const keyHandler = (e) => {
-      if (e.key === 'Escape') { cleanup(); resolve(false); }
-      if (e.key === 'Enter') { cleanup(); resolve(true); }
-    };
-
-    document.addEventListener('keydown', keyHandler);
-
-    overlay.querySelector('#confirm-cancel').onclick = () => { cleanup(); resolve(false); };
-    overlay.querySelector('#confirm-ok').onclick = () => { cleanup(); resolve(true); };
-    overlay.onclick = (e) => { if (e.target === overlay) { cleanup(); resolve(false); } };
-  });
-}
-
-// Replace native confirm
-const nativeConfirm = window.confirm;
-window.confirm = async (message) => {
-  // Use enhanced for important actions, native for simple ones
-  return await confirmAction(message, { danger: message.includes('حذف') || message.includes('پاک') });
-};
-
-
-// Auto-backup scheduler
-const BackupScheduler = {
-  interval: null,
-
-  start(minutes = 30) {
-    if (this.interval) clearInterval(this.interval);
-    this.interval = setInterval(() => {
-      this.createBackup();
-    }, minutes * 60 * 1000);
-  },
-
-  stop() {
-    if (this.interval) { clearInterval(this.interval); this.interval = null; }
-  },
-
-  createBackup() {
-    try {
-      const data = {
-        services: DB.get('services'),
-        customers: DB.get('customers'),
-        orders: DB.get('orders'),
-        order_items: DB.get('order_items'),
-        tariffs: DB.get('tariffs'),
-        internal_news: DB.get('internal_news'),
-        tips: DB.get('tips'),
-        backup_time: nowStr()
-      };
-
-      const backups = JSON.parse(localStorage.getItem('kafinet_backups') || '[]');
-      backups.push({ time: Date.now(), data });
-
-      // Keep only last 10 backups
-      if (backups.length > 10) backups.shift();
-
-      localStorage.setItem('kafinet_backups', JSON.stringify(backups));
-      console.log('✅ Auto-backup created');
-    } catch (e) {
-      console.error('Backup failed:', e);
-    }
-  },
-
-  restoreList() {
-    try {
-      return JSON.parse(localStorage.getItem('kafinet_backups') || '[]');
-    } catch { return []; }
-  },
-
-  restore(index) {
-    const backups = this.restoreList();
-    if (!backups[index]) return false;
-
-    const data = backups[index].data;
-    const tables = ['services', 'customers', 'orders', 'order_items', 'tariffs', 'internal_news', 'tips'];
-    tables.forEach(key => { if (data[key]) DB.set(key, data[key]); });
-    return true;
-  }
-};
-
-
-// Simple performance monitoring
-const PerfMonitor = {
-  marks: {},
-
-  start(label) {
-    this.marks[label] = performance.now();
-  },
-
-  end(label) {
-    if (!this.marks[label]) return;
-    const duration = performance.now() - this.marks[label];
-    delete this.marks[label];
-
-    if (duration > 100) {
-      console.warn(`⚠️ Slow operation: ${label} took ${duration.toFixed(1)}ms`);
-    }
-    return duration;
-  },
-
-  measure(fn, label) {
-    this.start(label);
-    const result = fn();
-    this.end(label);
-    return result;
-  }
+  get(k) { try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch { return null; } },
+  set(k, v) { localStorage.setItem(k, JSON.stringify(v)); },
 };
 
 function initDB() {
@@ -2871,28 +2342,6 @@ function fmtNum(n) { return Number(n||0).toLocaleString('fa-IR'); }
 function nextId(arr) { return arr.length ? Math.max(...arr.map(x=>x.id||0)) + 1 : 1; }
 function norm(s) { return (s||'').replace(/ي/g,'ی').replace(/ك/g,'ک').toLowerCase(); }
 
-// Debounce helper for search inputs
-function debounce(fn, delay = 300) {
-  let timer;
-  return function(...args) {
-    clearTimeout(timer);
-    timer = setTimeout(() => fn.apply(this, args), delay);
-  };
-}
-
-// Throttle helper for rapid events
-function throttle(fn, limit = 100) {
-  let inThrottle;
-  return function(...args) {
-    if (!inThrottle) {
-      fn.apply(this, args);
-      inThrottle = true;
-      setTimeout(() => inThrottle = false, limit);
-    }
-  };
-}
-
-
 // ============================================
 // SECURITY: HTML ESCAPING (XSS PREVENTION)
 // ============================================
@@ -2932,7 +2381,7 @@ function setSyncStatus(status, msg) {
 // ============================================
 let selectedCustomer = null;
 
-const searchCustomers = debounce(function(query) {
+function searchCustomers(query) {
   const q = query.trim();
   const dropdown = document.getElementById('customer-dropdown');
   
@@ -3326,10 +2775,10 @@ function deleteService() {
   selService=null; loadServices(); autoSync(); toast('حذف شد');
 }
 
-const filterServices = debounce(function(q) {
+function filterServices(q) {
   const nq = norm(q);
   renderServices(nq ? allServices.filter(s=>norm(s.name).includes(nq)||norm(s.category).includes(nq)) : allServices);
-}, 200);
+}
 
 // ============================================
 // TARIFFS
@@ -3502,10 +2951,10 @@ function deleteCustomer() {
   selCust=null; loadCustomers(); autoSync(); toast('حذف شد');
 }
 
-const filterCustomers = debounce(function(q) {
+function filterCustomers(q) {
   const nq=norm(q);
   renderCustomers(nq?allCustomers.filter(c=>norm(c.first_name+c.last_name).includes(nq)||norm(c.phone||'').includes(nq)||norm(c.national||'').includes(nq)):allCustomers);
-}, 200);
+}
 
 // ============================================
 // ORDERS
@@ -4080,12 +3529,12 @@ function deleteOrder(id) {
   toast('سفارش حذف شد', 'success');
 }
 
-const filterOrders = debounce(function(q) {
+function filterOrders(q) {
   const nq = norm(q);
   const custs = DB.get('customers')||[];
   const custMap = {}; custs.forEach(c=>custMap[c.id]=c.first_name+' '+c.last_name);
   renderOrders(nq ? allOrders.filter(o=>norm(custMap[o.customer_id]||'').includes(nq)||String(o.id).includes(nq)) : allOrders);
-}, 200);
+}
 
 // ============================================
 // INVOICE PRINT WITH STAMP - FIXED FOR MOBILE
@@ -4554,10 +4003,10 @@ function togglePin() {
   DB.set('internal_news',data); loadNews(); autoSync(); toast('وضعیت پین تغییر یافت','success');
 }
 
-const filterNews = debounce(function(q) {
+function filterNews(q) {
   const nq=norm(q);
   renderNews(nq?allNews.filter(n=>norm(n.title).includes(nq)||norm(n.content||'').includes(nq)):allNews);
-}, 200);
+}
 
 // ============================================
 // REPORTS
@@ -4736,14 +4185,14 @@ function reportServiceStats() {
   renderRep(Object.entries(cats).sort((a,b)=>b[1]-a[1]).map(([c,n])=>[c,n]));
 }
 
-const filterReport = debounce(function(q) {
+function filterReport(q) {
   const nq=norm(q);
   if (!nq) { renderRep(repAllData); return; }
   const filtered=repAllData.filter(row=>row.some(v=>norm(String(v)).includes(nq)));
   const tbody=document.getElementById('rep-table');
   tbody.innerHTML='';
   filtered.forEach(row=>{ const tr=document.createElement('tr'); tr.innerHTML=row.map(v=>`<td>${esc(v)}</td>`).join(''); tbody.appendChild(tr); });
-}, 200);
+}
 
 // ============================================
 // EXPORT / IMPORT
@@ -4833,56 +4282,6 @@ function updateDate() {
 // ============================================
 // INIT
 // ============================================
-
-// Keyboard shortcuts
-document.addEventListener('keydown', (e) => {
-  // Escape: close modals
-  if (e.key === 'Escape') {
-    document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
-    document.getElementById('lightbox')?.classList.remove('open');
-  }
-  // Ctrl+S: trigger save (prevent browser save)
-  if (e.ctrlKey && e.key === 's') {
-    e.preventDefault();
-    const activeModal = document.querySelector('.modal-overlay.open');
-    if (activeModal) {
-      const saveBtn = activeModal.querySelector('.btn-primary');
-      if (saveBtn) saveBtn.click();
-    }
-  }
-  // Ctrl+D: dashboard
-  if (e.ctrlKey && e.key === 'd') {
-    e.preventDefault();
-    showPage('dashboard');
-  }
-  // Ctrl+O: orders
-  if (e.ctrlKey && e.key === 'o') {
-    e.preventDefault();
-    showPage('orders');
-  }
-  // Ctrl+N: new order (if on orders page)
-  if (e.ctrlKey && e.key === 'n') {
-    e.preventDefault();
-    const activePage = document.querySelector('.page.active');
-    if (activePage?.id === 'page-orders') {
-      document.getElementById('order-prod-search').focus();
-    }
-  }
-});
-
-
-// Online/Offline indicator
-window.addEventListener('online', () => {
-  toast('✅ اینترنت وصل شد', 'success');
-  setSyncStatus('synced', '✅ آنلاین');
-  if (SYNC_CONFIG.GITHUB_TOKEN) syncFromCloud();
-});
-
-window.addEventListener('offline', () => {
-  toast('⛔ اینترنت قطع شد — داده‌ها به صورت محلی ذخیره می‌شوند', 'danger');
-  setSyncStatus('offline', '⛔ آفلاین');
-});
-
 const savedToken = sessionStorage.getItem('github_token');
 if (savedToken && savedToken !== '') {
   document.getElementById('login-page').classList.add('hidden');
@@ -4915,97 +4314,5 @@ console.log('   ✅ رفع مشکل نمایش پس‌زمینه و خروج د�
 console.log('   ✅ نام برنامه روی هوم اسکرین "کافینت چنار"');
 console.log('   ✅ رفع مشکل چاپ فاکتور روی گوشی');
 </script>
-
-<!-- Service Worker Registration -->
-<script>
-if ('serviceWorker' in navigator) {
-  const swCode = `
-    const CACHE_NAME = 'kafinet-v1';
-    const STATIC_ASSETS = [
-      '/',
-      '/index.html',
-      'https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap',
-      'https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js'
-    ];
-
-    self.addEventListener('install', (event) => {
-      event.waitUntil(
-        caches.open(CACHE_NAME).then((cache) => {
-          return cache.addAll(STATIC_ASSETS);
-        }).catch(() => {
-          // Silent fail for external resources
-        })
-      );
-      self.skipWaiting();
-    });
-
-    self.addEventListener('activate', (event) => {
-      event.waitUntil(
-        caches.keys().then((cacheNames) => {
-          return Promise.all(
-            cacheNames
-              .filter((name) => name !== CACHE_NAME)
-              .map((name) => caches.delete(name))
-          );
-        })
-      );
-      self.clients.claim();
-    });
-
-    self.addEventListener('fetch', (event) => {
-      // Only cache GET requests to same origin
-      if (event.request.method !== 'GET') return;
-
-      event.respondWith(
-        caches.match(event.request).then((cached) => {
-          if (cached) {
-            // Return cached but also fetch in background
-            fetch(event.request).then((response) => {
-              if (response.ok) {
-                caches.open(CACHE_NAME).then((cache) => {
-                  cache.put(event.request, response.clone());
-                });
-              }
-            }).catch(() => {});
-            return cached;
-          }
-
-          return fetch(event.request).then((response) => {
-            if (!response || response.status !== 200 || response.type !== 'basic') {
-              return response;
-            }
-            const responseToCache = response.clone();
-            caches.open(CACHE_NAME).then((cache) => {
-              cache.put(event.request, responseToCache);
-            });
-            return response;
-          }).catch(() => {
-            // If offline and not in cache, return offline page
-            if (event.request.mode === 'navigate') {
-              return new Response('<html><body style="text-align:center;padding:50px;font-family:sans-serif;"><h1>کافینت چنار</h1><p>⛔ شما آفلاین هستید. لطفاً اینترنت خود را بررسی کنید.</p></body></html>', {
-                headers: {'Content-Type': 'text/html'}
-              });
-            }
-          });
-        })
-      );
-    });
-  `;
-
-  const blob = new Blob([swCode], { type: 'application/javascript' });
-  const swUrl = URL.createObjectURL(blob);
-
-  navigator.serviceWorker.register(swUrl)
-    .then((reg) => console.log('SW registered:', reg.scope))
-    .catch((err) => console.log('SW registration failed:', err));
-}
-</script>
-
-
-<!-- Loading Spinner -->
-<div class="spinner-overlay" id="spinner-overlay">
-  <div class="spinner"></div>
-</div>
-
 </body>
 </html>
