@@ -281,7 +281,7 @@
       "id": 6,
       "customer_id": 7,
       "date": "۱۴۰۵/۰۴/۲۰ ۱۹:۰۳:۰۰",
-      "total": 410005,
+      "total": 410002,
       "status": "تکمیل شده"
     }
   ],
@@ -425,10 +425,10 @@
       "qty": 3,
       "unit_price": 200000,
       "discount_percent": 0,
-      "discount_amount": 116665,
+      "discount_amount": 116666,
       "total_discount": 349998,
       "final_unit_price": 83334,
-      "subtotal": 250005
+      "subtotal": 250002
     },
     {
       "order_id": 6,
@@ -492,5 +492,5 @@
       "date": "۱۴۰۵/۰۷/۱۳"
     }
   ],
-  "last_update": "۱۴۰۵/۰۷/۱۳ ۰۹:۳۷:۴۰"
+  "last_update": "۱۴۰۵/۰۷/۱۳ ۰۹:۳۸:۲۳"
 }
