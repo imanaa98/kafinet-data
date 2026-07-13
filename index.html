@@ -1902,7 +1902,7 @@ const SYNC_CONFIG = {
   },
   ENABLED: true,
   CHECK_INTERVAL: 30000,
-  SAVE_DELAY: 3000
+  SAVE_DELAY: 8000
 };
 
 // ============================================
@@ -1911,8 +1911,10 @@ const SYNC_CONFIG = {
 let syncTimer = null;
 let isSyncing = false;
 let pendingChanges = false;
-let localDirty = false;  // ← NEW: تغییرات محلی که هنوز سینک نشده
+let localDirty = false;
 let currentSHA = null;
+let retryCount = 0;
+const MAX_RETRIES = 3;
 
 function getRepoUrl() {
   return `https://api.github.com/repos/${SYNC_CONFIG.USERNAME}/${SYNC_CONFIG.REPO_NAME}/contents/${SYNC_CONFIG.FILE_PATH}`;
@@ -1927,14 +1929,37 @@ function getToken() {
   return token;
 }
 
+// fetch با timeout برای جلوگیری از hang
+async function fetchWithTimeout(url, options = {}, timeout = 15000) {
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(), timeout);
+  try {
+    const response = await fetch(url, { ...options, signal: controller.signal });
+    clearTimeout(id);
+    return response;
+  } catch (error) {
+    clearTimeout(id);
+    if (error.name === 'AbortError') {
+      throw new Error('Timeout: درخواست بیش از حد طول کشید');
+    }
+    throw error;
+  }
+}
+
 async function syncToCloud() {
-  if (!SYNC_CONFIG.ENABLED || isSyncing) return;
+  if (!SYNC_CONFIG.ENABLED || isSyncing) {
+    // اگر در حال سینک هستیم، تلاش مجدد را برنامه‌ریزی کن
+    if (isSyncing && pendingChanges) {
+      setTimeout(() => { if (pendingChanges) syncToCloud(); }, 5000);
+    }
+    return;
+  }
   const token = getToken();
   if (!token) return;
 
   try {
     isSyncing = true;
-    setSyncStatus('syncing', '⏳ همگام‌سازی...');
+    setSyncStatus('syncing', '⏳ در حال ارسال...');
 
     const data = {
       services: DB.get('services'),
@@ -1947,33 +1972,33 @@ async function syncToCloud() {
       last_update: nowStr()
     };
 
-    const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+    const payload = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
 
     let sha = null;
     try {
-      const getResponse = await fetch(getRepoUrl(), {
+      const getResponse = await fetchWithTimeout(getRepoUrl(), {
         headers: {
           'Authorization': `token ${token}`,
           'Accept': 'application/vnd.github.v3+json'
         }
-      });
+      }, 10000);
 
       if (getResponse.ok) {
         const fileData = await getResponse.json();
         sha = fileData.sha;
       }
     } catch (e) {
-      console.warn('عدم دریافت sha فایل قبل از سینک (احتمالاً فایل جدید است):', e);
+      console.warn('عدم دریافت sha (فایل جدید یا خطای شبکه):', e.message);
     }
 
     const body = {
       message: `همگام‌سازی خودکار - ${nowStr()}`,
-      content: content,
+      content: payload,
       branch: 'main'
     };
     if (sha) body.sha = sha;
 
-    const updateResponse = await fetch(getRepoUrl(), {
+    const updateResponse = await fetchWithTimeout(getRepoUrl(), {
       method: 'PUT',
       headers: {
         'Authorization': `token ${token}`,
@@ -1981,7 +2006,7 @@ async function syncToCloud() {
         'Accept': 'application/vnd.github.v3+json'
       },
       body: JSON.stringify(body)
-    });
+    }, 15000);
 
     if (!updateResponse.ok) {
       const err = new Error('Sync failed');
@@ -1991,40 +2016,63 @@ async function syncToCloud() {
 
     const result = await updateResponse.json();
     currentSHA = result.content.sha;
+    retryCount = 0;
     setSyncStatus('synced', '✅ همگام شد');
     pendingChanges = false;
-    localDirty = false;  // ← فقط در صورت موفقیت کامل false می‌شود
+    localDirty = false;
 
   } catch (e) {
     console.error('Sync error:', e);
+    retryCount++;
+
     if (e.status === 401 || e.status === 403) {
-      setSyncStatus('error', '⚠️ توکن نامعتبر یا دسترسی ناکافی');
+      setSyncStatus('error', '⚠️ توکن نامعتبر');
+      retryCount = MAX_RETRIES; // دیگر تلاش نکن
     } else if (e.status === 409) {
-      setSyncStatus('error', '⚠️ تعارض داده؛ ابتدا دریافت از سرور را اجرا کنید');
-      toast('داده‌ها روی سرور تغییر کرده؛ لطفاً صفحه را رفرش کنید تا آخرین نسخه دریافت شود', 'danger');
+      setSyncStatus('error', '⚠️ تعارض داده');
+      toast('داده‌ها روی سرور تغییر کرده؛ صفحه را رفرش کنید', 'danger');
+    } else if (e.message && e.message.includes('Timeout')) {
+      setSyncStatus('syncing', `⏳ اتصال کند (${retryCount}/${MAX_RETRIES})...`);
+      if (retryCount < MAX_RETRIES) {
+        setTimeout(() => { syncToCloud(); }, 5000 * retryCount);
+        return; // از finally رد نشو، isSyncing همچنان true
+      } else {
+        setSyncStatus('error', '⚠️ اتصال برقرار نشد؛ ذخیره محلی فعال');
+        // تغییرات محلی حفظ می‌شوند و در فرصت بعدی ارسال خواهند شد
+      }
     } else {
       setSyncStatus('error', '⚠️ خطا در همگام‌سازی');
+      if (retryCount < MAX_RETRIES) {
+        setTimeout(() => { syncToCloud(); }, 3000 * retryCount);
+        return;
+      }
     }
-    // ← pendingChanges و localDirty همچنان true می‌مانند تا در فرصت بعدی دوباره تلاش شود
   } finally {
     isSyncing = false;
   }
 }
 
 async function syncFromCloud() {
-  // ← FIX: اگر تغییرات محلی داریم که هنوز ارسال نشده، داده‌های قدیمی گیت‌هاب را نمی‌نویسیم
-  if (!SYNC_CONFIG.ENABLED || isSyncing || localDirty || pendingChanges) return;
+  // اگر تغییرات محلی داریم، داده‌های قدیمی را نمی‌نویسیم
+  if (!SYNC_CONFIG.ENABLED || isSyncing || localDirty || pendingChanges) {
+    if (localDirty || pendingChanges) {
+      setSyncStatus('syncing', '⏳ تغییرات محلی در انتظار ارسال...');
+    }
+    return;
+  }
   const token = getToken();
   if (!token) return;
 
   try {
     isSyncing = true;
-    const response = await fetch(getRepoUrl(), {
+    setSyncStatus('syncing', '⏳ در حال دریافت...');
+
+    const response = await fetchWithTimeout(getRepoUrl(), {
       headers: {
         'Authorization': `token ${token}`,
         'Accept': 'application/vnd.github.v3+json'
       }
-    });
+    }, 10000);
 
     if (!response.ok) {
       if (response.status === 404) {
@@ -2035,13 +2083,13 @@ async function syncFromCloud() {
         setSyncStatus('error', '⚠️ توکن نامعتبر');
         return;
       }
-      throw new Error('Fetch failed');
+      throw new Error('Fetch failed: ' + response.status);
     }
 
     const fileData = await response.json();
     currentSHA = fileData.sha;
-    const content = decodeURIComponent(escape(atob(fileData.content)));
-    const data = JSON.parse(content);
+    const payload = decodeURIComponent(escape(atob(fileData.content)));
+    const data = JSON.parse(payload);
 
     let changed = false;
     const tables = ['services', 'customers', 'orders', 'order_items', 'tariffs', 'internal_news', 'tips'];
@@ -2070,11 +2118,13 @@ async function syncFromCloud() {
     }
 
   } catch (e) {
-    console.error('Sync from cloud error:', e);
-    if (e.message.includes('401') || e.message.includes('403')) {
+    console.error('Sync from cloud error:', e.message || e);
+    if (e.message && e.message.includes('Timeout')) {
+      setSyncStatus('synced', '✅ حالت آفلاین');
+    } else if (e.message && (e.message.includes('401') || e.message.includes('403'))) {
       setSyncStatus('error', '⚠️ توکن نامعتبر');
     } else {
-      setSyncStatus('error', '⚠️ خطا');
+      setSyncStatus('synced', '✅ حالت محلی'); // خطای شبکه = ادامه کار محلی
     }
   } finally {
     isSyncing = false;
@@ -2083,12 +2133,12 @@ async function syncFromCloud() {
 
 function autoSync() {
   if (!SYNC_CONFIG.ENABLED) return;
-  localDirty = true;       // ← NEW: نشان‌دهنده تغییرات محلی
+  localDirty = true;
   pendingChanges = true;
+  retryCount = 0; // ریست تلاش‌ها
   if (syncTimer) { clearTimeout(syncTimer); syncTimer = null; }
   syncTimer = setTimeout(() => {
     if (pendingChanges) { syncToCloud(); }
-    // ← FIX: pendingChanges و localDirty فقط در صورت موفقیت syncToCloud false می‌شوند
     syncTimer = null;
   }, SYNC_CONFIG.SAVE_DELAY);
 }
@@ -2097,7 +2147,7 @@ function initSync() {
   if (SYNC_CONFIG.ENABLED) {
     const token = SYNC_CONFIG.GITHUB_TOKEN;
     if (token && token !== '') {
-      setTimeout(syncFromCloud, 2000);
+      setTimeout(() => { syncFromCloud(); }, 2000);
       setInterval(() => { syncFromCloud(); }, SYNC_CONFIG.CHECK_INTERVAL);
       setSyncStatus('synced', '✅ همگام با ریپازیتوری');
       updateLoginStatus('online', '✅ متصل');
@@ -2300,6 +2350,13 @@ function norm(s) { return (s||'').replace(/ي/g,'ی').replace(/ك/g,'ک').toLowe
 const _escMap = { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' };
 function esc(str) {
   return String(str ?? '').replace(/[&<>"']/g, ch => _escMap[ch]);
+}
+
+let isSaving = false;
+
+function setSaving(saving) {
+  isSaving = saving;
+  document.body.style.cursor = saving ? 'wait' : '';
 }
 
 function toast(msg, type='') {
@@ -2682,25 +2739,33 @@ function fillServiceForm(s) {
 }
 
 function addService() {
+  if (isSaving) { toast('⏳ لطفاً صبر کنید...', 'warning'); return; }
   const n = document.getElementById('svc-name').value.trim();
   const c = document.getElementById('svc-cat').value.trim();
   const p = +document.getElementById('svc-price').value;
   const st = +document.getElementById('svc-stock').value||999;
   if (!n||!p) { toast('نام و هزینه الزامی است', 'danger'); return; }
+  setSaving(true);
   const svcs = DB.get('services')||[];
   svcs.push({id:nextId(svcs),name:n,category:c,price:p,stock:st});
-  DB.set('services',svcs); loadServices(); autoSync(); toast('خدمت افزوده شد','success');
+  DB.set('services',svcs); loadServices(); autoSync();
+  setSaving(false);
+  toast('خدمت افزوده شد','success');
 }
 
 function editService() {
+  if (isSaving) { toast('⏳ لطفاً صبر کنید...', 'warning'); return; }
   if (!selService) { toast('یک ردیف انتخاب کنید','danger'); return; }
+  setSaving(true);
   const svcs = DB.get('services')||[];
   const n = document.getElementById('svc-name').value.trim();
   const c = document.getElementById('svc-cat').value.trim();
   const p = +document.getElementById('svc-price').value;
   const st = +document.getElementById('svc-stock').value||999;
   svcs.forEach(s=>{ if(s.id===selService.id) Object.assign(s,{name:n,category:c,price:p,stock:st}); });
-  DB.set('services',svcs); loadServices(); autoSync(); toast('ویرایش انجام شد','success');
+  DB.set('services',svcs); loadServices(); autoSync();
+  setSaving(false);
+  toast('ویرایش انجام شد','success');
 }
 
 function deleteService() {
@@ -2757,19 +2822,27 @@ function renderTariffs(data) {
 }
 
 function addTariff() {
+  if (isSaving) { toast('⏳ لطفاً صبر کنید...', 'warning'); return; }
   const n=document.getElementById('tar-name').value.trim();
   const p=+document.getElementById('tar-price').value;
   if (!n||!p) { toast('نام و قیمت الزامی','danger'); return; }
+  setSaving(true);
   const data=DB.get('tariffs')||[];
   data.push({id:nextId(data),name:n,description:document.getElementById('tar-desc').value,price:p,unit:document.getElementById('tar-unit').value,active:'فعال'});
-  DB.set('tariffs',data); loadTariffs(); autoSync(); toast('تعرفه افزوده شد','success');
+  DB.set('tariffs',data); loadTariffs(); autoSync();
+  setSaving(false);
+  toast('تعرفه افزوده شد','success');
 }
 
 function editTariff() {
+  if (isSaving) { toast('⏳ لطفاً صبر کنید...', 'warning'); return; }
   if (!selTariff) { toast('انتخاب نشده','danger'); return; }
+  setSaving(true);
   const data=DB.get('tariffs')||[];
   data.forEach(t=>{ if(t.id===selTariff.id) Object.assign(t,{name:document.getElementById('tar-name').value.trim(),description:document.getElementById('tar-desc').value,price:+document.getElementById('tar-price').value,unit:document.getElementById('tar-unit').value}); });
-  DB.set('tariffs',data); loadTariffs(); autoSync(); toast('ویرایش انجام شد','success');
+  DB.set('tariffs',data); loadTariffs(); autoSync();
+  setSaving(false);
+  toast('ویرایش انجام شد','success');
 }
 
 function deleteTariff() {
@@ -2827,10 +2900,12 @@ function fillCustForm(c) {
 }
 
 function addCustomer() {
+  if (isSaving) { toast('⏳ لطفاً صبر کنید...', 'warning'); return; }
   const fn=document.getElementById('cust-fn').value.trim();
   const ln=document.getElementById('cust-ln').value.trim();
   const ph=document.getElementById('cust-phone').value.trim();
   if (!fn) { toast('نام الزامی است','danger'); return; }
+  setSaving(true);
   const custs=DB.get('customers')||[];
   custs.push({
     id:nextId(custs),
@@ -2841,13 +2916,17 @@ function addCustomer() {
     debt:+(document.getElementById('cust-debt').value||0),
     address:document.getElementById('cust-addr').value,
     info:document.getElementById('cust-info').value,
-    join_date:today() // English digits: 1403/04/12
+    join_date:today()
   });
-  DB.set('customers',custs); loadCustomers(); autoSync(); toast('مشتری افزوده شد','success');
+  DB.set('customers',custs); loadCustomers(); autoSync();
+  setSaving(false);
+  toast('مشتری افزوده شد','success');
 }
 
 function editCustomer() {
+  if (isSaving) { toast('⏳ لطفاً صبر کنید...', 'warning'); return; }
   if (!selCust) { toast('یک ردیف انتخاب کنید','danger'); return; }
+  setSaving(true);
   const custs=DB.get('customers')||[];
   custs.forEach(c=>{
     if(c.id===selCust.id) Object.assign(c,{
@@ -2860,7 +2939,9 @@ function editCustomer() {
       info:document.getElementById('cust-info').value
     });
   });
-  DB.set('customers',custs); loadCustomers(); autoSync(); toast('ویرایش انجام شد','success');
+  DB.set('customers',custs); loadCustomers(); autoSync();
+  setSaving(false);
+  toast('ویرایش انجام شد','success');
 }
 
 function deleteCustomer() {
@@ -3804,11 +3885,13 @@ function deleteCurrentNote() {
 }
 
 function saveNote() {
+  if (isSaving) { toast('⏳ لطفاً صبر کنید...', 'warning'); return; }
   const title = document.getElementById('nm-title').value.trim();
   const folder = document.getElementById('nm-folder').value.trim()||'عمومی';
   const body = document.getElementById('nm-body').value.trim();
   const url = document.getElementById('nm-url').value.trim();
   if (!title) { toast('عنوان الزامی است','danger'); return; }
+  setSaving(true);
   const tips = DB.get('tips')||[];
   const imgs = pendingImgs.map(p=>p.dataUrl);
   if (editingNote) {
@@ -3818,6 +3901,7 @@ function saveNote() {
   }
   DB.set('tips',tips);
   closeNoteModal(); loadTips(); autoSync();
+  setSaving(false);
   toast(editingNote?'ویرایش انجام شد':'راهنما ذخیره شد','success');
 }
 
@@ -3883,18 +3967,26 @@ function renderNews(data) {
 }
 
 function addNews() {
+  if (isSaving) { toast('⏳ لطفاً صبر کنید...', 'warning'); return; }
   const title=document.getElementById('news-title').value.trim();
   if (!title) { toast('عنوان الزامی','danger'); return; }
+  setSaving(true);
   const data=DB.get('internal_news')||[];
   data.push({id:nextId(data),title,content:document.getElementById('news-body').value,category:document.getElementById('news-cat').value,date:today(),priority:document.getElementById('news-pri').value,pinned:false,active:true});
-  DB.set('internal_news',data); loadNews(); autoSync(); toast('اطلاعیه افزوده شد','success');
+  DB.set('internal_news',data); loadNews(); autoSync();
+  setSaving(false);
+  toast('اطلاعیه افزوده شد','success');
 }
 
 function editNews() {
+  if (isSaving) { toast('⏳ لطفاً صبر کنید...', 'warning'); return; }
   if (!selNews) { toast('انتخاب نشده','danger'); return; }
+  setSaving(true);
   const data=DB.get('internal_news')||[];
   data.forEach(n=>{ if(n.id===selNews.id) Object.assign(n,{title:document.getElementById('news-title').value.trim(),content:document.getElementById('news-body').value,category:document.getElementById('news-cat').value,priority:document.getElementById('news-pri').value}); });
-  DB.set('internal_news',data); loadNews(); autoSync(); toast('ویرایش انجام شد','success');
+  DB.set('internal_news',data); loadNews(); autoSync();
+  setSaving(false);
+  toast('ویرایش انجام شد','success');
 }
 
 function deleteNews() {
