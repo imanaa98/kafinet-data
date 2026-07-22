@@ -312,6 +312,13 @@
       "date": "۱۴۰۵/۰۴/۲۰ ۱۹:۰۳:۰۰",
       "total": 410002,
       "status": "تکمیل شده"
+    },
+    {
+      "id": 7,
+      "customer_id": 10,
+      "date": "۱۴۰۵/۰۷/۲۱ ۲۱:۲۳:۱۱",
+      "total": 700000,
+      "status": "تکمیل شده"
     }
   ],
   "order_items": [
@@ -470,6 +477,18 @@
       "total_discount": 90000,
       "final_unit_price": 0,
       "subtotal": 0
+    },
+    {
+      "order_id": 7,
+      "product_id": 25,
+      "product_name": "املاک و اسکان",
+      "qty": 1,
+      "unit_price": 800000,
+      "discount_percent": 0,
+      "discount_amount": 100000,
+      "total_discount": 100000,
+      "final_unit_price": 700000,
+      "subtotal": 700000
     }
   ],
   "tariffs": [],
@@ -557,5 +576,5 @@
       "date": "۱۴۰۵/۰۷/۱۹"
     }
   ],
-  "last_update": "۱۴۰۵/۰۷/۲۱ ۲۱:۲۲:۴۶"
+  "last_update": "۱۴۰۵/۰۷/۲۱ ۲۱:۲۳:۱۴"
 }
